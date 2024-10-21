@@ -1,6 +1,5 @@
-from fastapi import FastAPI, Depends
-from typing import List
-from datetime import datetime
+from fastapi import FastAPI
+from resources.coil_base import CoilBase
 import uvicorn
 
 app = FastAPI()
@@ -10,6 +9,8 @@ app = FastAPI()
 def ping():
     return "pong"
 
+coil_base = CoilBase()
+app.include_router(coil_base.get_router())
 
 if __name__ == "__main__":
     uvicorn.run("main:app", port=8080, reload=True)
