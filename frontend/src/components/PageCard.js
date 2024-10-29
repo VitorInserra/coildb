@@ -2,7 +2,7 @@ import React from "react";
 
 export default function PageCard(props) {
     return (
-        <div className="summary-reports">
+        <div className="page-card">
             <h2>{props.heading}</h2>
             {/* Search bar for Summary Reports */}
             <input
