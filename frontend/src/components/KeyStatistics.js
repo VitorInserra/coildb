@@ -2,15 +2,25 @@ import React from "react";
 
 export default function KeyStatistics() {
     return (
-        <section className = "keystats">
-            <img />
-            <h1 className = "keystats--header">Key Statistics</h1>
-            <ul className = "keystats--content">
-              <li>Departments Participating: 28</li>
-              <li>Courses Available: 100</li>
-              <li>Participating Schools: 50</li>
-              <li>Students Enrolled: 100</li>
-            </ul>
+        <section className="keystats">
+            <div className="keystats--content">
+                <div className="keystats--item">
+                    <div className="keystats--label">Departments Participating</div>
+                    <div className="keystats--number">28</div>
+                </div>
+                <div className="keystats--item">
+                    <div className="keystats--label">Courses Available</div>
+                    <div className="keystats--number">100</div>
+                </div>
+                <div className="keystats--item">
+                    <div className="keystats--label">Participating Schools</div>
+                    <div className="keystats--number">50</div>
+                </div>
+                <div className="keystats--item">
+                    <div className="keystats--label">Students Enrolled</div>
+                    <div className="keystats--number">100</div>
+                </div>
+            </div>
         </section>
-    )
+    );
 }

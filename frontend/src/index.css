@@ -52,11 +52,6 @@ li {
   margin-bottom: 10px;
 }
 
-.key-statistics {
-  flex: 2;
-}
-
-
 
 .starred-reports {
   flex: 1;
@@ -89,7 +84,6 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
 nav { 
   height: 50px; 
   display: flex;
@@ -105,16 +99,45 @@ section {
   padding: 20px
 }
 
-.keystats{
+
+/* Styling for Key Statistics section */
+.keystats {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.keystats--header {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+/* Flexbox layout for key statistics items */
+.keystats--content {
   display: flex;
-  flex-direction: column;
-  align-self: center;
+  justify-content: space-between;
+  gap: 20px;
 }
 
-.keystats--header{
-  margin-bottom: 16px;
+/* Individual statistic item */
+.keystats--item {
+  text-align: center;
+  flex: 1; /* Ensure equal spacing for each item */
 }
 
-.keystats--content{
-  margin-top: 0;
-} 
+/* Styling for the label (e.g., Departments Participating) */
+.keystats--label {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+/* Styling for the number (e.g., 28, 100) */
+.keystats--number {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #8AC0DA; /* Choose a color to highlight the number */
+}
