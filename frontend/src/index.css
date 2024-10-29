@@ -1,30 +1,42 @@
-body {
+html, body {
   font-family: 'Poppins', sans-serif;
   background-color: #f4f4f4;
   margin: 0;
   padding: 0;
+  height: 100%;
 }
 
 .container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure the container spans the full height */
 }
 
 .header {
   display: flex;
   align-items: center;
+  justify-content: space-between; /* This will separate the logo and the title */
   background-color: #fff;
   padding: 20px;
-  justify-content: flex-start;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
 }
+
 .header-title {
-  font-size: 2rem; /* Match the font size to UNC Global Affairs */
+  font-size: 2rem; 
   font-weight: bold;
-  color: #000;
-  margin: 0;
+  color: #13294B;
+  margin: 0 auto; /* Center the title */
+  text-align: center; 
+  flex-grow: 1; /* Ensure the title is centered between the logo and other items */
 }
+
+.nav--logo {
+  max-width: 150px;
+  height: auto; /* Maintain the aspect ratio */
+}
+
 .content {
+  flex: 1; /* This ensures the content takes up available space before the footer */
   display: flex;
   justify-content: space-between;
   padding: 20px;
@@ -52,6 +64,13 @@ li {
   margin-bottom: 10px;
 }
 
+.page-card-heading {
+  font-size: 1.5rem; /* Adjust font size as needed */
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center; /* Ensure the heading is centered */
+  color: #13294B;
+}
 
 .starred-reports {
   flex: 1;
@@ -61,18 +80,7 @@ li {
   flex: 1;
 }
 
-/* App.css */
-a {
-  color: #0000EE;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-
-.search-bar{
+.search-bar {
   width: 100%; 
   padding: 8px;
   box-sizing: border-box; 
@@ -80,28 +88,12 @@ a:hover {
   border-radius: 4px; 
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-nav { 
-  height: 50px; 
-  display: flex;
-  padding: 5px 10px;
-  background-color: #ffffff;
-}
-
-.nav--logo {
-  max-width: 100px;
-}
-
 section {
-  padding: 20px
+  padding: 20px;
 }
 
-
-/* Styling for Key Statistics section */
 .keystats {
+  margin: 10px;
   padding: 20px;
   background-color: #fff;
   border-radius: 8px;
@@ -115,29 +107,41 @@ section {
   font-weight: bold;
 }
 
-/* Flexbox layout for key statistics items */
 .keystats--content {
   display: flex;
   justify-content: space-between;
   gap: 20px;
 }
 
-/* Individual statistic item */
 .keystats--item {
   text-align: center;
-  flex: 1; /* Ensure equal spacing for each item */
+  flex: 1;
 }
 
-/* Styling for the label (e.g., Departments Participating) */
 .keystats--label {
   font-size: 1.2rem;
   color: #555;
   margin-bottom: 5px;
 }
 
-/* Styling for the number (e.g., 28, 100) */
 .keystats--number {
   font-size: 2rem;
   font-weight: bold;
-  color: #8AC0DA; /* Choose a color to highlight the number */
+  color: #7BAFD4;
+}
+
+/* Blue footer styles */
+.blue-footer {
+  background-color: #7BAFD4;
+  color: white;
+  text-align: center;
+  padding: 5px;
+  margin-top: auto; /* Ensure the footer stays at the bottom */
+}
+
+.blue-footer p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #13294B;
+  font-weight: bold;
 }

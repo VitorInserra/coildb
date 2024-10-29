@@ -75,6 +75,9 @@ const App = () => {
         filteredReports={filteredPages}
       />
       </div>
+      <footer className="blue-footer">
+        <p>© 2024 The University of North Carolina at Chapel Hill</p>
+      </footer>
       </div>
   );
 };

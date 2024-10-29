@@ -3,7 +3,7 @@ import React from "react";
 export default function PageCard(props) {
     return (
         <div className="page-card">
-            <h2>{props.heading}</h2>
+            <h2 className="page-card-heading">{props.heading}</h2>
             {/* Search bar for Summary Reports */}
             <input
               type="text"

@@ -1,12 +1,10 @@
 import React from "react"
 
-export default function Navbar(){
-    return (
-        <nav>
-            <img src="/images/gflogo3.png" classname="nav--logo" />
-            <header className="header">
-                 <h1 className = "header-title">COIL Database</h1>
-            </header>
-        </nav>
-    )
+export default function Navbar() {
+  return (
+    <nav className="header">
+      <img src="/images/gflogo3.png" className="nav--logo" alt="UNC Global Affairs Logo" />
+      <h1 className="header-title">COIL Database</h1>
+    </nav>
+  );
 }
