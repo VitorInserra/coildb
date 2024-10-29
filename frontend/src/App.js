@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import Navbar from './components/Navbar'; 
 import KeyStatistics from './components/KeyStatistics'; 
-import './App.css'; // Import your custom styles
+import PageCard from './components/PageCard'; 
+import './index.css'; // Import your custom styles
 
 const App = () => {
   // State to store the search query
@@ -49,71 +50,32 @@ const App = () => {
           <h1>COIL Database</h1>
         </header>
         <KeyStatistics />
-        <div className="content">
-          <div className="summary-reports">
-            <h2>Summary Reports</h2>
-            {/* Search bar for Summary Reports */}
-            <input
-              type="text"
-              placeholder="Search Summary Reports..."
-              value={searchSummaryReports}
-              onChange={(e) => setSearchSummaryReports(e.target.value)}
-              className="search-bar" />
+        {/* Summary Reports PageCard */}
+      <PageCard
+        heading="Summary Reports"
+        placeholder="Search Summary Reports..."
+        value={searchSummaryReports}
+        searchResult={setSearchSummaryReports}
+        filteredReports={filteredSummaryReports}
+      />
 
-            <ul>
-              {filteredSummaryReports.length > 0 ? (
-                filteredSummaryReports.map((report, index) => (
-                  <li key={index}>{report}</li>
-                ))
-              ) : (
-                <li>No matching reports found</li>
-              )}
-            </ul>
-          </div>
+      {/* Starred Reports PageCard */}
+      <PageCard
+        heading="Starred Reports"
+        placeholder="Search Starred Reports..."
+        value={searchTermReports}
+        searchResult={setSearchTermReports}
+        filteredReports={filteredReports}
+      />
 
-          <div className="starred-reports">
-            <h2>Starred Reports</h2>
-
-            {/* Search bar for Starred Reports */}
-            <input
-              type="text"
-              placeholder="Search Starred Reports..."
-              value={searchTermReports}
-              onChange={(e) => setSearchTermReports(e.target.value)}
-              className="search-bar" />
-
-            <ul>
-              {filteredReports.length > 0 ? (
-                filteredReports.map((report, index) => (
-                  <li key={index}>{report}</li>
-                ))
-              ) : (
-                <li>No matching reports found</li>
-              )}
-            </ul>
-          </div>
-
-          <div className="pages">
-            <h2>Pages</h2>
-            {/* Search bar */}
-            <input
-              type="text"
-              placeholder="Search Pages..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="search-bar" />
-
-            <ul>
-              {filteredPages.length > 0 ? (
-                filteredPages.map((page, index) => (
-                  <li key={index}>{page}</li>
-                ))
-              ) : (
-                <li>No matching pages found</li>
-              )}
-            </ul>
-          </div>
-        </div>
+      {/* Pages PageCard */}
+      <PageCard
+        heading="Pages"
+        placeholder="Search Pages..."
+        value={searchTerm}
+        searchResult={setSearchTerm}
+        filteredReports={filteredPages}
+      />
       </div></>
   );
 };
