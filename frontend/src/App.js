@@ -46,9 +46,6 @@ const App = () => {
   return (
     <div className="container">
         <Navbar />
-        <header className="header">
-          <h1>COIL Database</h1>
-        </header>
         <KeyStatistics />
         {/* Summary Reports PageCard */}
       <div className="content">

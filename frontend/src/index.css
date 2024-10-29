@@ -12,11 +12,18 @@ body {
 }
 
 .header {
+  display: flex;
+  align-items: center;
   background-color: #fff;
   padding: 20px;
-  text-align: left;
+  justify-content: flex-start;
 }
-
+.header-title {
+  font-size: 2rem; /* Match the font size to UNC Global Affairs */
+  font-weight: bold;
+  color: #000;
+  margin: 0;
+}
 .content {
   display: flex;
   justify-content: space-between;
@@ -76,15 +83,6 @@ a:hover {
   box-sizing: border-box; 
   border: 1px solid #ccc; 
   border-radius: 4px; 
-}
-
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 code {
