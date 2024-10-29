@@ -1,5 +1,5 @@
 html, body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   background-color: #f4f4f4;
   margin: 0;
   padding: 0;
@@ -16,18 +16,17 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: space-between; /* This will separate the logo and the title */
-  background-color: #fff;
+  background-color: #13294B;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
 }
 
 .header-title {
-  font-size: 2rem; 
-  font-weight: bold;
-  color: #13294B;
+  font-size: 2.5rem; 
+  color: #dfe0e1;
   margin: 0 auto; /* Center the title */
   text-align: center; 
-  flex-grow: 1; /* Ensure the title is centered between the logo and other items */
+  font-family: 'Georgia', sans-serif;
 }
 
 .nav--logo {
@@ -93,7 +92,7 @@ section {
 }
 
 .keystats {
-  margin: 10px;
+  margin: 20px;
   padding: 20px;
   background-color: #fff;
   border-radius: 8px;

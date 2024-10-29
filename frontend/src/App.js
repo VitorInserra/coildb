@@ -18,7 +18,7 @@ const App = () => {
   ];
 
   const starredReports = [
-    "Coil Courses Fall 2024",
+    "COIL Courses Fall 2024",
     "Faculty Recipients Fall 2024"
   ];
 
