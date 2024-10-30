@@ -9,16 +9,7 @@ html, body {
 .container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Ensure the container spans the full height */
-}
-
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between; /* This will separate the logo and the title */
-  background-color: #13294B;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+  min-height: 98.5vh; /* Ensure the container spans the full height */
 }
 
 .header-title {
@@ -27,6 +18,23 @@ html, body {
   margin: 0 auto; /* Center the title */
   text-align: center; 
   font-family: 'Georgia', sans-serif;
+}
+
+.header-banner {
+  width: 100%; /* Make it stretch across the full width */
+  height: auto; /* Maintain aspect ratio */
+  max-height: 75px; /* You can adjust the height to make it skinny */
+  object-fit: cover; /* Ensures the image is cropped correctly to fill the space */
+}
+
+nav {
+  width: 100%; /* Make the navbar stretch across the full width */
+  display: flex;
+  justify-content: space-between; /* Spread the logo and title to the edges */
+  align-items: center;
+  padding: 10px 20px; /* Add padding for spacing */
+  background-color: #13294B; /* Adjusted navy color */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
 }
 
 .nav--logo {
@@ -38,7 +46,7 @@ html, body {
   flex: 1; /* This ensures the content takes up available space before the footer */
   display: flex;
   justify-content: space-between;
-  padding: 20px;
+  padding: 10px 20px;
   gap: 20px;
 }
 
@@ -48,6 +56,7 @@ html, body {
   border-radius: 8px;
   flex: 1;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
 }
 
 h2 {
@@ -92,7 +101,7 @@ section {
 }
 
 .keystats {
-  margin: 20px;
+  margin: 10px 20px 5px 20px;
   padding: 20px;
   background-color: #fff;
   border-radius: 8px;
@@ -101,7 +110,7 @@ section {
 
 .keystats--header {
   text-align: center;
-  font-size: 1.8rem;
+  font-size: 1.7rem;
   margin-bottom: 20px;
   font-weight: bold;
 }
