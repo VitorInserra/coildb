@@ -8,7 +8,7 @@ export default function Navbar() {
       <h1 className="header-title">UNC COIL Database</h1>
       </nav>
       <img 
-        src="/images/banner7.png" 
+        src="/images/banner9.png" 
         alt="Global Network Banner" 
         className="header-banner" 
       />
