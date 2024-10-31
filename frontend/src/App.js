@@ -47,7 +47,6 @@ const HomePage = ({ addStarredReport, starredReports }) => {
   const pages = [
     { name: "Faculty Recipients", path: "/faculty-recipients" },
     { name: "Grad Student Recipients", path: "/grad-student-recipients" },
-    { name: "Faculty Awarded But Canceled", path: "#" } // Replace '#' with the correct path
   ];
 
   const filteredSummaryReports = summaryReports.filter(report =>
