@@ -1,54 +1,69 @@
-import React, {useState} from 'react';
-import Navbar from './components/Navbar'; 
-import KeyStatistics from './components/KeyStatistics'; 
-import PageCard from './components/PageCard'; 
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import PageCard from './components/PageCard';
 import './index.css'; // Import your custom styles
+import FacultyRecipients from './pages/FacultyRecipients';
+import GradStudentRecipients from './pages/GradStudentRecipients';
+import SummaryDepartmental from './pages/SummaryDepartmental';
+import SummarySchools from './pages/SummarySchools';
 
 const App = () => {
-  // State to store the search query
-  const [searchTerm, setSearchTerm] = useState('');
-  const [searchTermReports, setSearchTermReports] = useState('');
-  const [searchSummaryReports, setSearchSummaryReports] = useState('');
+  const [starredReports, setStarredReports] = useState([]);
 
-  // data which we should replace with our DB
-  const pages = [
-    "Faculty Recipients",
-    "Grad Student Recipients",
-    "Faculty Awarded But Canceled"
-  ];
-
-  const starredReports = [
-    "COIL Courses Fall 2024",
-    "Faculty Recipients Fall 2024"
-  ];
-
-  const summaryReports = [
-    "Departmental", 
-    "Schools", 
-    "Compiled Quantitative Data"
-  ];
-
-  // Filter the pages based on the search term
-  const filteredPages = pages.filter(page =>
-    page.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  // Filter the starred reports based on the search term
-  const filteredReports = starredReports.filter(report =>
-    report.toLowerCase().includes(searchTermReports.toLowerCase())
-  );
-
-  // Filter the starred reports based on the search term
-  const filteredSummaryReports = summaryReports.filter(report =>
-    report.toLowerCase().includes(searchSummaryReports.toLowerCase())
-  );
+  const addStarredReport = (report) => {
+    setStarredReports((prevReports) => [...prevReports, report]);
+  };
 
   return (
-    <div className="container">
+    <Router>
+      <div className="container">
         <Navbar />
-        <KeyStatistics />
-        {/* Summary Reports PageCard */}
-      <div className="content">
+        <Routes>
+          <Route path="/" element={<HomePage addStarredReport={addStarredReport} starredReports={starredReports} />} />
+          <Route path="/faculty-recipients" element={<FacultyRecipients addStarredReport={addStarredReport}/>} />
+          <Route path="/grad-student-recipients" element={<GradStudentRecipients addStarredReport={addStarredReport}/>} />
+          <Route path="/summary-departmental" element={<SummaryDepartmental addStarredReport={addStarredReport} />} />
+          <Route path="/summary-schools" element={<SummarySchools addStarredReport={addStarredReport} />} />
+        </Routes>
+        <footer className="blue-footer">
+          <p>© 2024 The University of North Carolina at Chapel Hill</p>
+        </footer>
+      </div>
+    </Router>
+  );
+};
+
+const HomePage = ({ addStarredReport, starredReports }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchSummaryReports, setSearchSummaryReports] = useState('');
+  const [searchTermStarred, setSearchTermStarred] = useState(''); // State for the Starred Reports search term
+
+  const summaryReports = [
+    { name: "Departmental", path: "/summary-departmental" },
+    { name: "Schools", path: "/summary-schools" }
+  ];
+
+  const pages = [
+    { name: "Faculty Recipients", path: "/faculty-recipients" },
+    { name: "Grad Student Recipients", path: "/grad-student-recipients" },
+    { name: "Faculty Awarded But Canceled", path: "#" } // Replace '#' with the correct path
+  ];
+
+  const filteredSummaryReports = summaryReports.filter(report =>
+    report.name.toLowerCase().includes(searchSummaryReports.toLowerCase())
+  );
+
+  const filteredPages = pages.filter(page =>
+    page.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const filteredStarredReports = starredReports
+    .filter(report => report.title.toLowerCase().includes(searchTermStarred.toLowerCase()))
+    .map(report => ({ name: report.title, path: report.path }));
+
+  return (
+    <div className="content">
       <PageCard
         heading="Summary Reports"
         placeholder="Search Summary Reports..."
@@ -56,17 +71,13 @@ const App = () => {
         searchResult={setSearchSummaryReports}
         filteredReports={filteredSummaryReports}
       />
-
-      {/* Starred Reports PageCard */}
       <PageCard
         heading="Starred Reports"
         placeholder="Search Starred Reports..."
-        value={searchTermReports}
-        searchResult={setSearchTermReports}
-        filteredReports={filteredReports}
+        value={searchTermStarred}
+        searchResult={setSearchTermStarred} // Update search term state for Starred Reports
+        filteredReports={filteredStarredReports} // Use the filtered Starred Reports
       />
-
-      {/* Pages PageCard */}
       <PageCard
         heading="Pages"
         placeholder="Search Pages..."
@@ -74,12 +85,9 @@ const App = () => {
         searchResult={setSearchTerm}
         filteredReports={filteredPages}
       />
-      </div>
-      <footer className="blue-footer">
-        <p>© 2024 The University of North Carolina at Chapel Hill</p>
-      </footer>
-      </div>
+    </div>
   );
 };
+
 
 export default App;
