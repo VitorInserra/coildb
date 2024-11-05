@@ -14,4 +14,5 @@ class CoilBase(Base):
     id = Column(Integer, primary_key=True, index=True)  # Primary key
 
 # Create the table if it doesn't already exist
+
 Base.metadata.create_all(bind=engine)
