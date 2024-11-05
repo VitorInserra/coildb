@@ -59,39 +59,8 @@ This document outlines the steps to connect to a PostgreSQL database running on 
    ```
    Replace `<POSTGRES_USER>` and `<POSTGRES_DB>` with the appropriate values (e.g., `dev_user` and `dev_db`).
 
-### 2. Create a Test Table
 
-1. **Run SQL Commands:**
-   Once in the `psql` prompt, run this SQL command to create a test table:
-   ```sql
-   CREATE TABLE test_table (
-       id SERIAL PRIMARY KEY,
-       name VARCHAR(50) NOT NULL,
-       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-   );
-   ```
-
-2. **Verify the Table:**
-   Run the following command to check that the table was created:
-   ```sql
-   \dt
-   ```
-
-### 3. Insert Test Data (Optional)
-
-1. **Insert a Sample Record:**
-   Add a sample entry to the table with this command:
-   ```sql
-   INSERT INTO test_table (name) VALUES ('Test Entry');
-   ```
-
-2. **View the Inserted Data:**
-   Run the following command to display the data in the table:
-   ```sql
-   SELECT * FROM test_table;
-   ```
-
-### 4. Exit the `psql` Prompt and Pod
+### 2. Exit the `psql` Prompt and Pod
 
 1. **Exit `psql`:**
    Type the following command to leave the `psql` prompt:
