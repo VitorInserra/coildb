@@ -1,13 +1,155 @@
-body {
+html, body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: #f4f4f4;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  height: 100%;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 98.5vh; /* Ensure the container spans the full height */
+}
+
+.header-title {
+  font-size: 2.5rem; 
+  color: #dfe0e1;
+  margin: 0 auto; /* Center the title */
+  text-align: center; 
+  font-family: 'Georgia', sans-serif;
+}
+
+.header-banner {
+  width: 100%; /* Make it stretch across the full width */
+  height: auto; /* Maintain aspect ratio */
+  max-height: 75px; /* You can adjust the height to make it skinny */
+  object-fit: cover; /* Ensures the image is cropped correctly to fill the space */
+}
+
+nav {
+  width: 100%; /* Make the navbar stretch across the full width */
+  display: flex;
+  justify-content: space-between; /* Spread the logo and title to the edges */
+  align-items: center;
+  padding: 10px 20px; /* Add padding for spacing */
+  background-color: #13294B; /* Adjusted navy color */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+}
+
+.nav--logo {
+  max-width: 150px;
+  height: auto; /* Maintain the aspect ratio */
+}
+
+.content {
+  flex: 1; /* This ensures the content takes up available space before the footer */
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  gap: 20px;
+}
+
+.page-card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  flex: 1;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+}
+
+h2 {
+  margin-top: 0;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+.page-card-heading {
+  font-size: 1.5rem; /* Adjust font size as needed */
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center; /* Ensure the heading is centered */
+  color: #13294B;
+}
+
+.starred-reports {
+  flex: 1;
+}
+
+.pages {
+  flex: 1;
+}
+
+.search-bar {
+  width: 100%; 
+  padding: 8px;
+  box-sizing: border-box; 
+  border: 1px solid #ccc; 
+  border-radius: 4px; 
+}
+
+section {
+  padding: 20px;
+}
+
+.keystats {
+  margin: 10px 20px 5px 20px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.keystats--header {
+  text-align: center;
+  font-size: 1.7rem;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.keystats--content {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.keystats--item {
+  text-align: center;
+  flex: 1;
+}
+
+.keystats--label {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.keystats--number {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #7BAFD4;
+}
+
+/* Blue footer styles */
+.blue-footer {
+  background-color: #7BAFD4;
+  color: white;
+  text-align: center;
+  padding: 5px;
+  margin-top: auto; /* Ensure the footer stays at the bottom */
+}
+
+.blue-footer p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #13294B;
+  font-weight: bold;
 }
