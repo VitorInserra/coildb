@@ -5,7 +5,7 @@ from db import engine  # Import engine from db.py
 # Define the base class for models
 Base = declarative_base()
 
-class School(base):
+class School(Base):
     __tablename__ = "school_count"
     id = Column(Integer, primary_key=True, index=True)
     school_name = Column(String)
@@ -13,7 +13,7 @@ class School(base):
     repeat_faculty = Column(Integer)
     unique = Column(Integer)
  
-class Department(base):
+class Department(Base):
     __tablename__ = "department_list"
     id = Column(Integer, primary_key=True, index=True)
     department = Column(String)
