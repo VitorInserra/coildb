@@ -33,6 +33,5 @@ class FacultyRecipientModel(BaseModel):
     coil_champions: str
     notes: str
     partner_region: str
-
     class Config:
         orm_mode = True
