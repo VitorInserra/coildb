@@ -1,5 +1,10 @@
 # coildb
 
+## Set up
+
+`cd backend`
+`python -m venv venv`
+
 ## Running
 
 Usage:
