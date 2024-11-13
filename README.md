@@ -1,30 +1,12 @@
 # coildb
 
-## Running the backend
+## Running
 
-From coildb:
-
-`cd backend`
-
-`python -m venv venv`
-
-`source venv/bin/activate`
-
-`pip install -r requirements.txt`
-
-`python main.py`
-
-## Running frontend
-
-`cd frontend`
-
-`npm install`
-
-`npm start`
-
-Here's a Markdown README document with the steps outlined for connecting to the PostgreSQL database, creating a test table, and inserting data.
-
----
+Usage:
+- Run `make install` to install dependencies for both backend and frontend.
+- Run `make backend` to start the Python backend.
+- Run `make frontend` to start the React frontend.
+- Run `make all` to start both the backend and frontend concurrently in separate terminals if you're using a multiprocess terminal setup.
 
 ## Connecting to PostgreSQL Database and Creating a Test Table in OpenShift
 
