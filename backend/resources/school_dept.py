@@ -18,25 +18,21 @@ class SchoolDeptResource:
             finally:
                 db.close()
 
-        # Sample GET endpoint
-        @self.router.get("/school_dept/schools", response_model=SchoolModel)
+        @self.router.get("/school-dept/schools", response_model=SchoolModel)
         async def get_schools(school_id: int, db: Session = Depends(get_db)):
             return db.query(School).filter(School.id == school_id).first()
-          # Sample GET endpoint
 
-        @self.router.get("/school_dept/depts", response_model=DepartmentModel)
+        @self.router.get("/school-dept/depts", response_model=DepartmentModel)
         async def get_departments(department_id: int, db: Session = Depends(get_db)):
             return db.query(Department).filter(Department.id == department_id).first()
 
-        # Sample POST endpoint
-        @self.router.post("/faculty_recipient/schools", response_model=SchoolModel)
+        @self.router.post("/faculty-recipient/schools", response_model=SchoolModel)
         async def create_school(school: SchoolModel, db: Session = Depends(get_db)):
-            db_school = School(**school.dict())
+            db_school = School(**dict(school))
             db.add(db_school)
             db.commit()
             db.refresh(db_school)
             return db_school
 
-        # Add more endpoints here as needed
 
         return self.router

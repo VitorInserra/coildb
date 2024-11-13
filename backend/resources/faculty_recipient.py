@@ -10,7 +10,6 @@ class FacultyRecipientResource:
         self.router = APIRouter()
 
     def get_router(self):
-        # Dependency to get the database session
         def get_db():
             db = SessionLocal()
             try:
@@ -18,13 +17,11 @@ class FacultyRecipientResource:
             finally:
                 db.close()
 
-        # Sample GET endpoint
-        @self.router.get("/faculty_recipient/{faculty_id}", response_model=FacultyRecipientModel)
+        @self.router.get("/faculty-recipient/{faculty_id}", response_model=FacultyRecipientModel)
         async def get_faculty_recipient(faculty_id: int, db: Session = Depends(get_db)):
             return db.query(FacultyRecipient).filter(FacultyRecipient.id == faculty_id).first()
 
-        # Sample POST endpoint
-        @self.router.post("/faculty_recipient/", response_model=FacultyRecipientModel)
+        @self.router.post("/faculty-recipient/", response_model=FacultyRecipientModel)
         async def create_faculty_recipient(faculty: FacultyRecipientModel, db: Session = Depends(get_db)):
             db_faculty = FacultyRecipient(**faculty.dict())
             db.add(db_faculty)
@@ -32,6 +29,5 @@ class FacultyRecipientResource:
             db.refresh(db_faculty)
             return db_faculty
 
-        # Add more endpoints here as needed
 
         return self.router
