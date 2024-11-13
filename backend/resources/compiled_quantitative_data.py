@@ -1,7 +1,7 @@
-from backend.models.compiled_quantitative_data import CompiledQuantitativeData
+from models.compiled_quantitative_data import CompiledQuantitativeData
 from sqlalchemy.orm import Session
-from backend.db import get_db
-from backend.models.schemas.compiled_quantitative_data import CompiledDataModel
+from db import get_db
+from models.schemas.compiled_quantitative_data import CompiledDataModel
 from fastapi import APIRouter, Depends
 # from models.coil_base import CoilBase
 
