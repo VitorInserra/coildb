@@ -24,5 +24,4 @@ class CompiledDataResource:
             return db_compiled
 
 
-
         return self.router
