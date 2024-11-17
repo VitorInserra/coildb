@@ -12,8 +12,8 @@ class GradStudentRecipientModel(BaseModel):
     course: Optional[str] = None
     number: Optional[str] = None
     unc_course_name: Optional[str] = None
-    #partner_institution = str
-    #award = int
+    partner_institution: Optional[str] = None
+    award: Optional[int] = None
     class Config:
         orm_mode = True
         from_attributes=True

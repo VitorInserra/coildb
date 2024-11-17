@@ -17,7 +17,7 @@ class GradStudentRecipient(Base):
     course= Column('Course', String)
     number = Column('Number', String)
     unc_course_name = Column('UNC Course Name', String)
-    #partner_institution = Column(String)
-    #award = Column(Integer)
+    partner_institution = Column('Partner Institution', String)
+    award = Column('Award', Integer)
 
 Base.metadata.create_all(bind=engine)
