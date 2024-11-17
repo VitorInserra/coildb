@@ -2,7 +2,7 @@ from models.gradstudent_recipient import GradStudentRecipient
 from sqlalchemy.orm import Session
 from db import SessionLocal
 from models.schemas.gradstudent_recipient import GradStudentRecipientModel
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from db import get_db
 from typing import List
 # from models.coil_base import CoilBase
@@ -27,6 +27,17 @@ class GradStudentRecipientResource:
             db.commit()
             db.refresh(db_student)
             return db_student
-
+        
+        @self.router.delete("/delete-recipient/{last_name}/{first_name}", response_model=GradStudentRecipientModel)
+        async def delete_gradstudent_recipient(last_name: str, first_name: str, db: Session = Depends(get_db)):
+            matching_student = db.query(GradStudentRecipient).filter(GradStudentRecipient.last_name == last_name, GradStudentRecipient.first_name == first_name).all()
+            if not matching_student:
+                raise HTTPException(status_code=404, detail="FacultyRecipient not found")
+            if len(matching_student) > 1:
+                raise HTTPException(status_code=400, detail="Multiple records found for the given faculty name. Please check the database.")
+            db_student = matching_student[0]
+            db.delete(db_student)
+            db.commit()
+            return db_student
 
         return self.router
