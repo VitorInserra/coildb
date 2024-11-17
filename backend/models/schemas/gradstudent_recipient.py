@@ -1,15 +1,19 @@
 from pydantic import BaseModel
+from typing import Optional
 
 class GradStudentRecipientModel(BaseModel):
-    semester_taught = str
-    last_name = str
-    first_name = str
-    faculty_supervisor = str
-    school = str
-    department = str
-    course_number = str
-    unc_course_name = str
-    partner_institution = str
-    award = int
+    semester_taught: Optional[str] = None
+    year_taught: Optional[int] = None
+    last_name: Optional[str] = None
+    first_name: Optional[str] = None
+    faculty_supervisor: Optional[str] = None
+    school: Optional[str] = None
+    department: Optional[str] = None
+    course: Optional[str] = None
+    number: Optional[str] = None
+    unc_course_name: Optional[str] = None
+    #partner_institution = str
+    #award = int
     class Config:
         orm_mode = True
+        from_attributes=True

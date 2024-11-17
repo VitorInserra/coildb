@@ -1,26 +1,23 @@
-from backend.models.gradstudent_recipient import GradStudentRecipient
+from models.gradstudent_recipient import GradStudentRecipient
 from sqlalchemy.orm import Session
-from backend.db import SessionLocal
-from backend.models.schemas.gradstudent_recipient import GradStudentRecipientModel
+from db import SessionLocal
+from models.schemas.gradstudent_recipient import GradStudentRecipientModel
 from fastapi import APIRouter, Depends
+from db import get_db
+from typing import List
 # from models.coil_base import CoilBase
 
 class GradStudentRecipientResource:
-    def __init__(self, db: Session):
+    def __init__(self):
         self.router = APIRouter()
+        self.router = APIRouter(prefix="/gradstudent-recipient", tags=["GradStudentResource"])
 
     def get_router(self):
 
-        def get_db():
-            db = SessionLocal()
-            try:
-                yield db
-            finally:
-                db.close()
-
-        @self.router.get("/gradstudent-recipient/{gradstudent_id}", response_model=GradStudentRecipientModel)
-        async def get_gradstudent(gradstudent_id: int, db: Session = Depends(get_db)):
-            return db.query(GradStudentRecipient).filter(GradStudentRecipient.id == gradstudent_id).first()
+        @self.router.get("/gradstudent-recipient/", response_model=List[GradStudentRecipientModel])
+        async def get_gradstudent(db: Session = Depends(get_db)):
+            gradstudent = db.query(GradStudentRecipient)
+            return [GradStudentRecipientModel.from_orm(student) for student in gradstudent]
 
 
         @self.router.post("/gradstudent-recipient/", response_model=GradStudentRecipientModel)
