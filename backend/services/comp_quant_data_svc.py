@@ -7,7 +7,6 @@ class CompiledQuantitativeDataService:
     def full_query(self, db: Session, semester, year):
         query = f"""
 SELECT
-    -- Aggregated values from faculty
     COUNT(*) FILTER (
         WHERE f."Semester Taught" = :semester_year AND 
               f."Co-taught Semester" = :semester AND f."Co-taught Year" = :year
@@ -59,8 +58,6 @@ SELECT
     c.eligible_ee_credit AS eligible_ee_credit,
     c.received_ee_credit AS received_ee_credit,
 
-
-    -- Aggregated values from faculty
     SUM(f."Enrolled UNC Students (LDOC)") FILTER (
         WHERE f."Semester Taught" = :semester_year
     ) AS total_students_ldoc,
