@@ -46,4 +46,5 @@ class FacultyRecipientResource:
             db.commit()
             return db_faculty
         
+
         return self.router
