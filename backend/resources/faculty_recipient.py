@@ -30,4 +30,5 @@ class FacultyRecipientResource:
             return db_faculty
 
 
+
         return self.router
