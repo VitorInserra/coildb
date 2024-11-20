@@ -7,7 +7,6 @@ import json
 from services.comp_quant_data_svc import CompiledQuantitativeDataService
 from typing import List
 from sqlalchemy import text
-
 # from models.coil_base import CoilBase
 
 
