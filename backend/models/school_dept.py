@@ -6,15 +6,13 @@ from db import engine  # Import engine from db.py
 Base = declarative_base()
 
 class School(Base):
-    __tablename__ = "school_count"
-    id = Column(Integer, primary_key=True, index=True)
-    school_name = Column(String)
+    __tablename__ = "schools"
+    school = Column(String)
     school_count = Column(Integer)
     repeat_faculty = Column(Integer)
-    unique = Column(Integer)
+    unique_faculty = Column(Integer)
  
 class Department(Base):
-    __tablename__ = "department_list"
-    id = Column(Integer, primary_key=True, index=True)
+    __tablename__ = "departments"
     department = Column(String)
-    courses = Column(ARRAY(String))
+    course = Column(String)

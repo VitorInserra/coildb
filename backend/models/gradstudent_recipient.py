@@ -6,17 +6,18 @@ from db import engine  # Import engine from db.py
 Base = declarative_base()
 
 class GradStudentRecipient(Base):
-    __tablename__ = "gradstudent_recipient"
-    id = Column(Integer, primary_key=True, index=True)  # Primary key
-    semester_taught = Column(String)
-    last_name = Column(String)
-    first_name = Column(String)
-    faculty_supervisor = Column(String)
-    school = Column(String)
-    department = Column(String)
-    course_number = Column(String)
-    unc_course_name = Column(String)
-    partner_institution = Column(String)
-    award = Column(Integer)
+    __tablename__ = "grad_student"
+    semester_taught = Column('Semester Taught', String)
+    year_taught = Column('Year Taught', Integer)
+    last_name = Column('Last Name', String, primary_key=True, index=False)#Primary key
+    first_name = Column('First Name', String)
+    faculty_supervisor = Column('Faculty Supervisor', String)
+    school = Column('School', String)
+    department = Column('Department', String)
+    course= Column('Course', String)
+    number = Column('Number', String)
+    unc_course_name = Column('UNC Course Name', String)
+    partner_institution = Column('Partner Institution', String)
+    award = Column('Award', Integer)
 
 Base.metadata.create_all(bind=engine)

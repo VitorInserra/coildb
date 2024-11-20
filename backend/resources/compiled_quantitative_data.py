@@ -7,14 +7,12 @@ import json
 from services.comp_quant_data_svc import CompiledQuantitativeDataService
 from typing import List
 from sqlalchemy import text
-
 # from models.coil_base import CoilBase
 
 
 class CompiledDataResource:
     def __init__(self):
         self.router = APIRouter(prefix="/compiled-data", tags=["CompiledDataResource"])
-
 
     def get_router(self):
         @self.router.get("/get-data/")

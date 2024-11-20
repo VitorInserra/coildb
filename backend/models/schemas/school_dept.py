@@ -1,16 +1,16 @@
 from pydantic import BaseModel
 
 class SchoolModel(BaseModel):
-    school_name = str
+    school = str
     school_count = int
     repeat_faculty = int
-    unique = int
+    unique_faculty = int
     class Config:
         orm_mode = True
 
 class DepartmentModel(BaseModel):
     department = str
-    courses = list[str]
+    course = str
 
     class Config:
         orm_mode = True
