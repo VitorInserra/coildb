@@ -22,10 +22,6 @@ def override_db():
         db.close()
 
 
-compiled_data_resource = CompiledDataResource()
-app.include_router(compiled_data_resource.get_router())
-
-
 
 def test_add_hard_coded(override_db, client):
     response = client.post(

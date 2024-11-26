@@ -1,6 +1,5 @@
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from db import Base, engine
 from models.gradstudent_recipient import GradStudentRecipient
@@ -22,16 +21,6 @@ def override_db():
 
 url_base = '/gradstudent-recipient'
 
-
-@pytest.fixture(scope="module", autouse=True)
-def setup_database():
-    Base.metadata.create_all(bind=engine)
-    yield
-    Base.metadata.drop_all(bind=engine)
-
-@pytest.fixture(autouse=True)
-def override_dependency():
-    app.dependency_overrides[TestSessionLocal] = lambda: TestSessionLocal()
 
 def test_get_gradstudents(override_db, client):
     student_1 = GradStudentRecipient(
