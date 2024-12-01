@@ -7,6 +7,7 @@ import FacultyRecipients from './pages/FacultyRecipients';
 import GradStudentRecipients from './pages/GradStudentRecipients';
 import SummaryDepartmental from './pages/SummaryDepartmental';
 import SummarySchools from './pages/SummarySchools';
+import KeyStatistics from './components/KeyStatistics';
 
 const App = () => {
   const [starredReports, setStarredReports] = useState([]);
@@ -62,28 +63,31 @@ const HomePage = ({ addStarredReport, starredReports }) => {
     .map(report => ({ name: report.title, path: report.path }));
 
   return (
+    <div>
+    <KeyStatistics />
     <div className="content">
-      <PageCard
-        heading="Summary Reports"
-        placeholder="Search Summary Reports..."
-        value={searchSummaryReports}
-        searchResult={setSearchSummaryReports}
-        filteredReports={filteredSummaryReports}
-      />
-      <PageCard
-        heading="Starred Reports"
-        placeholder="Search Starred Reports..."
-        value={searchTermStarred}
-        searchResult={setSearchTermStarred} // Update search term state for Starred Reports
-        filteredReports={filteredStarredReports} // Use the filtered Starred Reports
-      />
-      <PageCard
-        heading="Pages"
-        placeholder="Search Pages..."
-        value={searchTerm}
-        searchResult={setSearchTerm}
-        filteredReports={filteredPages}
-      />
+        <PageCard
+          heading="Summary Reports"
+          placeholder="Search Summary Reports..."
+          value={searchSummaryReports}
+          searchResult={setSearchSummaryReports}
+          filteredReports={filteredSummaryReports}
+        />
+        <PageCard
+          heading="Starred Reports"
+          placeholder="Search Starred Reports..."
+          value={searchTermStarred}
+          searchResult={setSearchTermStarred} // Update search term state for Starred Reports
+          filteredReports={filteredStarredReports} // Use the filtered Starred Reports
+        />
+        <PageCard
+          heading="Pages"
+          placeholder="Search Pages..."
+          value={searchTerm}
+          searchResult={setSearchTerm}
+          filteredReports={filteredPages}
+        />
+    </div>
     </div>
   );
 };

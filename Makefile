@@ -24,7 +24,6 @@ backend:
 	@sleep 3
 	@cd $(BACKEND_DIR) && source venv/bin/activate && python main.py
 	@kill $$PORT_FORWARD_PID  # Terminate the port-forward process after main.py exits
-
 # Run the React frontend
 frontend:
 	cd $(FRONTEND_DIR) && npm start
