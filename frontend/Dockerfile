@@ -8,6 +8,6 @@ RUN npm install && npm run build
 
 RUN npm install -g serve
 
-EXPOSE 8080
+EXPOSE 80
 
-CMD ["serve", "-s", "build", "-l", "8080"]
+CMD ["serve", "-s", "build", "-l", "80", "--host", "0.0.0.0"]
