@@ -2,9 +2,12 @@ FROM node:alpine
 
 WORKDIR /app
 
-COPY build/ .
+COPY . .
+
+RUN npm install && npm run build
+
 RUN npm install -g serve
 
 EXPOSE 80
 
-CMD ["serve", "-s", ".", "-l", "80"]
+CMD ["serve", "-s", "build", "-l", "80"]
