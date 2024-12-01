@@ -10,4 +10,6 @@ RUN npm install -g serve
 
 EXPOSE 8080
 
+ENV HOST 0.0.0.0
+
 CMD ["serve", "-s", "build", "-l", "8080", "--host", "0.0.0.0"]
