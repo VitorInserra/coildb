@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS
@@ -9,6 +9,7 @@ export default function GradStudentRecipients({ addStarredReport }) {
     const [title, setTitle] = useState("");
     const [rowData, setRowData] = useState([]); // holds backend data
     const navigate = useNavigate();
+    const gridRef = useRef(null); // Reference to the grid for API access
 
     // Fetching data from the backend
   useEffect(() => {
@@ -51,7 +52,6 @@ export default function GradStudentRecipients({ addStarredReport }) {
     const handleCellValueChanged = (event) => {
       const updatedData = event.data; // The updated row data
       console.log("Updated Row Data:", updatedData);
-    
       // Call the backend to save the updated data
       saveUpdatedData(updatedData);
     };
@@ -75,7 +75,12 @@ export default function GradStudentRecipients({ addStarredReport }) {
           console.log("Data successfully saved:", data);
         })
         .catch(error => console.error("Error saving data:", error));
-    };    
+    };   
+    
+      // Export table data as CSV
+    const exportToCsv = () => {
+      gridRef.current.api.exportDataAsCsv(); // Use Ag-Grid's export API
+    };
   
     return (
       <div>
@@ -93,13 +98,15 @@ export default function GradStudentRecipients({ addStarredReport }) {
           </div>
         )}
         {/* Adding ag-Grid to display data */}
+        <button onClick={exportToCsv}>Export as CSV</button>
         <div className="ag-theme-alpine" style={{ height: 400, width: '100%' }}>
           <AgGridReact
+            ref={gridRef}
             rowData={rowData}  // Data from backend
             columnDefs={columnDefs}  // Column definitions
             pagination={true}  // Optional: Add pagination for better display
             paginationPageSize={10}  // Optional: Number of rows per page
-            onCellValueChanged={handleCellValueChanged} // Capture changes
+            onCellValueChanged={handleCellValueChanged} // Capture change
           />
         </div>
         <button onClick={() => navigate('/')}>Back to Homepage</button>
