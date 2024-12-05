@@ -1,9 +1,5 @@
 from sqlalchemy import Column, Integer, String, ARRAY, TIMESTAMP, Float, func
-from sqlalchemy.ext.declarative import declarative_base
-from db import engine  # Import engine from db.py
-
-# Define the base class for models
-Base = declarative_base()
+from db import engine, Base
 
 class CompiledQuantitativeData(Base):
     __tablename__ = "compiled_quantitative_data"

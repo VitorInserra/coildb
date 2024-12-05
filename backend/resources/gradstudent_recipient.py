@@ -39,5 +39,25 @@ class GradStudentRecipientResource:
             db.delete(db_student)
             db.commit()
             return db_student
+        
+        @self.router.put("/update-recipient/", response_model=GradStudentRecipientModel)
+        async def update_gradstudent_recipient(updated_data: GradStudentRecipientModel, db: Session = Depends(get_db)):
+            try:
+                db_student = db.query(GradStudentRecipient).filter_by(
+                    id=updated_data.id,
+                ).first()
+                if not db_student:
+                    raise HTTPException(status_code=404, detail="Recipient not found")
+
+                for key, value in updated_data.dict().items():
+                    if hasattr(db_student, key) and value is not None:
+                        setattr(db_student, key, value)
+
+                db.commit()
+                db.refresh(db_student)
+                return db_student
+            except Exception as e:
+                raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+
 
         return self.router
