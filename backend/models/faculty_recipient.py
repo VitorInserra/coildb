@@ -12,7 +12,7 @@ class FacultyRecipient(Base):
     department = Column('Department', String)
     course_name = Column('Course Name', String)  
     course_number = Column('Course Number', String) 
-    sections = Column('Sections', Integer)  
+    sections = Column('Sections', String)  
     total_sections_taught = Column('Total # Sections Taught', Integer) 
     course_title = Column('Course Title', String, nullable=False)
     co_taught_semester = Column('Co-taught Semester', String)

@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import List, Optional
 from datetime import date
 
 class FacultyRecipientModel(BaseModel):
@@ -12,7 +12,7 @@ class FacultyRecipientModel(BaseModel):
     department:  Optional[str] = None
     course_name: Optional[str] = None
     course_number:  Optional[str] = None
-    sections: Optional[int] = None
+    sections: Optional[str] = None
     total_sections_taught: Optional[int] = None
     course_title: Optional[str] = None
     co_taught_semester: Optional[str] = None  # Allow None values
