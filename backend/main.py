@@ -5,6 +5,8 @@ from resources.compiled_quantitative_data import CompiledDataResource
 from resources.faculty_recipient import FacultyRecipientResource
 from resources.gradstudent_recipient import GradStudentRecipientResource
 from resources.school_dept import SchoolDeptResource
+from db import get_db
+from services.school_dept_compile import update_faculty_counts
 
 
 import uvicorn
@@ -25,6 +27,16 @@ app.include_router(CompiledDataResource().get_router())
 app.include_router(FacultyRecipientResource().get_router())
 app.include_router(GradStudentRecipientResource().get_router())
 app.include_router(SchoolDeptResource().get_router())
+
+@app.on_event("startup")
+async def on_startup():
+    # Directly use get_db() to fetch the session
+    db = next(get_db())  # Get the database session
+    try:
+        # You can call your function here, for example update_faculty_counts(db)
+        update_faculty_counts(db)
+    finally:
+        db.close()  # Close the session after use
 
 
 if __name__ == "__main__":

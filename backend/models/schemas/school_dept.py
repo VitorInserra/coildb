@@ -4,8 +4,8 @@ class SchoolModel(BaseModel):
     id: int
     school: str
     school_count: int
-    #repeat_faculty: int
-    #unique_faculty: int
+    repeat_faculty: int
+    unique_faculty: int
     class Config:
         orm_mode = True
 

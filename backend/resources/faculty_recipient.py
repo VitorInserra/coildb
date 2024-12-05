@@ -46,5 +46,24 @@ class FacultyRecipientResource:
             db.commit()
             return db_faculty
         
+        @self.router.put("/update-recipient/", response_model=FacultyRecipientModel)
+        async def update_faculty_recipient(updated_data: FacultyRecipientModel, db: Session = Depends(get_db)):
+            try:
+                db_faculty = db.query(FacultyRecipient).filter_by(
+                    id=updated_data.id,
+                ).first()
+                if not db_faculty:
+                    raise HTTPException(status_code=404, detail="Recipient not found")
+
+                for key, value in updated_data.dict().items():
+                    if hasattr(db_faculty, key) and value is not None:
+                        setattr(db_faculty, key, value)
+
+                db.commit()
+                db.refresh(db_faculty)
+                return db_faculty
+            except Exception as e:
+                raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+        
 
         return self.router

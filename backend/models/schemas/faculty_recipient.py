@@ -12,7 +12,7 @@ class FacultyRecipientModel(BaseModel):
     department:  Optional[str] = None
     course_name: Optional[str] = None
     course_number:  Optional[str] = None
-    sections: Optional[str] = None
+    sections: Optional[int] = None
     total_sections_taught: Optional[int] = None
     course_title: Optional[str] = None
     co_taught_semester: Optional[str] = None  # Allow None values

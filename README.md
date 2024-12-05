@@ -43,11 +43,19 @@ This document outlines the steps to connect to a PostgreSQL database running on 
    ```
 
 3. **Connect to PostgreSQL Using `psql`:**
-   Inside the pod, connect to the PostgreSQL database with the following command:
+   <!--Inside the pod, connect to the PostgreSQL database with the following command:
    ```bash
    psql -U <POSTGRES_USER> -d <POSTGRES_DB>
    ```
-   Replace `<POSTGRES_USER>` and `<POSTGRES_DB>` with the appropriate values (e.g., `dev_user` and `dev_db`).
+   Replace `<POSTGRES_USER>` and `<POSTGRES_DB>` with the appropriate values (e.g., `dev_user` and `dev_db`).-->
+   Inside the pod, connect to the PostgreSQL database with the following command:
+   ```bash
+   psql
+   ```
+   then
+   ```bash
+   \c prod_db
+   ```
 
 
 ### 2. Exit the `psql` Prompt and Pod
