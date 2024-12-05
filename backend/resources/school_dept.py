@@ -23,7 +23,11 @@ class SchoolDeptResource:
 
         @self.router.get("/depts", response_model=DepartmentModel)
         async def get_departments(department_id: int, db: Session = Depends(get_db)):
-            return db.query(Department).filter(Department.id == department_id).first()
+            result = db.query(Department).filter(Department.id == department_id).first()
+            if result:
+                return result
+            else:
+                return {"message": "No matching department found"}
 
         @self.router.post("/schools", response_model=SchoolModel)
         async def create_school(school: SchoolModel, db: Session = Depends(get_db)):
