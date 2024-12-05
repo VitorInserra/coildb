@@ -84,7 +84,7 @@ export default function GradStudentRecipients({ addStarredReport }) {
   
     return (
       <div>
-        <h1>Grad Students Recipients Page</h1>
+        <h1>Graduate Students Recipients Page</h1>
         <button onClick={() => setShowInput(true)}>Star This Report</button>
         {showInput && (
           <div>

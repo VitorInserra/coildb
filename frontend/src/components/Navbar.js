@@ -5,7 +5,7 @@ export default function Navbar() {
     <>
     <nav className="nav">
       <img src="/images/gflogowhite.png" className="nav--logo" alt="UNC Global Affairs Logo" />
-      <h1 className="header-title">UNC COIL Database</h1>
+      <h1 className="header-title">UNC COIL at Carolina Database</h1>
       </nav>
       <img 
         src="/images/banner9.png" 
