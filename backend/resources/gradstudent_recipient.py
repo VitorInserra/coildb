@@ -44,7 +44,7 @@ class GradStudentRecipientResource:
         async def update_gradstudent_recipient(updated_data: GradStudentRecipientModel, db: Session = Depends(get_db)):
             try:
                 db_student = db.query(GradStudentRecipient).filter_by(
-                    last_name=updated_data.last_name,
+                    id=updated_data.id,
                 ).first()
                 if not db_student:
                     raise HTTPException(status_code=404, detail="Recipient not found")
