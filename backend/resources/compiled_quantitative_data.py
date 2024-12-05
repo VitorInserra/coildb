@@ -15,7 +15,20 @@ class CompiledDataResource:
         self.router = APIRouter(prefix="/compiled-data", tags=["CompiledDataResource"])
 
     def get_router(self):
-        @self.router.get("/get-data/")
+        @self.router.get("/get-partner-univerisities")
+        async def get_compiled_data(
+            semesters: List[str] = Query(),
+            db: Session = Depends(get_db),
+            svc=CompiledQuantitativeDataService(),
+        ):
+            res = {}
+            for i in range(len(semesters)):
+                semester, year = semesters[i].split()
+                res[f"{semesters[i]}"] = svc.get_unique_partners(db, semester, year)
+
+            return res
+
+        @self.router.get("/get-quantity-data")
         async def get_compiled_data(
             semesters: List[str] = Query(),
             db: Session = Depends(get_db),
