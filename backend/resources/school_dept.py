@@ -1,3 +1,4 @@
+from typing import List
 from models.school_dept import School, Department
 from sqlalchemy.orm import Session
 from db import SessionLocal
@@ -13,8 +14,24 @@ class SchoolDeptResource:
 
     def get_router(self):
 
+        @self.router.get("/schools_table", response_model=List[SchoolModel])  # Use List to return multiple records
+        async def get_schools(db: Session = Depends(get_db)):
+            result = db.query(School).all()  # Use .all() to get all records
+            if result:
+                return result
+            else:
+                return {"message": "No schools found"}
+            
+        @self.router.get("/departments_table", response_model=List[DepartmentModel])  # Use List to return multiple records
+        async def get_departments(db: Session = Depends(get_db)):
+            result = db.query(Department).all()  # Use .all() to get all records
+            if result:
+                return result
+            else:
+                return {"message": "No departments found"}
+
         @self.router.get("/schools", response_model=SchoolModel)
-        async def get_schools(school_id: int, db: Session = Depends(get_db)):
+        async def get_school(school_id: int, db: Session = Depends(get_db)):
             result = db.query(School).filter(School.id == school_id).first()
             if result:
                 return result
@@ -22,7 +39,7 @@ class SchoolDeptResource:
                 return {"message": "No matching school found"}
 
         @self.router.get("/depts", response_model=DepartmentModel)
-        async def get_departments(department_id: int, db: Session = Depends(get_db)):
+        async def get_department(department_id: int, db: Session = Depends(get_db)):
             result = db.query(Department).filter(Department.id == department_id).first()
             if result:
                 return result
