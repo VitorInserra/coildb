@@ -69,6 +69,13 @@ This document outlines the steps to connect to a PostgreSQL database running on 
 2. **Exit the Pod Shell:**
    Type `exit` to leave the pod shell.
 
+
+## Populate the Databases
+To run SQL files in order to populate or alter the databases used the following piped command:
+`cat <path to sql file> | oc rsh <psql pod> psql -d <db_name>`
+
+The `<db_name>` will be `prod_db` for the production database pod and `dev_db` for the development database pod.
+
 ---
 
 You have now successfully connected to the PostgreSQL database, created a test table, and inserted data.

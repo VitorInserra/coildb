@@ -17,5 +17,7 @@ class GradStudentRecipient(Base):
     unc_course_name = Column('UNC Course Name', String)
     partner_institution = Column('Partner Institution', String)
     award = Column('Award', Integer)
+    email = Column('TA Email', String)
+    pid = Column('TA PID', Integer)
 
 Base.metadata.create_all(bind=engine)

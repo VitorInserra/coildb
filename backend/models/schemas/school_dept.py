@@ -13,6 +13,9 @@ class DepartmentModel(BaseModel):
     id: int
     department: str
     course: str
+    id: int
+    department: str
+    course: str
 
     class Config:
         orm_mode = True

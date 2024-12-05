@@ -66,4 +66,5 @@ class FacultyRecipientResource:
                 raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
         
 
+
         return self.router
