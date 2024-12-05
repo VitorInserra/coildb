@@ -12,13 +12,13 @@ ALTER TABLE grad_student ADD COLUMN id SERIAL PRIMARY KEY;
 ALTER TABLE grad_student ADD CONSTRAINT grad_student_pkey PRIMARY KEY (id);
 
 -- For School table:
-ALTER TABLE schools DROP CONSTRAINT IF EXISTS schools_pkey;
-ALTER TABLE schools ADD COLUMN id SERIAL PRIMARY KEY;
-ALTER TABLE schools ADD CONSTRAINT schools_pkey PRIMARY KEY (id);
+--ALTER TABLE schools DROP CONSTRAINT IF EXISTS schools_pkey;
+--ALTER TABLE schools ADD COLUMN id SERIAL PRIMARY KEY;
+--ALTER TABLE schools ADD CONSTRAINT schools_pkey PRIMARY KEY (id);
 
 -- For Department table:
-ALTER TABLE departments DROP CONSTRAINT IF EXISTS departments_pkey;
-ALTER TABLE departments ADD COLUMN id SERIAL PRIMARY KEY;
-ALTER TABLE departments ADD CONSTRAINT departments_pkey PRIMARY KEY (id);
+--ALTER TABLE departments DROP CONSTRAINT IF EXISTS departments_pkey;
+--ALTER TABLE departments ADD COLUMN id SERIAL PRIMARY KEY;
+--ALTER TABLE departments ADD CONSTRAINT departments_pkey PRIMARY KEY (id);
 -- oc cp backend/services/fixes.sql postgresql-1-w9knm:/tmp/fixes.sql
 -- oc rsh postgresql-1-w9knm psql -U dev_user -d dev_db -f /tmp/fixes.sql

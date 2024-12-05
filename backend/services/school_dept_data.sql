@@ -1,5 +1,6 @@
 CREATE TABLE schools(
-    school VARCHAR(100) PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
+    school VARCHAR(100),
     school_count INT,
     repeat_faculty INT,
     unique_faculty INT
@@ -17,6 +18,7 @@ VALUES
 ('Gillings School of Global Public Health', 2);
 
 CREATE TABLE departments(
+    id SERIAL PRIMARY KEY,
     department VARCHAR(100),
     course VARCHAR(100)
 );
