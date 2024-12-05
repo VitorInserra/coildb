@@ -15,6 +15,8 @@ class GradStudentRecipientModel(BaseModel):
     unc_course_name: Optional[str] = None
     partner_institution: Optional[str] = None
     award: Optional[int] = None
+    pid: Optional[int] = None
+    email: Optional[str] = None
     class Config:
         orm_mode = True
         from_attributes=True
