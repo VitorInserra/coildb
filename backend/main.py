@@ -5,18 +5,18 @@ from resources.compiled_quantitative_data import CompiledDataResource
 from resources.faculty_recipient import FacultyRecipientResource
 from resources.gradstudent_recipient import GradStudentRecipientResource
 
-# from resources.school_dept import SchoolDeptResource
+
 import uvicorn
 
 app = FastAPI()
 
-# Add CORS Middleware
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:80"],  # Allow requests from your frontend origin
+    allow_origins=["http://localhost:3000"],
     allow_credentials=True,
-    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
-    allow_headers=["*"],  # Allow all headers
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(CoilBase().get_router())

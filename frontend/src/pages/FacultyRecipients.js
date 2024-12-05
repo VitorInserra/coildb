@@ -13,7 +13,7 @@ export default function FacultyRecipients({ addStarredReport }) {
 
   // Fetching data from the backend
   useEffect(() => {
-    fetch('http://localhost:8080/faculty-recipient/get-recipient') // Update to match your backend endpoint URL
+    fetch('http://0.0.0.0:8080/faculty-recipient/get-recipient') // Update to match your backend endpoint URL
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
