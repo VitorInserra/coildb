@@ -155,3 +155,34 @@ section {
   color: #13294B;
   font-weight: bold;
 }
+
+button {
+  background-color: #13294B; /* Navy blue background */
+  color: white; /* White text color */
+  font-size: 1rem; /* Font size */
+  font-family: 'Georgia', sans-serif; /* Match the global font style */
+  padding: 10px 20px; /* Add some padding for larger buttons */
+  margin: 10px; /* Space around buttons */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Slightly rounded corners */
+  cursor: pointer; /* Show a pointer on hover */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: all 0.3s ease; /* Smooth hover transition */
+}
+
+h1 {
+  font-size: 2rem; /* Adjust font size if needed */
+  color: #13294B; /* Match the header theme */
+  margin-bottom: 20px; /* Add spacing below the heading */
+  margin: 10px; 
+}
+
+.ag-theme-alpine {
+  margin: 20px auto; /* Add top and bottom margin, center horizontally */
+  padding: 5px; /* Optional: Add padding inside the grid container */
+  max-width: 98%; /* Optional: Limit the width of the grid */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow for better visibility */
+  border-radius: 8px; /* Optional: Add rounded corners */
+  background-color: #fff; /* Optional: Ensure grid has a white background */
+  min-height: 55vh; 
+}
