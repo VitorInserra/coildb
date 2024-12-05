@@ -1,15 +1,13 @@
 from sqlalchemy import Column, Integer, String, ARRAY, TIMESTAMP, Float, func
-from sqlalchemy.ext.declarative import declarative_base
-from db import engine  # Import engine from db.py
+from db import engine, Base
 
-# Define the base class for models
-Base = declarative_base()
 
 class GradStudentRecipient(Base):
     __tablename__ = "grad_student"
+    id = Column(Integer, primary_key=True, index=True)  # Primary key
     semester_taught = Column('Semester Taught', String)
     year_taught = Column('Year Taught', Integer)
-    last_name = Column('Last Name', String, primary_key=True, index=False)#Primary key
+    last_name = Column('Last Name', String, index=False)
     first_name = Column('First Name', String)
     faculty_supervisor = Column('Faculty Supervisor', String)
     school = Column('School', String)

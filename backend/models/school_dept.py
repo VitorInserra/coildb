@@ -1,18 +1,16 @@
 from sqlalchemy import Column, Integer, String, ARRAY, TIMESTAMP, Float, func
-from sqlalchemy.ext.declarative import declarative_base
-from db import engine  # Import engine from db.py
-
-# Define the base class for models
-Base = declarative_base()
+from db import engine, Base
 
 class School(Base):
     __tablename__ = "schools"
+    id = Column(Integer, primary_key=True, index=True)  # Primary key
     school = Column(String)
     school_count = Column(Integer)
-    repeat_faculty = Column(Integer)
-    unique_faculty = Column(Integer)
+    #repeat_faculty = Column(Integer)
+    #unique_faculty = Column(Integer)
  
 class Department(Base):
+    id = Column(Integer, primary_key=True, index=True)  # Primary key
     __tablename__ = "departments"
     department = Column(String)
     course = Column(String)
