@@ -16,6 +16,9 @@ DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NA
 # Create the SQLAlchemy engine
 engine = create_engine(DATABASE_URL)
 
+# Create the base class for declarative models
+Base = declarative_base()
+
 # Create a session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 TestSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
