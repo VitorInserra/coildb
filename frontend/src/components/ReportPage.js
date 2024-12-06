@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AgGridReact } from 'ag-grid-react';
-import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS
-import 'ag-grid-community/styles/ag-theme-alpine.css'; // Theme
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
 
 export default function ReportPage({
   title,
@@ -13,13 +13,13 @@ export default function ReportPage({
 }) {
   const [showInput, setShowInput] = useState(false);
   const [newReportTitle, setNewReportTitle] = useState("");
-  const [rowData, setRowData] = useState([]); // holds backend data
+  const [rowData, setRowData] = useState([]);
   const navigate = useNavigate();
-  const gridRef = useRef(null); // Reference to the grid for API access
+  const gridRef = useRef(null);
 
-  // Fetching data from the backend
+
   useEffect(() => {
-    fetch(fetchEndpoint) // Fetch data using the provided endpoint
+    fetch(fetchEndpoint)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -28,7 +28,7 @@ export default function ReportPage({
       })
       .then((data) => {
         console.log("Fetched data:", data);
-        setRowData(data); // Set the fetched data to the grid
+        setRowData(data);
       })
       .catch((error) => console.error("Error fetching data:", error));
   }, [fetchEndpoint]);
@@ -40,10 +40,10 @@ export default function ReportPage({
   };
 
   const handleCellValueChanged = (event) => {
-    const updatedData = event.data; // The updated row data
+    const updatedData = event.data;
     console.log("Updated Row Data:", updatedData);
 
-    // Call the backend to save the updated data
+
     saveUpdatedData(updatedData);
   };
 
@@ -54,7 +54,7 @@ export default function ReportPage({
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(updatedData), // Ensure the updatedData object matches the backend schema
+      body: JSON.stringify(updatedData),
     })
       .then((response) => {
         if (!response.ok) {
@@ -69,7 +69,7 @@ export default function ReportPage({
   };
 
   const exportToCsv = () => {
-    gridRef.current.api.exportDataAsCsv(); // Use Ag-Grid's export API
+    gridRef.current.api.exportDataAsCsv();
   };
 
   return (
@@ -113,21 +113,21 @@ export default function ReportPage({
             onChange={(e) => setNewReportTitle(e.target.value)}
             placeholder="Enter Title"
             style={{
-                padding: "5px 10px", 
-                width: "200px", 
-                marginRight: "10px",
-                border: "1px solid #ccc",
-                borderRadius: "4px",
+              padding: "5px 10px",
+              width: "200px",
+              marginRight: "10px",
+              border: "1px solid #ccc",
+              borderRadius: "4px",
             }}
           />
           <button
             style={{
-                padding: "5px 10px", 
-                backgroundColor: "#13294B",
-                color: "white",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer",
+              padding: "5px 10px",
+              backgroundColor: "#13294B",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
             }}
             onClick={handleAddReport}
           >
@@ -138,11 +138,11 @@ export default function ReportPage({
       <div className="ag-theme-alpine" style={{ height: 400, width: "100%", margin: "0 auto" }}>
         <AgGridReact
           ref={gridRef}
-          rowData={rowData} // Data from backend
-          columnDefs={columnDefs} // Column definitions
-          pagination={true} // Optional: Add pagination for better display
-          paginationPageSize={10} // Optional: Number of rows per page
-          onCellValueChanged={handleCellValueChanged} // Capture changes
+          rowData={rowData}
+          columnDefs={columnDefs}
+          pagination={true}
+          paginationPageSize={10}
+          onCellValueChanged={handleCellValueChanged}
         />
       </div>
       <button onClick={() => navigate('/')}>Back to Homepage</button>

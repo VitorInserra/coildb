@@ -5,6 +5,7 @@ FRONTEND_DIR = frontend
 # Define targets
 .PHONY: all backend frontend install-backend install-frontend
 
+all: backend frontend
 
 test_backend:
 	@echo "Starting port-forwarding for PostgreSQL..."

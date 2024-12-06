@@ -1,35 +1,23 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext } from 'react';
+import ReportPage from '../components/ReportPage';
+import AuthContext from '../auth/AuthContext';
 
-// Add 'addStarredReport' as a prop in the component function
 export default function SummaryDepartmental({ addStarredReport }) {
-  const [showInput, setShowInput] = useState(false);
-  const [title, setTitle] = useState("");
-  const navigate = useNavigate();
+  const { isAuthenticated, authToken } = useContext(AuthContext);
 
-  const handleAddReport = () => {
-    // Use 'addStarredReport' prop here
-    addStarredReport({ title, path: "/summary-departmental" });
-    setTitle("");
-    setShowInput(false);
-  };
+  const columnDefs = [
+    { headerName: "Department", field: "department", filter: true, editable: isAuthenticated },
+    { headerName: "Course", field: "course", filter: true, editable: isAuthenticated },
+  ];
 
   return (
-    <div>
-      <h1>Departmental Summary Page</h1>
-      <button onClick={() => navigate('/')}>Back to Homepage</button>
-      <button onClick={() => setShowInput(true)}>Star This Report</button>
-      {showInput && (
-        <div>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Enter Title"
-          />
-          <button onClick={handleAddReport}>Add</button>
-        </div>
-      )}
-    </div>
+    <ReportPage
+      title="Departments Data Page"
+      fetchEndpoint="http://0.0.0.0:8080/school-dept/departments_table"
+      updateEndpoint="http://0.0.0.0:8080/departments/update-department"
+      columnDefs={columnDefs}
+      addStarredReport={addStarredReport}
+      authToken={authToken}
+    />
   );
 }
