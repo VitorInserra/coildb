@@ -5,7 +5,8 @@ from db import SessionLocal
 from models.schemas.school_dept import SchoolModel, DepartmentModel
 from fastapi import APIRouter, Depends
 from db import get_db
-# from models.coil_base import CoilBase
+from dependencies import get_current_username
+
 
 class SchoolDeptResource:
     def __init__(self):
@@ -14,15 +15,19 @@ class SchoolDeptResource:
 
     def get_router(self):
 
-        @self.router.get("/schools_table", response_model=List[SchoolModel])  # Use List to return multiple records
+        @self.router.get(
+            "/schools_table", response_model=List[SchoolModel]
+        )  # Use List to return multiple records
         async def get_schools(db: Session = Depends(get_db)):
             result = db.query(School).all()  # Use .all() to get all records
             if result:
                 return result
             else:
                 return {"message": "No schools found"}
-            
-        @self.router.get("/departments_table", response_model=List[DepartmentModel])  # Use List to return multiple records
+
+        @self.router.get(
+            "/departments_table", response_model=List[DepartmentModel]
+        )  # Use List to return multiple records
         async def get_departments(db: Session = Depends(get_db)):
             result = db.query(Department).all()  # Use .all() to get all records
             if result:
@@ -47,12 +52,15 @@ class SchoolDeptResource:
                 return {"message": "No matching department found"}
 
         @self.router.post("/schools", response_model=SchoolModel)
-        async def create_school(school: SchoolModel, db: Session = Depends(get_db)):
+        async def create_school(
+            school: SchoolModel,
+            db: Session = Depends(get_db),
+            username: str = Depends(get_current_username),
+        ):
             db_school = School(**dict(school))
             db.add(db_school)
             db.commit()
             db.refresh(db_school)
             return db_school
-
 
         return self.router

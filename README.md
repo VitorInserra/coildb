@@ -14,7 +14,7 @@ Usage:
 - Run `make test_backend` to run integration tests on the Python backend.
 - Run `make backend` to start the Python backend.
 - Run `make frontend` to start the React frontend.
-- Run `make all` to start both the backend and frontend concurrently in separate terminals if you're using a multiprocess terminal setup.
+- Run `make` to start both the backend and frontend concurrently in separate terminals if you're using a multiprocess terminal setup.
 
 ## Connecting to PostgreSQL Database and Creating a Test Table in OpenShift
 
