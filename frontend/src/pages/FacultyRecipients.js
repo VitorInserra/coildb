@@ -15,11 +15,15 @@ export default function FacultyRecipients({ addStarredReport }) {
     { headerName: 'Course Number', field: 'course_number', filter: true, editable: isAuthenticated },
   ];
 
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+  const fetchEndpoint = `${API_BASE_URL}/faculty-recipient/get-recipient`;
+  const updateEndpoint = `${API_BASE_URL}/faculty-recipient/update-recipient`;
+
   return (
     <ReportPage
       title="Faculty Recipients Page"
-      fetchEndpoint="http://0.0.0.0:8080/faculty-recipient/get-recipient"
-      updateEndpoint="http://0.0.0.0:8080/faculty-recipient/update-recipient"
+      fetchEndpoint={fetchEndpoint}
+      updateEndpoint={updateEndpoint}
       columnDefs={columnDefs}
       addStarredReport={addStarredReport}
       authToken={authToken}
