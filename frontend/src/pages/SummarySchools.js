@@ -1,32 +1,21 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import ReportPage from "../components/ReportPage";
 
 export default function SummarySchools({ addStarredReport }) {
-    const [showInput, setShowInput] = useState(false);
-    const [title, setTitle] = useState("");
-    const navigate = useNavigate();
-  
-    const handleAddReport = () => {
-      addStarredReport({ title, path: "/summary-schools" });
-      setTitle("");
-      setShowInput(false);
-    };
-  
-    return (
-      <div>
-        <h1>Schools Summary Page</h1>
-        <button onClick={() => navigate('/')}>Back to Homepage</button>
-        <button onClick={() => setShowInput(true)}>Star This Report</button>
-        {showInput && (
-          <div>
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Enter Title"
-            />
-            <button onClick={handleAddReport}>Add</button>
-          </div>
-        )}
-      </div>);
+  const columnDefs = [
+    { headerName: "School", field: "school", filter: true, editable: true },
+    { headerName: "School Count", field: "school_count", filter: true, editable: true },
+    { headerName: "Repeat Faculty", field: "repeat_faculty", filter: true, editable: true },
+    { headerName: "Unique Faculty", field: "unique_faculty", filter: true, editable: true },
+  ];
+
+  return (
+    <ReportPage
+      title="Schools Data Page"
+      fetchEndpoint="http://0.0.0.0:8080/school-dept/schools_table" 
+      updateEndpoint="http://0.0.0.0:8080/schools/update-school" 
+      columnDefs={columnDefs}
+      addStarredReport={addStarredReport}
+    />
+  );
 }
