@@ -11,7 +11,8 @@ export default function SummaryDepartmental({ addStarredReport }) {
     <ReportPage
       title="Departments Data Page"
       fetchEndpoint="http://0.0.0.0:8080/school-dept/departments_table" 
-      updateEndpoint="http://0.0.0.0:8080/departments/update-department" 
+      updateEndpoint="TODO: add put endpoint" 
+      createEndpoint="TODO: add post endpoint" 
       columnDefs={columnDefs}
       addStarredReport={addStarredReport}
     />

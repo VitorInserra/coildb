@@ -8,12 +8,15 @@ export default function ReportPage({
   title,
   fetchEndpoint,
   updateEndpoint,
+  createEndpoint,
   columnDefs,
   addStarredReport,
 }) {
   const [showInput, setShowInput] = useState(false);
   const [newReportTitle, setNewReportTitle] = useState("");
   const [rowData, setRowData] = useState([]); // holds backend data
+  const [newRowData, setNewRowData] = useState({});
+  const [isFormOpen, setIsFormOpen] = useState(false); // For toggling the form
   const navigate = useNavigate();
   const gridRef = useRef(null); // Reference to the grid for API access
 
@@ -33,10 +36,17 @@ export default function ReportPage({
       .catch((error) => console.error("Error fetching data:", error));
   }, [fetchEndpoint]);
 
-  const handleAddReport = () => {
+  const handleAddStarredReport = () => {
     addStarredReport({ title: newReportTitle, path: window.location.pathname });
     setNewReportTitle("");
     setShowInput(false);
+  };
+
+  const handleInputChange = (field, value) => {
+    setNewRowData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
   };
 
   const handleCellValueChanged = (event) => {
@@ -67,6 +77,31 @@ export default function ReportPage({
       })
       .catch((error) => console.error("Error saving data:", error));
   };
+
+  const addRow = () => {
+    const formattedData = { ...newRowData };
+  
+    console.log("Data being sent to backend:", formattedData); // Debugging log
+  
+    fetch(createEndpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formattedData),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Failed to add row: ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then((newRow) => {
+        setRowData((prev) => [...prev, newRow]); // Add the new row to the table
+        setNewRowData({}); // Reset the form
+        setIsFormOpen(false); // Close the form
+      })
+      .catch((error) => console.error("Error adding row:", error));
+  };
+  
 
   const exportToCsv = () => {
     gridRef.current.api.exportDataAsCsv(); // Use Ag-Grid's export API
@@ -104,6 +139,20 @@ export default function ReportPage({
         >
           Export as CSV
         </button>
+        <button
+          style={{
+            padding: "10px 20px",
+            margin: "0 10px",
+            backgroundColor: "#4CAF50",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+          }}
+          onClick={() => setIsFormOpen((prev) => !prev)} // Toggle the form
+        >
+          {isFormOpen ? "Cancel" : "Add New Row"}
+        </button>
       </div>
       {showInput && (
         <div style={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}>
@@ -113,26 +162,73 @@ export default function ReportPage({
             onChange={(e) => setNewReportTitle(e.target.value)}
             placeholder="Enter Title"
             style={{
-                padding: "5px 10px", 
-                width: "200px", 
-                marginRight: "10px",
-                border: "1px solid #ccc",
-                borderRadius: "4px",
+              padding: "5px 10px",
+              width: "200px",
+              marginRight: "10px",
+              border: "1px solid #ccc",
+              borderRadius: "4px",
             }}
           />
           <button
             style={{
-                padding: "5px 10px", 
-                backgroundColor: "#13294B",
+              padding: "5px 10px",
+              backgroundColor: "#13294B",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+            onClick={handleAddStarredReport}
+          >
+            Add
+          </button>
+        </div>
+      )}
+      {/* Add New Row Form */}
+      {isFormOpen && (
+        <div
+          style={{
+            marginBottom: "20px",
+            padding: "20px",
+            border: "1px solid #ccc",
+            borderRadius: "8px",
+            width: "80%",
+            margin: "0 auto",
+          }}
+        >
+          <h3 style={{ textAlign: "center" }}>Add New Row</h3>
+          {columnDefs.map((col) => (
+            <div key={col.field} style={{ marginBottom: "10px" }}>
+              <label style={{ marginRight: "10px" }}>{col.headerName}:</label>
+              <input
+                type="text"
+                placeholder={col.headerName}
+                value={newRowData[col.field] || ""}
+                onChange={(e) => handleInputChange(col.field, e.target.value)}
+                style={{
+                  padding: "5px",
+                  width: "200px",
+                  border: "1px solid #ccc",
+                  borderRadius: "4px",
+                }}
+              />
+            </div>
+          ))}
+          <div style={{ textAlign: "center", marginTop: "20px" }}>
+            <button
+              onClick={addRow}
+              style={{
+                padding: "10px 20px",
+                backgroundColor: "#4CAF50",
                 color: "white",
                 border: "none",
                 borderRadius: "4px",
                 cursor: "pointer",
-            }}
-            onClick={handleAddReport}
-          >
-            Add
-          </button>
+              }}
+            >
+              Submit
+            </button>
+          </div>
         </div>
       )}
       <div className="ag-theme-alpine" style={{ height: 400, width: "100%", margin: "0 auto" }}>
@@ -145,7 +241,23 @@ export default function ReportPage({
           onCellValueChanged={handleCellValueChanged} // Capture changes
         />
       </div>
-      <button onClick={() => navigate('/')}>Back to Homepage</button>
+      <button
+        onClick={() => navigate("/")}
+        style={{
+          padding: "10px 20px",
+          marginTop: "20px",
+          backgroundColor: "#13294B",
+          color: "white",
+          border: "none",
+          borderRadius: "4px",
+          cursor: "pointer",
+          display: "block",
+          marginLeft: "auto",
+          marginRight: "auto",
+        }}
+      >
+        Back to Homepage
+      </button>
     </div>
   );
 }

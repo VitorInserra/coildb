@@ -13,7 +13,8 @@ export default function SummarySchools({ addStarredReport }) {
     <ReportPage
       title="Schools Data Page"
       fetchEndpoint="http://0.0.0.0:8080/school-dept/schools_table" 
-      updateEndpoint="http://0.0.0.0:8080/schools/update-school" 
+      updateEndpoint="TODO:CREATE ENDPOINT" 
+      createEndpoint="http://0.0.0.0:8080/school-dept/schools" 
       columnDefs={columnDefs}
       addStarredReport={addStarredReport}
     />

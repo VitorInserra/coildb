@@ -17,6 +17,7 @@ export default function FacultyRecipients({ addStarredReport }) {
       title="Faculty Recipients Page"
       fetchEndpoint="http://0.0.0.0:8080/faculty-recipient/get-recipient"
       updateEndpoint="http://0.0.0.0:8080/faculty-recipient/update-recipient"
+      createEndpoint="http://0.0.0.0:8080/faculty-recipient/post-recipient/"
       columnDefs={columnDefs}
       addStarredReport={addStarredReport}
     />
