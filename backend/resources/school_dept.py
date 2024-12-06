@@ -3,7 +3,7 @@ from models.school_dept import School, Department
 from sqlalchemy.orm import Session
 from db import SessionLocal
 from models.schemas.school_dept import SchoolModel, DepartmentModel
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from db import get_db
 # from models.coil_base import CoilBase
 
@@ -53,6 +53,27 @@ class SchoolDeptResource:
             db.commit()
             db.refresh(db_school)
             return db_school
+        
+        @self.router.put("/update-school/", response_model=SchoolModel)
+        async def update_school(updated_data: SchoolModel, db: Session = Depends(get_db)):
+            try:
+                db_school = db.query(School).filter_by(
+                    id=updated_data.id,
+                ).first()
+                if not db_school:
+                    raise HTTPException(status_code=404, detail="Recipient not found")
+
+                for key, value in updated_data.dict().items():
+                    if key in {"repeat_faculty", "unique_faculty"}:
+                        continue  # Skip these fields
+                    if hasattr(db_school, key) and value is not None:
+                        setattr(db_school, key, value)
+
+                db.commit()
+                db.refresh(db_school)
+                return db_school
+            except Exception as e:
+                raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
 
         return self.router
