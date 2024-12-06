@@ -24,6 +24,5 @@
 --ALTER TABLE schools
 --ADD COLUMN repeat_faculty INTEGER DEFAULT 0,
 --ADD COLUMN unique_faculty INTEGER DEFAULT 0;
-
 -- oc cp backend/services/fixes.sql postgresql-1-w9knm:/tmp/fixes.sql
 -- oc rsh postgresql-1-w9knm psql -U dev_user -d dev_db -f /tmp/fixes.sql
