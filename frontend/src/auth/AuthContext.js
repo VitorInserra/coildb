@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
             const API_BASE_URL = process.env.REACT_APP_API_BASE_URL
             console.log("Ping:", API_BASE_URL)
             fetch(`${API_BASE_URL}/ping`, {
-                method: 'GET',
+                method: 'POST',
                 headers: {
                     'Authorization': `Basic ${authToken}`,
                 },
@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
         const API_BASE_URL = process.env.REACT_APP_API_BASE_URL
         console.log("Ping:", API_BASE_URL)
         const response = await fetch(`${API_BASE_URL}/ping`, {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 'Authorization': `Basic ${token}`,
             },

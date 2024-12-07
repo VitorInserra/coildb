@@ -11,7 +11,7 @@ class CoilBase:
 
     def get_router(self):
 
-        @self.router.get("/ping")
+        @self.router.post("/ping")
         async def ping(
             username: str = Depends(get_current_username)
         ):
