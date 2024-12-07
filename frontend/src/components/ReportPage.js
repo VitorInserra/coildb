@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
+import AuthContext from '../auth/AuthContext';
 
 export default function ReportPage({
   title,
@@ -16,10 +17,15 @@ export default function ReportPage({
   const [rowData, setRowData] = useState([]);
   const navigate = useNavigate();
   const gridRef = useRef(null);
+  const { isAuthenticated, authToken } = useContext(AuthContext);
 
 
   useEffect(() => {
-    fetch(fetchEndpoint)
+    fetch(fetchEndpoint, {
+      headers: {
+        'Authorization': `Basic ${authToken}`,
+      }
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -51,7 +57,7 @@ export default function ReportPage({
     fetch(updateEndpoint, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json",
+        'Authorization': `Basic ${authToken}`,
       },
       body: JSON.stringify(updatedData),
     })

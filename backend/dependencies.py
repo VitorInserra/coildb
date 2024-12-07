@@ -1,4 +1,4 @@
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 import os
 from dotenv import load_dotenv
@@ -11,6 +11,9 @@ PASSWORD = os.getenv("AUTH_PASS", "secret")
 
 
 def get_current_username(credentials: HTTPBasicCredentials = Depends(security)):
+    if Request.method == "OPTIONS":
+        return None
+
     if credentials.username != USERNAME or credentials.password != PASSWORD:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

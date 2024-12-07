@@ -1,14 +1,16 @@
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
-from api import app
+from api import app, create_auth_middleware
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://coildb-frontend-dept-coildb.apps.cloudapps.unc.edu"],
     allow_credentials=True,
-    allow_methods=["POST", "PUT", "OPTIONS", "GET", "DELETE"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allow_headers=["Authorization", "Content-Type"],
 )
+
+create_auth_middleware(app)
 
 
 if __name__ == "__main__":

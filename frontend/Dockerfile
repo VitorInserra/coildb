@@ -1,14 +1,24 @@
-FROM node:alpine
+
+FROM node:alpine AS build
 
 WORKDIR /app
 
+COPY package*.json ./
+
+RUN npm install
+
 COPY . .
 
-RUN npm install && npm run build
+RUN npm run build
 
-RUN npm install -g http-server
+FROM nginx:alpine
+
+RUN rm /etc/nginx/conf.d/default.conf
+
+COPY nginx.conf /etc/nginx/conf.d/
+
+COPY --from=build /app/build /usr/share/nginx/html
 
 EXPOSE 8080
 
-
-CMD ["http-server", "build", "-p", "8080", "-a", "0.0.0.0"]
+CMD ["nginx", "-g", "daemon off;"]

@@ -22,7 +22,7 @@ PASSWORD = os.getenv("AUTH_PASS", "secret")
 def create_auth_middleware(app: FastAPI):
     @app.middleware("http")
     async def basic_auth_middleware(request: Request, call_next):
-        if request.method not in ["POST", "PUT", "DELETE"]:
+        if request.method not in ["POST", "PUT", "DELETE", "GET", "POST"]:
             return await call_next(request)
 
         auth = request.headers.get("Authorization")
@@ -49,15 +49,13 @@ def create_auth_middleware(app: FastAPI):
                 headers={"WWW-Authenticate": 'Basic realm="Login Required"'},
             )
 
-        if username != USERNAME and password != PASSWORD:
+        if username != USERNAME or password != PASSWORD:
             return Response(
                 status_code=401,
                 headers={"WWW-Authenticate": 'Basic realm="Login Required"'},
             )
 
         return await call_next(request)
-
-create_auth_middleware(app)
 
 app.include_router(CoilBase().get_router())
 app.include_router(CompiledDataResource().get_router())

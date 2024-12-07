@@ -75,8 +75,8 @@ class GradStudentRecipientResource:
         @self.router.put("/update-recipient/", response_model=GradStudentRecipientModel)
         async def update_gradstudent_recipient(
             updated_data: GradStudentRecipientModel,
-            db: Session = Depends(get_db),
             username: str = Depends(get_current_username),
+            db: Session = Depends(get_db),
         ):
             try:
                 db_student = (
