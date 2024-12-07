@@ -6,7 +6,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://coildb-frontend-dept-coildb.apps.cloudapps.unc.edu"],
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["POST", "PUT", "OPTIONS", "GET", "DELETE"],
     allow_headers=["Authorization", "Content-Type"],
 )
 
