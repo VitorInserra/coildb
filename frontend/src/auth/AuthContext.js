@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
     }, [authToken]);
 
     const login = async (username, password) => {
-        const token = btoa(`${username}: ${password}`);
+        const token = btoa(`${username}:${password}`);
         const API_BASE_URL = process.env.REACT_APP_API_BASE_URL
         console.log("Ping:", API_BASE_URL)
         const response = await fetch(`${API_BASE_URL}/ping`, {

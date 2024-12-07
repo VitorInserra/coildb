@@ -13,7 +13,7 @@ class CoilBase:
 
         @self.router.get("/ping")
         async def ping(
-            db: Session = Depends(get_db), username: str = Depends(get_current_username)
+            username: str = Depends(get_current_username)
         ):
             return {"message": "ok"}
 
