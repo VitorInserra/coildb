@@ -1,15 +1,11 @@
-FROM node:18-alpine AS build
-WORKDIR /app
-COPY package*.json ./
+FROM node:14 as builder
+WORKDIR /usr/src/app
+COPY package.json package-lock.json ./
 RUN npm install
-COPY . .
+COPY . ./
 RUN npm run build
 
-FROM nginx:alpine
-RUN rm -f /etc/nginx/conf.d/default.conf
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=build /app/build /usr/share/nginx/html
+FROM bitnami/nginx:latest
+COPY --from=builder /usr/src/app/build /app
 EXPOSE 8080
-
-RUN chown -R nginx:nginx /var/cache/nginx /var/log/nginx
-USER nginx
+CMD ["nginx", "-g", "daemon off;"]
