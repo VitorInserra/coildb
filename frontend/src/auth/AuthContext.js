@@ -10,12 +10,7 @@ export const AuthProvider = ({ children }) => {
         if (authToken) {
             const API_BASE_URL = process.env.REACT_APP_API_BASE_URL
             console.log("Ping:", API_BASE_URL)
-            fetch(`${API_BASE_URL}/ping`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Basic ${authToken}`,
-                },
-            })
+            fetch(`${API_BASE_URL}/ping`)
                 .then(res => {
                     if (res.ok) {
                         setIsAuthenticated(true);
@@ -39,12 +34,7 @@ export const AuthProvider = ({ children }) => {
         const token = btoa(`${username}:${password}`);
         const API_BASE_URL = process.env.REACT_APP_API_BASE_URL
         console.log("Ping:", API_BASE_URL)
-        const response = await fetch(`${API_BASE_URL}/ping`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Basic ${token}`,
-            },
-        });
+        const response = await fetch(`${API_BASE_URL}/ping`);
 
         if (response.ok) {
             localStorage.setItem('authToken', token);
