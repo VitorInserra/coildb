@@ -1,7 +1,10 @@
 from models.gradstudent_recipient import GradStudentRecipient
 from sqlalchemy.orm import Session
+from sqlalchemy import func
+import logging
 from db import SessionLocal
 from models.schemas.gradstudent_recipient import GradStudentRecipientModel
+from models.schemas.base_m import LargestIdResponse
 from fastapi import APIRouter, Depends, HTTPException
 from db import get_db
 from typing import List
@@ -58,6 +61,13 @@ class GradStudentRecipientResource:
                 return db_student
             except Exception as e:
                 raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+        
+        @self.router.get("/largest-id", response_model=LargestIdResponse)
+        async def get_largest_id(db: Session = Depends(get_db)):
+            largest_id = db.query(func.max(GradStudentRecipient.id)).scalar()
+            if largest_id is None:
+                return {"largest_id": 0}
+            return {"largest_id": largest_id}
 
 
         return self.router

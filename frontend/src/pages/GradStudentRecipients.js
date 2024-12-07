@@ -13,7 +13,7 @@ export default function GradStudentRecipients({ addStarredReport }) {
     { headerName: "School", field: "school", filter: true, editable: true },
     { headerName: "Department", field: "department", filter: true, editable: true },
     { headerName: "Course", field: "course", filter: true, editable: true },
-    { headerName: "Number", field: "course_number", filter: true, editable: true },
+    { headerName: "Number", field: "number", filter: true, editable: true },
     { headerName: "UNC Course Name", field: "unc_course_name", filter: true, editable: true },
     { headerName: "Partner Institution", field: "partner_institution", filter: true, editable: true },
     { headerName: "Award", field: "award", filter: true, editable: true },
@@ -22,9 +22,10 @@ export default function GradStudentRecipients({ addStarredReport }) {
   return (
     <ReportPage
       title="Graduate Students Recipients Page"
-      fetchEndpoint="http://0.0.0.0:8080/gradstudent-recipient/gradstudent-recipient/"
-      updateEndpoint="http://0.0.0.0:8080/gradstudent-recipient/update-recipient"
-      createEndpoint="http://0.0.0.0:8080/gradstudent-recipient/gradstudent-recipient/"
+      fetchEndpoint="http://localhost:8080/gradstudent-recipient/gradstudent-recipient/"
+      updateEndpoint="http://localhost:8080/gradstudent-recipient/update-recipient"
+      createEndpoint="http://localhost:8080/gradstudent-recipient/gradstudent-recipient/"
+      largestId="http://localhost:8080/gradstudent-recipient/largest-id"
       columnDefs={columnDefs}
       addStarredReport={addStarredReport}
     />

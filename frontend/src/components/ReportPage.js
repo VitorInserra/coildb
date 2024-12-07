@@ -11,6 +11,7 @@ export default function ReportPage({
   createEndpoint,
   columnDefs,
   addStarredReport,
+  largestId,
 }) {
   const [showInput, setShowInput] = useState(false);
   const [newReportTitle, setNewReportTitle] = useState("");
@@ -45,7 +46,9 @@ export default function ReportPage({
   const handleInputChange = (field, value) => {
     setNewRowData((prev) => ({
       ...prev,
-      [field]: value,
+      [field]: ["year_taught", "award", "pid"].includes(field)        //some values stayed as string when response was sent, even tho it needed to be an int
+      ? parseInt(value, 10) || 0 
+      : value, 
     }));
   };
 
@@ -77,30 +80,47 @@ export default function ReportPage({
       })
       .catch((error) => console.error("Error saving data:", error));
   };
-
+  
   const addRow = () => {
-    const formattedData = { ...newRowData };
-  
-    console.log("Data being sent to backend:", formattedData); // Debugging log
-  
-    fetch(createEndpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formattedData),
-    })
+
+    fetch(largestId)
       .then((response) => {
         if (!response.ok) {
-          throw new Error(`Failed to add row: ${response.statusText}`);
+          throw new Error(`Failed to fetch largest ID: ${response.statusText}`);
         }
         return response.json();
       })
-      .then((newRow) => {
-        setRowData((prev) => [...prev, newRow]); // Add the new row to the table
-        setNewRowData({}); // Reset the form
-        setIsFormOpen(false); // Close the form
+      .then((data) => {
+        const max_id = data.largest_id || -5; // Use 0 if no records found
+        const newId = max_id + 1; // Calculate the new ID
+  
+        // Add the new ID to the row data
+        const formattedData = { id: newId, ...newRowData };
+  
+        console.log("Data being sent to backend:", formattedData); // Debugging log
+  
+        // Send the data to the backend
+        fetch(createEndpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formattedData),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`Failed to add row: ${response.statusText}`);
+            }
+            return response.json();
+          })
+          .then((newRow) => {
+            setRowData((prev) => [...prev, newRow]); // Add the new row to the table
+            setNewRowData({}); // Reset the form
+            setIsFormOpen(false); // Close the form
+          })
+          .catch((error) => console.error("Error adding row:", error));
       })
-      .catch((error) => console.error("Error adding row:", error));
+      .catch((error) => console.error("Error fetching largest ID:", error));
   };
+  
   
 
   const exportToCsv = () => {
@@ -201,7 +221,7 @@ export default function ReportPage({
             <div key={col.field} style={{ marginBottom: "10px" }}>
               <label style={{ marginRight: "10px" }}>{col.headerName}:</label>
               <input
-                type="text"
+                type={["year_taught", "award", "pid"].includes(col.field) ? "number" : "text"}      //just lets them know which fields you can only add numbers
                 placeholder={col.headerName}
                 value={newRowData[col.field] || ""}
                 onChange={(e) => handleInputChange(col.field, e.target.value)}
