@@ -35,20 +35,10 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (username, password) => {
         const token = btoa(`${username}:${password}`);
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/ping`, {
-            headers: {
-                'Authorization': `Basic ${token}`,
-            },
-        });
-
-        if (response.ok) {
-            localStorage.setItem('authToken', token);
-            setAuthToken(token);
-            setIsAuthenticated(true);
+        localStorage.setItem('authToken', token);
+        setAuthToken(token);
+        setIsAuthenticated(true);
             return true;
-        } else {
-            throw new Error('Invalid credentials');
-        }
     };
 
     const logout = () => {
