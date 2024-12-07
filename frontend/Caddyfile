@@ -1,0 +1,33 @@
+# Serve static files for your React app
+root * /usr/share/caddy
+
+# Middleware: Add general headers (optional for static content)
+header {
+    Strict-Transport-Security max-age=63072000;
+    X-Content-Type-Options nosniff
+    Referrer-Policy no-referrer-when-downgrade
+}
+
+# Middleware: Handle React's SPA routing
+try_files {path} /index.html
+
+# Reverse proxy for backend API
+reverse_proxy /api/* coildb-dept-coildb.apps.cloudapps.unc.edu:8080
+
+# CORS for API
+header /api/* {
+    Access-Control-Allow-Origin http://coildb-frontend-dept-coildb.apps.cloudapps.unc.edu
+    Access-Control-Allow-Methods GET, POST, OPTIONS
+    Access-Control-Allow-Headers Authorization, Content-Type
+    Access-Control-Allow-Credentials true
+}
+
+# Preflight request handling
+@api_preflight {
+    path /api/*
+    method OPTIONS
+}
+respond @api_preflight 204
+
+# Serve static files
+file_server

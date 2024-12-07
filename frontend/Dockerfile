@@ -1,3 +1,4 @@
+
 FROM node:18 AS build
 
 WORKDIR /app
@@ -10,12 +11,15 @@ COPY . .
 
 RUN npm run build
 
-FROM nginx:1.23
+FROM caddy:2.7.4-alpine
 
-COPY --from=build /app/build /usr/share/nginx/html
+COPY --from=build /app/build /usr/share/caddy
 
 EXPOSE 8080
 
-USER nginx
+USER caddy
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["caddy", "run", "--config", "./Caddyfile"]
+
+
+
