@@ -22,7 +22,7 @@ PASSWORD = os.getenv("AUTH_PASS", "secret")
 def create_auth_middleware(app: FastAPI):
     @app.middleware("http")
     async def basic_auth_middleware(request: Request, call_next):
-        if request.method not in ["POST", "PUT", "DELETE", "GET", "POST"]:
+        if request.method not in ["POST", "PUT", "DELETE"]:
             return await call_next(request)
 
         auth = request.headers.get("Authorization")

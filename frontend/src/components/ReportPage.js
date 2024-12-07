@@ -21,11 +21,7 @@ export default function ReportPage({
 
 
   useEffect(() => {
-    fetch(fetchEndpoint, {
-      headers: {
-        'Authorization': `Basic ${authToken}`,
-      }
-    })
+    fetch(fetchEndpoint)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
