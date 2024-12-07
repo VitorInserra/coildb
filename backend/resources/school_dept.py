@@ -1,8 +1,10 @@
 from typing import List
 from models.school_dept import School, Department
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from db import SessionLocal
 from models.schemas.school_dept import SchoolModel, DepartmentModel
+from models.schemas.base_m import LargestIdResponse
 from fastapi import APIRouter, Depends
 from db import get_db
 # from models.coil_base import CoilBase
@@ -53,6 +55,14 @@ class SchoolDeptResource:
             db.commit()
             db.refresh(db_school)
             return db_school
+        
+        @self.router.get("/largest-id/school", response_model=LargestIdResponse)
+        async def get_largest_id_school(db: Session = Depends(get_db)):
+            largest_id = db.query(func.max(School.id)).scalar()
+            if largest_id is None:
+                return {"largest_id": 0}
+            return {"largest_id": largest_id}
+
 
 
         return self.router

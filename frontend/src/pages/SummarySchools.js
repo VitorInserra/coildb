@@ -15,6 +15,7 @@ export default function SummarySchools({ addStarredReport }) {
       fetchEndpoint="http://0.0.0.0:8080/school-dept/schools_table" 
       updateEndpoint="TODO:CREATE ENDPOINT" 
       createEndpoint="http://0.0.0.0:8080/school-dept/schools" 
+      largestId="http://0.0.0.0:8080/school-dept/largest-id/school"
       columnDefs={columnDefs}
       addStarredReport={addStarredReport}
     />
