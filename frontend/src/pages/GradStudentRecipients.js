@@ -24,6 +24,7 @@ export default function GradStudentRecipients({ addStarredReport }) {
       title="Graduate Students Recipients Page"
       fetchEndpoint="http://0.0.0.0:8080/gradstudent-recipient/gradstudent-recipient/"
       updateEndpoint="http://0.0.0.0:8080/gradstudent-recipient/update-recipient"
+      createEndpoint="http://0.0.0.0:8080/gradstudent-recipient/gradstudent-recipient/"
       columnDefs={columnDefs}
       addStarredReport={addStarredReport}
     />
