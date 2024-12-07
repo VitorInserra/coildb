@@ -12,8 +12,6 @@ RUN npm run build
 
 FROM bitnami/nginx:latest
 
-RUN rm /opt/bitnami/nginx/conf/server_blocks/default.conf
-
 COPY default.conf /opt/bitnami/nginx/conf/server_blocks/default.conf
 
 COPY --from=build /app/build /app
