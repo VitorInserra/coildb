@@ -25,7 +25,7 @@ def create_auth_middleware(app: FastAPI):
         if request.method == "OPTIONS":
             return await call_next(request)
 
-        if request.method not in ["POST", "PUT", "DELETE", "GET"]:
+        if request.method not in ["POST", "PUT", "DELETE"]:
             return await call_next(request)
 
         auth = request.headers.get("Authorization")
