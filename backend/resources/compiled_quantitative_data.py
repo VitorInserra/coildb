@@ -15,11 +15,16 @@ class CompiledDataResource:
         self.router = APIRouter(prefix="/compiled-data", tags=["CompiledDataResource"])
 
     def get_router(self):
+        @self.router.get("/get-compiled_data", response_model=List[CompiledDataModel])
+        async def get_compiled_data_table(db: Session = Depends(get_db)):
+            compiled_list = db.query(CompiledQuantitativeData)
+            return [CompiledDataModel.from_orm(compiled) for compiled in compiled_list]
+
         @self.router.get("/get-partner-univerisities")
         async def get_compiled_data(
             semesters: List[str] = Query(),
             db: Session = Depends(get_db),
-            svc=CompiledQuantitativeDataService(),
+            svc: CompiledQuantitativeDataService = Depends(CompiledQuantitativeDataService),
         ):
             res = {}
             for i in range(len(semesters)):
@@ -32,7 +37,7 @@ class CompiledDataResource:
         async def get_compiled_data(
             semesters: List[str] = Query(),
             db: Session = Depends(get_db),
-            svc=CompiledQuantitativeDataService(),
+            svc: CompiledQuantitativeDataService = Depends(CompiledQuantitativeDataService),
         ):
             res = {}
             for i in range(len(semesters)):
