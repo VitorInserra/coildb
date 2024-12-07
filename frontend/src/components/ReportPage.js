@@ -43,7 +43,6 @@ export default function ReportPage({
     const updatedData = event.data;
     console.log("Updated Row Data:", updatedData);
 
-
     saveUpdatedData(updatedData);
   };
 
