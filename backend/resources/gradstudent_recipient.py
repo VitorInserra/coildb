@@ -32,13 +32,10 @@ class GradStudentRecipientResource:
             return db_student
         
         @self.router.delete("/delete-recipient/{last_name}/{first_name}", response_model=GradStudentRecipientModel)
-        async def delete_gradstudent_recipient(last_name: str, first_name: str, db: Session = Depends(get_db)):
-            matching_student = db.query(GradStudentRecipient).filter(GradStudentRecipient.last_name == last_name, GradStudentRecipient.first_name == first_name).all()
-            if not matching_student:
+        async def delete_gradstudent_recipient(last_name: str, first_name: str, email: str, db: Session = Depends(get_db)):
+            db_student = db.query(GradStudentRecipient).filter(GradStudentRecipient.last_name == last_name, GradStudentRecipient.first_name == first_name,  GradStudentRecipient.email == email).first()
+            if not db_student:
                 raise HTTPException(status_code=404, detail="FacultyRecipient not found")
-            if len(matching_student) > 1:
-                raise HTTPException(status_code=400, detail="Multiple records found for the given faculty name. Please check the database.")
-            db_student = matching_student[0]
             db.delete(db_student)
             db.commit()
             return db_student
@@ -47,7 +44,9 @@ class GradStudentRecipientResource:
         async def update_gradstudent_recipient(updated_data: GradStudentRecipientModel, db: Session = Depends(get_db)):
             try:
                 db_student = db.query(GradStudentRecipient).filter_by(
-                    id=updated_data.id,
+                    last_name=updated_data.last_name,
+                    first_name=updated_data.first_name,
+                    email=updated_data.email
                 ).first()
                 if not db_student:
                     raise HTTPException(status_code=404, detail="Recipient not found")
