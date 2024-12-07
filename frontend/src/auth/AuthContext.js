@@ -8,7 +8,9 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         if (authToken) {
-            fetch(`${process.env.REACT_APP_API_BASE_URL}/ping`, {
+            const API_BASE_URL = process.env.REACT_APP_API_BASE_URL
+            console.log("Ping:", API_BASE_URL)
+            fetch(`${API_BASE_URL}/ping`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Basic ${authToken}`,
@@ -35,7 +37,9 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (username, password) => {
         const token = btoa(`${username}: ${password}`);
-        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/ping`, {
+        const API_BASE_URL = process.env.REACT_APP_API_BASE_URL
+        console.log("Ping:", API_BASE_URL)
+        const response = await fetch(`${API_BASE_URL}/ping`, {
             method: 'GET',
             headers: {
                 'Authorization': `Basic ${token}`,
