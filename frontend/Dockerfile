@@ -1,11 +1,21 @@
-FROM node:14 as builder
-WORKDIR /usr/src/app
-COPY package.json package-lock.json ./
+FROM node:18 AS build
+
+WORKDIR /app
+
+COPY package*.json ./
+
 RUN npm install
-COPY . ./
+
+COPY . .
+
 RUN npm run build
 
-FROM bitnami/nginx:latest
-COPY --from=builder /usr/src/app/build /app
-EXPOSE 8080
+FROM nginx:1.23
+
+COPY --from=build /app/build /usr/share/nginx/html
+
+EXPOSE 80
+
+USER nginx
+
 CMD ["nginx", "-g", "daemon off;"]
