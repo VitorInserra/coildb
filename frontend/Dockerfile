@@ -10,13 +10,15 @@ COPY . .
 
 RUN npm run build
 
-FROM nginx:1.23
+FROM bitnami/nginx:latest
 
-RUN rm /etc/nginx/conf.d/default.conf
+RUN rm /opt/bitnami/nginx/conf/server_blocks/default.conf
 
-COPY default.conf /etc/nginx/conf.d/default.conf
+COPY default.conf /opt/bitnami/nginx/conf/server_blocks/default.conf
 
-COPY --from=build /app/build /usr/share/nginx/html
+COPY --from=build /app/build /app
+
+ENV NGINX_DOCUMENT_ROOT=/app
 
 EXPOSE 8080
 
