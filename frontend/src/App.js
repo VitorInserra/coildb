@@ -6,6 +6,7 @@ import './index.css'; // Import your custom styles
 import FacultyRecipients from './pages/FacultyRecipients';
 import GradStudentRecipients from './pages/GradStudentRecipients';
 import SummaryDepartmental from './pages/SummaryDepartmental';
+import Compiled from './pages/Compiled';
 import SummarySchools from './pages/SummarySchools';
 import KeyStatistics from './components/KeyStatistics';
 
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/grad-student-recipients" element={<GradStudentRecipients addStarredReport={addStarredReport}/>} />
           <Route path="/summary-departmental" element={<SummaryDepartmental addStarredReport={addStarredReport} />} />
           <Route path="/summary-schools" element={<SummarySchools addStarredReport={addStarredReport} />} />
+          <Route path="/compiled" element={<Compiled addStarredReport={addStarredReport} />} />
         </Routes>
         <footer className="blue-footer">
           <p>© 2024 The University of North Carolina at Chapel Hill</p>
@@ -42,7 +44,8 @@ const HomePage = ({ addStarredReport, starredReports }) => {
 
   const summaryReports = [
     { name: "Departmental", path: "/summary-departmental" },
-    { name: "Schools", path: "/summary-schools" }
+    { name: "Schools", path: "/summary-schools" },
+    { name: "Compiled Quantitative Data", path: "/compiled" }
   ];
 
   const pages = [
