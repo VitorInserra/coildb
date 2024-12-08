@@ -170,6 +170,10 @@ button {
   transition: all 0.3s ease; /* Smooth hover transition */
 }
 
+button:hover {
+  opacity: 0.7; /* Slight transparency for hover effect */
+}
+
 h1 {
   font-size: 2rem; /* Adjust font size if needed */
   color: #13294B; /* Match the header theme */

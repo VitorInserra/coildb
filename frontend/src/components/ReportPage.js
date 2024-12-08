@@ -12,6 +12,7 @@ export default function ReportPage({
   columnDefs,
   addStarredReport,
   largestId,
+  deleteEndpoint,
 }) {
   const [showInput, setShowInput] = useState(false);
   const [newReportTitle, setNewReportTitle] = useState("");
@@ -127,6 +128,42 @@ export default function ReportPage({
       .catch((error) => console.error("Error fetching largest ID:", error));
   };
   
+  const [selectedRowId, setSelectedRowId] = useState(null);
+
+  const handleRowClick = (event) => {
+    const id = event.data.id; // Assuming `id` exists in your row data
+    setSelectedRowId(id); // Save the selected row ID
+    console.log("Selected Row ID:", id);
+  };
+
+  const handleDeleteRow = () => {
+    if (!selectedRowId) {
+      alert("Please select a row to delete.");
+      return;
+    }
+    // Confirmation dialog (optional)
+    const confirmDelete = window.confirm(`Are you sure you want to delete row with ID: ${selectedRowId}?`);
+
+    if (!confirmDelete) return;
+
+    fetch(`${deleteEndpoint}/${selectedRowId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Failed to delete row: ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then(() => {
+        setRowData((prev) => prev.filter((row) => row.id !== selectedRowId));       // Remove the deleted row from the UI
+        setSelectedRowId(null);
+      })
+      .catch((error) => console.error("Error deleting row:", error));
+  };
   
 
   const exportToCsv = () => {
@@ -169,7 +206,7 @@ export default function ReportPage({
           style={{
             padding: "10px 20px",
             margin: "0 10px",
-            backgroundColor: "#4CAF50",
+            backgroundColor: "#06693f", //"#4CAF50",
             color: "white",
             border: "none",
             borderRadius: "4px",
@@ -178,6 +215,20 @@ export default function ReportPage({
           onClick={() => setIsFormOpen((prev) => !prev)} // Toggle the form
         >
           {isFormOpen ? "Cancel" : "Add New Row"}
+        </button>
+        <button
+          style={{
+            padding: "10px 20px",
+            margin: "0 10px",
+            backgroundColor: "#780707",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+          }}
+          onClick={handleDeleteRow}
+        >
+          Delete Row
         </button>
       </div>
       {showInput && (
@@ -253,7 +304,7 @@ export default function ReportPage({
               onClick={addRow}
               style={{
                 padding: "10px 20px",
-                backgroundColor: "#4CAF50",
+                backgroundColor: "#06693f", //"#4CAF50",  4B9CD3
                 color: "white",
                 border: "none",
                 borderRadius: "4px",
@@ -273,6 +324,8 @@ export default function ReportPage({
           pagination={true} // Optional: Add pagination for better display
           paginationPageSize={10} // Optional: Number of rows per page
           onCellValueChanged={handleCellValueChanged} // Capture changes
+          rowSelection="single" // Allow single-row selection
+          onRowClicked={(event) => handleRowClick(event)} // Capture row click        
         />
       </div>
       <button

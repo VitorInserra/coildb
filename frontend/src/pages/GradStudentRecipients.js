@@ -22,10 +22,11 @@ export default function GradStudentRecipients({ addStarredReport }) {
   return (
     <ReportPage
       title="Graduate Students Recipients Page"
-      fetchEndpoint="http://0.0.0.0:8080/gradstudent-recipient/gradstudent-recipient/"
-      updateEndpoint="http://0.0.0.0:8080/gradstudent-recipient/update-recipient"
-      createEndpoint="http://0.0.0.0:8080/gradstudent-recipient/gradstudent-recipient/"
-      largestId="http://0.0.0.0:8080/gradstudent-recipient/largest-id"
+      fetchEndpoint="http://localhost:8080/gradstudent-recipient/gradstudent-recipient/"
+      updateEndpoint="http://localhost:8080/gradstudent-recipient/update-recipient"
+      createEndpoint="http://localhost:8080/gradstudent-recipient/gradstudent-recipient/"
+      largestId="http://localhost:8080/gradstudent-recipient/largest-id"
+      deleteEndpoint="http://localhost:8080/gradstudent-recipient/delete-recipient"
       columnDefs={columnDefs}
       addStarredReport={addStarredReport}
     />
