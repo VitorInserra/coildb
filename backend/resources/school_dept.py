@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from db import SessionLocal
 from models.schemas.school_dept import SchoolModel, DepartmentModel
 from models.schemas.base_m import LargestIdResponse
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from db import get_db
 # from models.coil_base import CoilBase
 
@@ -62,7 +62,23 @@ class SchoolDeptResource:
             if largest_id is None:
                 return {"largest_id": 0}
             return {"largest_id": largest_id}
-
-
+        
+        @self.router.delete("/delete-school/{id}", response_model=SchoolModel)
+        async def delete_school(id: int, db: Session = Depends(get_db)):
+            db_school = db.query(School).filter(School.id == id).first()
+            if not db_school:
+                raise HTTPException(status_code=404, detail="School not found")
+            db.delete(db_school)
+            db.commit()
+            return db_school
+        
+        @self.router.delete("/delete-department/{id}", response_model=DepartmentModel)
+        async def delete_department(id: int, db: Session = Depends(get_db)):
+            db_department = db.query(Department).filter(Department.id == id).first()
+            if not db_department:
+                raise HTTPException(status_code=404, detail="Department not found")
+            db.delete(db_department)
+            db.commit()
+            return db_department
 
         return self.router
