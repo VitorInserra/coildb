@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AgGridReact } from 'ag-grid-react';
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-alpine.css';
-import AuthContext from '../auth/AuthContext';
+import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS
+import 'ag-grid-community/styles/ag-theme-alpine.css'; // Theme
 
 export default function ReportPage({
   title,
@@ -17,14 +16,15 @@ export default function ReportPage({
 }) {
   const [showInput, setShowInput] = useState(false);
   const [newReportTitle, setNewReportTitle] = useState("");
-  const [rowData, setRowData] = useState([]);
+  const [rowData, setRowData] = useState([]); // holds backend data
+  const [newRowData, setNewRowData] = useState({});
+  const [isFormOpen, setIsFormOpen] = useState(false); // For toggling the form
   const navigate = useNavigate();
-  const gridRef = useRef(null);
-  const { isAuthenticated, authToken } = useContext(AuthContext);
+  const gridRef = useRef(null); // Reference to the grid for API access
 
-
+  // Fetching data from the backend
   useEffect(() => {
-    fetch(fetchEndpoint)
+    fetch(fetchEndpoint) // Fetch data using the provided endpoint
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -33,7 +33,7 @@ export default function ReportPage({
       })
       .then((data) => {
         console.log("Fetched data:", data);
-        setRowData(data);
+        setRowData(data); // Set the fetched data to the grid
       })
       .catch((error) => console.error("Error fetching data:", error));
   }, [fetchEndpoint]);
@@ -57,9 +57,10 @@ export default function ReportPage({
 };
 
   const handleCellValueChanged = (event) => {
-    const updatedData = event.data;
+    const updatedData = event.data; // The updated row data
     console.log("Updated Row Data:", updatedData);
 
+    // Call the backend to save the updated data
     saveUpdatedData(updatedData);
   };
 
@@ -68,9 +69,9 @@ export default function ReportPage({
     fetch(updateEndpoint, {
       method: "PUT",
       headers: {
-        'Authorization': `Basic ${authToken}`,
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(updatedData),
+      body: JSON.stringify(updatedData), // Ensure the updatedData object matches the backend schema
     })
       .then((response) => {
         if (!response.ok) {
@@ -166,7 +167,7 @@ export default function ReportPage({
   
 
   const exportToCsv = () => {
-    gridRef.current.api.exportDataAsCsv();
+    gridRef.current.api.exportDataAsCsv(); // Use Ag-Grid's export API
   };
 
   return (
