@@ -5,7 +5,8 @@ from resources.faculty_recipient import FacultyRecipientResource
 from resources.gradstudent_recipient import GradStudentRecipientResource
 from resources.school_dept import SchoolDeptResource
 from resources.starred_report import StarredReportResource
-from resources.key_stats import KeyStatisticsResourcefrom db import get_db
+from resources.key_stats import KeyStatisticsResource
+from db import get_db
 from services.school_dept_compile import update_faculty_counts
 
 

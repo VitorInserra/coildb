@@ -10,8 +10,8 @@ class School(Base):
     school_count = Column(Integer)
     #repeat_faculty = Column(Integer)
     #unique_faculty = Column(Integer)
-    repeat_faculty = Column(Integer, default=0)  # New column
-    unique_faculty = Column(Integer, default=0)  # New column
+    repeat_faculty = Column(Integer, default=0, nullable=True)  # New column
+    unique_faculty = Column(Integer, default=0, nullable=True)  # New column
  
 class Department(Base):
     id = Column(Integer, primary_key=True, index=True)  # Primary key
