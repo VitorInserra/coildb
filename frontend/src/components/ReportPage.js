@@ -44,13 +44,16 @@ export default function ReportPage({
   };
 
   const handleInputChange = (field, value) => {
+    const column = columnDefs.find((col) => col.field === field);
     setNewRowData((prev) => ({
-      ...prev,
-      [field]: ["year_taught", "award", "pid"].includes(field)        //some values stayed as string when response was sent, even tho it needed to be an int
-      ? parseInt(value, 10) || 0 
-      : value, 
+        ...prev,
+        [field]: column.type === "int"
+            ? parseInt(value, 10) || 0
+            : column.type === "boolean"
+            ? value === "true" || value === true || value === false
+            : value, // Default to string for "string" type
     }));
-  };
+};
 
   const handleCellValueChanged = (event) => {
     const updatedData = event.data; // The updated row data
@@ -80,9 +83,8 @@ export default function ReportPage({
       })
       .catch((error) => console.error("Error saving data:", error));
   };
-  
-  const addRow = () => {
 
+  const addRow = () => {
     fetch(largestId)
       .then((response) => {
         if (!response.ok) {
@@ -91,12 +93,16 @@ export default function ReportPage({
         return response.json();
       })
       .then((data) => {
-        const max_id = data.largest_id || -5; // Use 0 if no records found
-        const newId = max_id + 1; // Calculate the new ID
+        const max_id = data.largest_id || -5; 
+        const newId = max_id + 1;             // Calculate the new ID
   
-        // Add the new ID to the row data
-        const formattedData = { id: newId, ...newRowData };
-  
+        const formattedData = columnDefs.reduce((acc, col) => {
+          acc[col.field] = col.type === "boolean"
+            ? newRowData[col.field] ?? false            //  false default for boolean
+            : newRowData[col.field] ?? null;            //  null default
+          return acc;
+        }, { id: newId });
+          
         console.log("Data being sent to backend:", formattedData); // Debugging log
   
         // Send the data to the backend
@@ -113,8 +119,8 @@ export default function ReportPage({
           })
           .then((newRow) => {
             setRowData((prev) => [...prev, newRow]); // Add the new row to the table
-            setNewRowData({}); // Reset the form
-            setIsFormOpen(false); // Close the form
+            setNewRowData({});                       // Reset the form
+            setIsFormOpen(false);                    // Close the form
           })
           .catch((error) => console.error("Error adding row:", error));
       })
@@ -221,7 +227,15 @@ export default function ReportPage({
             <div key={col.field} style={{ marginBottom: "10px" }}>
               <label style={{ marginRight: "10px" }}>{col.headerName}:</label>
               <input
-                type={["year_taught", "award", "pid"].includes(col.field) ? "number" : "text"}      //just lets them know which fields you can only add numbers
+                type={
+                  col.type === "int"
+                    ? "number"
+                    : col.type === "boolean"
+                    ? "checkbox"
+                    : col.type === "date"
+                    ? "date"
+                    : "text"
+                }          
                 placeholder={col.headerName}
                 value={newRowData[col.field] || ""}
                 onChange={(e) => handleInputChange(col.field, e.target.value)}
