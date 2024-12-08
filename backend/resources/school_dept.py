@@ -71,5 +71,14 @@ class SchoolDeptResource:
             db.delete(db_school)
             db.commit()
             return db_school
+        
+        @self.router.delete("/delete-department/{id}", response_model=DepartmentModel)
+        async def delete_department(id: int, db: Session = Depends(get_db)):
+            db_department = db.query(Department).filter(Department.id == id).first()
+            if not db_department:
+                raise HTTPException(status_code=404, detail="Department not found")
+            db.delete(db_department)
+            db.commit()
+            return db_department
 
         return self.router
