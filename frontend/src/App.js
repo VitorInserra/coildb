@@ -6,6 +6,7 @@ import './index.css';
 import FacultyRecipients from './pages/FacultyRecipients';
 import GradStudentRecipients from './pages/GradStudentRecipients';
 import SummaryDepartmental from './pages/SummaryDepartmental';
+import Compiled from './pages/Compiled';
 import SummarySchools from './pages/SummarySchools';
 import KeyStatistics from './components/KeyStatistics';
 import { AuthProvider } from './auth/AuthContext';
@@ -80,7 +81,7 @@ const HomePage = ({ addStarredReport, starredReports }) => {
 
   const summaryReports = [
     { name: "Departmental", path: "/summary-departmental" },
-    { name: "Schools", path: "/summary-schools" }
+    { name: "Schools", path: "/summary-schools" },
   ];
 
   const pages = [

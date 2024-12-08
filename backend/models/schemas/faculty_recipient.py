@@ -3,7 +3,7 @@ from typing import Optional
 from datetime import date
 
 class FacultyRecipientModel(BaseModel):
-    #id: int
+    id: int
     last_name:  Optional[str] = None
     first_name:  Optional[str] = None
     email:  Optional[str] = None

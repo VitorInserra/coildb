@@ -1,9 +1,11 @@
 from typing import List
 from models.school_dept import School, Department
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from db import SessionLocal
 from models.schemas.school_dept import SchoolModel, DepartmentModel
-from fastapi import APIRouter, Depends
+from models.schemas.base_m import LargestIdResponse
+from fastapi import APIRouter, Depends, HTTPException
 from db import get_db
 from dependencies import get_current_username
 
@@ -62,5 +64,37 @@ class SchoolDeptResource:
             db.commit()
             db.refresh(db_school)
             return db_school
+        
+        @self.router.get("/largest-id/school", response_model=LargestIdResponse)
+        async def get_largest_id_school(db: Session = Depends(get_db)):
+            largest_id = db.query(func.max(School.id)).scalar()
+            if largest_id is None:
+                return {"largest_id": 0}
+            return {"largest_id": largest_id}
+        
+        @self.router.get("/largest-id/department", response_model=LargestIdResponse)
+        async def get_largest_id_department(db: Session = Depends(get_db)):
+            largest_id = db.query(func.max(Department.id)).scalar()
+            if largest_id is None:
+                return {"largest_id": 0}
+            return {"largest_id": largest_id}
+        
+        @self.router.delete("/delete-school/{id}", response_model=SchoolModel)
+        async def delete_school(id: int, db: Session = Depends(get_db)):
+            db_school = db.query(School).filter(School.id == id).first()
+            if not db_school:
+                raise HTTPException(status_code=404, detail="School not found")
+            db.delete(db_school)
+            db.commit()
+            return db_school
+        
+        @self.router.delete("/delete-department/{id}", response_model=DepartmentModel)
+        async def delete_department(id: int, db: Session = Depends(get_db)):
+            db_department = db.query(Department).filter(Department.id == id).first()
+            if not db_department:
+                raise HTTPException(status_code=404, detail="Department not found")
+            db.delete(db_department)
+            db.commit()
+            return db_department
 
         return self.router

@@ -1,8 +1,10 @@
 from models.faculty_recipient import FacultyRecipient
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from db import SessionLocal
 from db import get_db
 from models.schemas.faculty_recipient import FacultyRecipientModel
+from models.schemas.base_m import LargestIdResponse
 from fastapi import APIRouter, Depends, HTTPException
 from typing import List, Union
 from dependencies import get_current_username
@@ -34,18 +36,22 @@ class FacultyRecipientResource:
             db.commit()
             db.refresh(db_faculty)
             return db_faculty
-    
-        @self.router.delete("/delete-recipient/{last_name}/{first_name}", response_model=FacultyRecipientModel)
-        async def delete_faculty_recipient(last_name: str, first_name: str, db: Session = Depends(get_db), username: str = Depends(get_current_username)):
-            matching_faculty = db.query(FacultyRecipient).filter(FacultyRecipient.last_name == last_name, FacultyRecipient.first_name == first_name).all()
-            if not matching_faculty:
+        
+        @self.router.get("/largest-id", response_model=LargestIdResponse)
+        async def get_largest_id(db: Session = Depends(get_db)):
+            largest_id = db.query(func.max(FacultyRecipient.id)).scalar()
+            if largest_id is None:
+                return {"largest_id": 0}
+            return {"largest_id": largest_id}
+        
+        @self.router.delete("/delete-recipient/{id}", response_model=FacultyRecipientModel)
+        async def delete_faculty_recipient(id: int, db: Session = Depends(get_db)):
+            db_student = db.query(FacultyRecipient).filter(FacultyRecipient.id == id).first()
+            if not db_student:
                 raise HTTPException(status_code=404, detail="FacultyRecipient not found")
-            if len(matching_faculty) > 1:
-                raise HTTPException(status_code=400, detail="Multiple records found for the given faculty name. Please check the database.")
-            db_faculty = matching_faculty[0]
-            db.delete(db_faculty)
+            db.delete(db_student)
             db.commit()
-            return db_faculty
-        
-        
+            return db_student
+
+
         return self.router

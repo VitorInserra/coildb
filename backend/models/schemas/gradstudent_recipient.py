@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from typing import Optional
 
 class GradStudentRecipientModel(BaseModel):
-    #id: int
+    id: int
     semester_taught: Optional[str] = None
     year_taught: Optional[int] = None
     last_name: Optional[str] = None

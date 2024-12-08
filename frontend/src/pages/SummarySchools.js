@@ -6,10 +6,10 @@ export default function SummarySchools({ addStarredReport }) {
   const { isAuthenticated, authToken } = useContext(AuthContext);
 
   const columnDefs = [
-    { headerName: "School", field: "school", filter: true, editable: isAuthenticated },
-    { headerName: "School Count", field: "school_count", filter: true, editable: isAuthenticated },
-    { headerName: "Repeat Faculty", field: "repeat_faculty", filter: true, editable: isAuthenticated },
-    { headerName: "Unique Faculty", field: "unique_faculty", filter: true, editable: isAuthenticated },
+    { headerName: "School", field: "school", filter: true, editable: true },
+    { headerName: "School Count", field: "school_count", filter: true, editable: true },
+    //{ headerName: "Repeat Faculty", field: "repeat_faculty", filter: true, editable: true },
+    //{ headerName: "Unique Faculty", field: "unique_faculty", filter: true, editable: true },
   ];
 
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -19,8 +19,11 @@ export default function SummarySchools({ addStarredReport }) {
   return (
     <ReportPage
       title="Schools Data Page"
-      fetchEndpoint={fetchEndpoint}
-      updateEndpoint={updateEndpoint}
+      fetchEndpoint="http://0.0.0.0:8080/school-dept/schools_table" 
+      updateEndpoint="TODO:CREATE ENDPOINT" 
+      createEndpoint="http://0.0.0.0:8080/school-dept/schools" 
+      largestId="http://0.0.0.0:8080/school-dept/largest-id/school"
+      deleteEndpoint="http://0.0.0.0:8080/school-dept/delete-school"
       columnDefs={columnDefs}
       addStarredReport={addStarredReport}
       authToken={authToken}

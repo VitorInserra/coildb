@@ -12,6 +12,8 @@ export default function ReportPage({
   createEndpoint,
   columnDefs,
   addStarredReport,
+  largestId,
+  deleteEndpoint,
 }) {
   const [showInput, setShowInput] = useState(false);
   const [newReportTitle, setNewReportTitle] = useState("");
@@ -43,11 +45,16 @@ export default function ReportPage({
   };
 
   const handleInputChange = (field, value) => {
+    const column = columnDefs.find((col) => col.field === field);
     setNewRowData((prev) => ({
-      ...prev,
-      [field]: value,
+        ...prev,
+        [field]: column.type === "int"
+            ? parseInt(value, 10) || 0
+            : column.type === "boolean"
+            ? value === "true" || value === true || value === false
+            : value, // Default to string for "string" type
     }));
-  };
+};
 
   const handleCellValueChanged = (event) => {
     const updatedData = event.data;
@@ -78,27 +85,83 @@ export default function ReportPage({
   };
 
   const addRow = () => {
-    const formattedData = { ...newRowData };
-  
-    console.log("Data being sent to backend:", formattedData); // Debugging log
-  
-    fetch(createEndpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formattedData),
-    })
+    fetch(largestId)
       .then((response) => {
         if (!response.ok) {
-          throw new Error(`Failed to add row: ${response.statusText}`);
+          throw new Error(`Failed to fetch largest ID: ${response.statusText}`);
         }
         return response.json();
       })
-      .then((newRow) => {
-        setRowData((prev) => [...prev, newRow]); // Add the new row to the table
-        setNewRowData({}); // Reset the form
-        setIsFormOpen(false); // Close the form
+      .then((data) => {
+        const max_id = data.largest_id || -5; 
+        const newId = max_id + 1;             // Calculate the new ID
+  
+        const formattedData = columnDefs.reduce((acc, col) => {
+          acc[col.field] = col.type === "boolean"
+            ? newRowData[col.field] ?? false            //  false default for boolean
+            : newRowData[col.field] ?? null;            //  null default
+          return acc;
+        }, { id: newId });
+          
+        console.log("Data being sent to backend:", formattedData); // Debugging log
+  
+        // Send the data to the backend
+        fetch(createEndpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formattedData),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`Failed to add row: ${response.statusText}`);
+            }
+            return response.json();
+          })
+          .then((newRow) => {
+            setRowData((prev) => [...prev, newRow]); // Add the new row to the table
+            setNewRowData({});                       // Reset the form
+            setIsFormOpen(false);                    // Close the form
+          })
+          .catch((error) => console.error("Error adding row:", error));
       })
-      .catch((error) => console.error("Error adding row:", error));
+      .catch((error) => console.error("Error fetching largest ID:", error));
+  };
+  
+  const [selectedRowId, setSelectedRowId] = useState(null);
+
+  const handleRowClick = (event) => {
+    const id = event.data.id; // Assuming `id` exists in your row data
+    setSelectedRowId(id); // Save the selected row ID
+    console.log("Selected Row ID:", id);
+  };
+
+  const handleDeleteRow = () => {
+    if (!selectedRowId) {
+      alert("Please select a row to delete.");
+      return;
+    }
+    // Confirmation dialog (optional)
+    const confirmDelete = window.confirm(`Are you sure you want to delete row with ID: ${selectedRowId}?`);
+
+    if (!confirmDelete) return;
+
+    fetch(`${deleteEndpoint}/${selectedRowId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Failed to delete row: ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then(() => {
+        setRowData((prev) => prev.filter((row) => row.id !== selectedRowId));       // Remove the deleted row from the UI
+        setSelectedRowId(null);
+      })
+      .catch((error) => console.error("Error deleting row:", error));
   };
   
 
@@ -142,7 +205,7 @@ export default function ReportPage({
           style={{
             padding: "10px 20px",
             margin: "0 10px",
-            backgroundColor: "#4CAF50",
+            backgroundColor: "#06693f", //"#4CAF50",
             color: "white",
             border: "none",
             borderRadius: "4px",
@@ -151,6 +214,20 @@ export default function ReportPage({
           onClick={() => setIsFormOpen((prev) => !prev)} // Toggle the form
         >
           {isFormOpen ? "Cancel" : "Add New Row"}
+        </button>
+        <button
+          style={{
+            padding: "10px 20px",
+            margin: "0 10px",
+            backgroundColor: "#780707",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+          }}
+          onClick={handleDeleteRow}
+        >
+          Delete Row
         </button>
       </div>
       {showInput && (
@@ -200,7 +277,15 @@ export default function ReportPage({
             <div key={col.field} style={{ marginBottom: "10px" }}>
               <label style={{ marginRight: "10px" }}>{col.headerName}:</label>
               <input
-                type="text"
+                type={
+                  col.type === "int"
+                    ? "number"
+                    : col.type === "boolean"
+                    ? "checkbox"
+                    : col.type === "date"
+                    ? "date"
+                    : "text"
+                }          
                 placeholder={col.headerName}
                 value={newRowData[col.field] || ""}
                 onChange={(e) => handleInputChange(col.field, e.target.value)}
@@ -218,7 +303,7 @@ export default function ReportPage({
               onClick={addRow}
               style={{
                 padding: "10px 20px",
-                backgroundColor: "#4CAF50",
+                backgroundColor: "#06693f", //"#4CAF50",  4B9CD3
                 color: "white",
                 border: "none",
                 borderRadius: "4px",
@@ -233,11 +318,13 @@ export default function ReportPage({
       <div className="ag-theme-alpine" style={{ height: 400, width: "100%", margin: "0 auto" }}>
         <AgGridReact
           ref={gridRef}
-          rowData={rowData}
-          columnDefs={columnDefs}
-          pagination={true}
-          paginationPageSize={10}
-          onCellValueChanged={handleCellValueChanged}
+          rowData={rowData} // Data from backend
+          columnDefs={columnDefs} // Column definitions
+          pagination={true} // Optional: Add pagination for better display
+          paginationPageSize={10} // Optional: Number of rows per page
+          onCellValueChanged={handleCellValueChanged} // Capture changes
+          rowSelection="single" // Allow single-row selection
+          onRowClicked={(event) => handleRowClick(event)} // Capture row click        
         />
       </div>
       <button
