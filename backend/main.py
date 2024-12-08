@@ -1,4 +1,3 @@
-from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from resources.coil_base import CoilBase
 from resources.compiled_quantitative_data import CompiledDataResource
@@ -8,16 +7,14 @@ from resources.school_dept import SchoolDeptResource
 from resources.starred_report import StarredReportResource
 from resources.key_stats import KeyStatisticsResource
 import uvicorn
-
-app = FastAPI()
-
+from api import app, create_auth_middleware
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type"],
 )
 
 app.include_router(CoilBase().get_router())

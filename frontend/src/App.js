@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import PageCard from './components/PageCard';
-import './index.css'; // Import your custom styles
+import './index.css';
 import FacultyRecipients from './pages/FacultyRecipients';
 import GradStudentRecipients from './pages/GradStudentRecipients';
 import SummaryDepartmental from './pages/SummaryDepartmental';
 import Compiled from './pages/Compiled';
 import SummarySchools from './pages/SummarySchools';
 import KeyStatistics from './components/KeyStatistics';
+import { AuthProvider } from './auth/AuthContext';
+import LoginModal from './components/LoginModal';
 
 const App = () => {
   const [starredReports, setStarredReports] = useState([]);
@@ -17,29 +19,65 @@ const App = () => {
     setStarredReports((prevReports) => [...prevReports, report]);
   };
 
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
+  const openLoginModal = () => {
+    setIsLoginModalOpen(true);
+  };
+
+  const closeLoginModal = () => {
+    setIsLoginModalOpen(false);
+  };
+
   return (
-    <Router>
-      <div className="container">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<HomePage addStarredReport={addStarredReport} starredReports={starredReports} />} />
-          <Route path="/faculty-recipients" element={<FacultyRecipients addStarredReport={addStarredReport}/>} />
-          <Route path="/grad-student-recipients" element={<GradStudentRecipients addStarredReport={addStarredReport}/>} />
-          <Route path="/summary-departmental" element={<SummaryDepartmental addStarredReport={addStarredReport} />} />
-          <Route path="/summary-schools" element={<SummarySchools addStarredReport={addStarredReport} />} />
-        </Routes>
-        <footer className="blue-footer">
-          <p>© 2024 The University of North Carolina at Chapel Hill</p>
-        </footer>
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <div className="container">
+          <Navbar openLoginModal={openLoginModal} />
+          <MainRoutes addStarredReport={addStarredReport} starredReports={starredReports} />
+          <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} />
+          <footer className="blue-footer">
+            <p>© 2024 The University of North Carolina at Chapel Hill</p>
+          </footer>
+        </div>
+      </Router>
+    </AuthProvider>
+  );
+};
+
+const MainRoutes = ({ addStarredReport, starredReports }) => {
+  return (
+    <>
+      <Routes>
+        <Route
+          path="/"
+          element={<HomePage addStarredReport={addStarredReport} starredReports={starredReports} />}
+        />
+        <Route
+          path="/faculty-recipients"
+          element={<FacultyRecipients addStarredReport={addStarredReport} />}
+        />
+        <Route
+          path="/grad-student-recipients"
+          element={<GradStudentRecipients addStarredReport={addStarredReport} />}
+        />
+        <Route
+          path="/summary-departmental"
+          element={<SummaryDepartmental addStarredReport={addStarredReport} />}
+        />
+        <Route
+          path="/summary-schools"
+          element={<SummarySchools addStarredReport={addStarredReport} />}
+        />
+      </Routes>
+    </>
   );
 };
 
 const HomePage = ({ addStarredReport, starredReports }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchSummaryReports, setSearchSummaryReports] = useState('');
-  const [searchTermStarred, setSearchTermStarred] = useState(''); // State for the Starred Reports search term
+  const [searchTermStarred, setSearchTermStarred] = useState('');
 
   const summaryReports = [
     { name: "Departmental", path: "/summary-departmental" },
@@ -65,8 +103,8 @@ const HomePage = ({ addStarredReport, starredReports }) => {
 
   return (
     <div>
-    <KeyStatistics />
-    <div className="content">
+      <KeyStatistics />
+      <div className="content">
         <PageCard
           heading="Summary Reports"
           placeholder="Search Summary Reports..."
@@ -78,8 +116,8 @@ const HomePage = ({ addStarredReport, starredReports }) => {
           heading="Starred Reports"
           placeholder="Search Starred Reports..."
           value={searchTermStarred}
-          searchResult={setSearchTermStarred} // Update search term state for Starred Reports
-          filteredReports={filteredStarredReports} // Use the filtered Starred Reports
+          searchResult={setSearchTermStarred}
+          filteredReports={filteredStarredReports}
         />
         <PageCard
           heading="Pages"
@@ -88,10 +126,9 @@ const HomePage = ({ addStarredReport, starredReports }) => {
           searchResult={setSearchTerm}
           filteredReports={filteredPages}
         />
-    </div>
+      </div>
     </div>
   );
 };
-
 
 export default App;

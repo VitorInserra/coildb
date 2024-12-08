@@ -7,7 +7,8 @@ from models.schemas.school_dept import SchoolModel, DepartmentModel
 from models.schemas.base_m import LargestIdResponse
 from fastapi import APIRouter, Depends, HTTPException
 from db import get_db
-# from models.coil_base import CoilBase
+from dependencies import get_current_username
+
 
 class SchoolDeptResource:
     def __init__(self):
@@ -16,17 +17,21 @@ class SchoolDeptResource:
 
     def get_router(self):
 
-        @self.router.get("/schools_table", response_model=List[SchoolModel])  # Use List to return multiple records
+        @self.router.get(
+            "/schools_table", response_model=List[SchoolModel]
+        )  # Use List to return multiple records
         async def get_schools(db: Session = Depends(get_db)):
-            result = db.query(School).all()  # Use .all() to get all records
+            result = db.query(School).order_by(School.id).all()  # Use .all() to get all records
             if result:
                 return result
             else:
                 return {"message": "No schools found"}
-            
-        @self.router.get("/departments_table", response_model=List[DepartmentModel])  # Use List to return multiple records
+
+        @self.router.get(
+            "/departments_table", response_model=List[DepartmentModel]
+        )  # Use List to return multiple records
         async def get_departments(db: Session = Depends(get_db)):
-            result = db.query(Department).all()  # Use .all() to get all records
+            result = db.query(Department).order_by(Department.id).all()  # Use .all() to get all records
             if result:
                 return result
             else:
@@ -49,12 +54,27 @@ class SchoolDeptResource:
                 return {"message": "No matching department found"}
 
         @self.router.post("/schools", response_model=SchoolModel)
-        async def create_school(school: SchoolModel, db: Session = Depends(get_db)):
+        async def create_school(
+            school: SchoolModel,
+            db: Session = Depends(get_db),
+            username: str = Depends(get_current_username),
+        ):
             db_school = School(**dict(school))
             db.add(db_school)
             db.commit()
             db.refresh(db_school)
             return db_school
+        
+        @self.router.post("/department", response_model=DepartmentModel)
+        async def create_department(
+            department: DepartmentModel,
+            db: Session = Depends(get_db)
+        ):
+            db_department = Department(**dict(department))
+            db.add(db_department)
+            db.commit()
+            db.refresh(db_department)
+            return db_department
         
         @self.router.get("/largest-id/school", response_model=LargestIdResponse)
         async def get_largest_id_school(db: Session = Depends(get_db)):
@@ -87,5 +107,50 @@ class SchoolDeptResource:
             db.delete(db_department)
             db.commit()
             return db_department
+        
+        @self.router.put("/update-school/", response_model=SchoolModel)
+        async def update_school(
+            updated_data: SchoolModel,
+            db: Session = Depends(get_db),
+        ):
+            try:
+                db_school = db.query(School).filter_by(
+                    id=updated_data.id,
+                ).first()
+                if not db_school:
+                    raise HTTPException(status_code=404, detail="School not found")
+
+                for key, value in updated_data.dict().items():
+                    if hasattr(db_school, key) and value is not None:
+                        setattr(db_school, key, value)
+
+                db.commit()
+                db.refresh(db_school)
+                return db_school
+            except Exception as e:
+                raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+            
+        @self.router.put("/update-department/", response_model=DepartmentModel)
+        async def update_department(
+            updated_data: DepartmentModel,
+            db: Session = Depends(get_db),
+        ):
+            try:
+                db_department = db.query(Department).filter_by(
+                    id=updated_data.id,
+                ).first()
+                if not db_department:
+                    raise HTTPException(status_code=404, detail="Department not found")
+
+                for key, value in updated_data.dict().items():
+                    if hasattr(db_department, key) and value is not None:
+                        setattr(db_department, key, value)
+
+                db.commit()
+                db.refresh(db_department)
+                return db_department
+            except Exception as e:
+                raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
         return self.router
+    

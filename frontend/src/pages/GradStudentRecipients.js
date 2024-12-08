@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from 'react';
 import ReportPage from "../components/ReportPage";
+import AuthContext from '../auth/AuthContext';
 
 export default function GradStudentRecipients({ addStarredReport }) {
+  const { isAuthenticated, authToken } = useContext(AuthContext);
   const columnDefs = [
     { headerName: "Semester Taught", field: "semester_taught", filter: true, editable: true, type: "string" },
     { headerName: "Year Taught", field: "year_taught", filter: true, editable: true, type: "int" },
@@ -19,6 +21,10 @@ export default function GradStudentRecipients({ addStarredReport }) {
     { headerName: "Award", field: "award", filter: true, editable: true, type: "int" },
   ];
 
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+  const fetchEndpoint = `${API_BASE_URL}/gradstudent-recipient/gradstudent-recipient/`;
+  const updateEndpoint = `${API_BASE_URL}/gradstudent-recipient/update-recipient`;
+
   return (
     <ReportPage
       title="Graduate Students Recipients Page"
@@ -29,6 +35,7 @@ export default function GradStudentRecipients({ addStarredReport }) {
       deleteEndpoint="http://0.0.0.0:8080/gradstudent-recipient/delete-recipient"
       columnDefs={columnDefs}
       addStarredReport={addStarredReport}
+      authToken={authToken}
     />
   );
 }

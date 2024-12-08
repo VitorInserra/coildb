@@ -7,6 +7,7 @@ from models.schemas.faculty_recipient import FacultyRecipientModel
 from models.schemas.base_m import LargestIdResponse
 from fastapi import APIRouter, Depends, HTTPException
 from typing import List, Union
+from dependencies import get_current_username
 # from models.coil_base import CoilBase
 
 class FacultyRecipientResource:
@@ -29,7 +30,7 @@ class FacultyRecipientResource:
                 return {"message": "No matching faculty recipient found"}
 
         @self.router.post("/post-recipient/", response_model=FacultyRecipientModel)
-        async def create_faculty_recipient(faculty: FacultyRecipientModel, db: Session = Depends(get_db)):
+        async def create_faculty_recipient(faculty: FacultyRecipientModel, db: Session = Depends(get_db), username: str = Depends(get_current_username)):
             db_faculty = FacultyRecipient(**faculty.dict())
             db.add(db_faculty)
             db.commit()

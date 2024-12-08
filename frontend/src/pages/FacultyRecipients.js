@@ -1,7 +1,10 @@
-import React from "react";
-import ReportPage from "../components/ReportPage";
+import React, { useContext } from 'react';
+import ReportPage from '../components/ReportPage';
+import AuthContext from '../auth/AuthContext';
 
 export default function FacultyRecipients({ addStarredReport }) {
+  const { isAuthenticated, authToken } = useContext(AuthContext);
+
   const columnDefs = [
     { headerName: "Last Name", field: "last_name", filter: true, editable: true, type: "string" },
     { headerName: "First Name", field: "first_name", filter: true, editable: true, type: "string" },
@@ -54,6 +57,7 @@ export default function FacultyRecipients({ addStarredReport }) {
       deleteEndpoint="http://0.0.0.0:8080/faculty-recipient/delete-recipient"
       columnDefs={columnDefs}
       addStarredReport={addStarredReport}
+      authToken={authToken}
     />
   );
 }
