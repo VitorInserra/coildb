@@ -27,7 +27,6 @@ const App = () => {
           <Route path="/grad-student-recipients" element={<GradStudentRecipients addStarredReport={addStarredReport}/>} />
           <Route path="/summary-departmental" element={<SummaryDepartmental addStarredReport={addStarredReport} />} />
           <Route path="/summary-schools" element={<SummarySchools addStarredReport={addStarredReport} />} />
-          <Route path="/compiled" element={<Compiled addStarredReport={addStarredReport} />} />
         </Routes>
         <footer className="blue-footer">
           <p>© 2024 The University of North Carolina at Chapel Hill</p>
@@ -45,7 +44,6 @@ const HomePage = ({ addStarredReport, starredReports }) => {
   const summaryReports = [
     { name: "Departmental", path: "/summary-departmental" },
     { name: "Schools", path: "/summary-schools" },
-    { name: "Compiled Quantitative Data", path: "/compiled" }
   ];
 
   const pages = [
