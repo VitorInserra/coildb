@@ -20,7 +20,7 @@ export default function SummarySchools({ addStarredReport }) {
     <ReportPage
       title="Schools Data Page"
       fetchEndpoint="http://0.0.0.0:8080/school-dept/schools_table" 
-      updateEndpoint="TODO:CREATE ENDPOINT" 
+      updateEndpoint="http://0.0.0.0:8080/school-dept/update-school" 
       createEndpoint="http://0.0.0.0:8080/school-dept/schools" 
       largestId="http://0.0.0.0:8080/school-dept/largest-id/school"
       deleteEndpoint="http://0.0.0.0:8080/school-dept/delete-school"
