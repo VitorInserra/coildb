@@ -1,28 +1,29 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Response, Request, middleware
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 from db import get_db
+from fastapi import Depends, HTTPException, status
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
+import os
+from dotenv import load_dotenv
+from dependencies import get_current_username
 
-# from models.coil_base import CoilBase
+load_dotenv(os.getcwd() + "/.env")
+
+security = HTTPBasic()
+USERNAME = os.getenv("AUTH_USER", "admin")
+PASSWORD = os.getenv("AUTH_PASS", "secret")
+
 
 class CoilBase:
     def __init__(self):
         self.router = APIRouter()
 
     def get_router(self):
+
         @self.router.get("/ping")
-        async def ping(db: Session = Depends(get_db)):
-            query = text("SELECT * FROM test_table")
+        def ping():
+            return {"message": "ok"}
 
-            # Execute the query
-            result = db.execute(query)
-            
-            # Fetch all rows and convert to a list of dictionaries
-            rows = [dict(row) for row in result.mappings()]
-
-            print(rows)  # For debugging purposes
-
-            # Return the rows in a structured format
-            return {"status": "pong", "data": rows}
 
         return self.router

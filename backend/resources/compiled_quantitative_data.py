@@ -7,6 +7,7 @@ import json
 from services.comp_quant_data_svc import CompiledQuantitativeDataService
 from typing import List
 from sqlalchemy import text
+from dependencies import get_current_username
 # from models.coil_base import CoilBase
 
 
@@ -15,11 +16,16 @@ class CompiledDataResource:
         self.router = APIRouter(prefix="/compiled-data", tags=["CompiledDataResource"])
 
     def get_router(self):
+        @self.router.get("/get-compiled_data", response_model=List[CompiledDataModel])
+        async def get_compiled_data_table(db: Session = Depends(get_db)):
+            compiled_list = db.query(CompiledQuantitativeData)
+            return [CompiledDataModel.from_orm(compiled) for compiled in compiled_list]
+
         @self.router.get("/get-partner-univerisities")
         async def get_compiled_data(
             semesters: List[str] = Query(),
             db: Session = Depends(get_db),
-            svc=CompiledQuantitativeDataService(),
+            svc: CompiledQuantitativeDataService = Depends(CompiledQuantitativeDataService),
         ):
             res = {}
             for i in range(len(semesters)):
@@ -32,7 +38,7 @@ class CompiledDataResource:
         async def get_compiled_data(
             semesters: List[str] = Query(),
             db: Session = Depends(get_db),
-            svc=CompiledQuantitativeDataService(),
+            svc: CompiledQuantitativeDataService = Depends(CompiledQuantitativeDataService),
         ):
             res = {}
             for i in range(len(semesters)):
@@ -51,6 +57,7 @@ class CompiledDataResource:
             eligible_ee_credit: int = Query(None),
             received_ee_credit: int = Query(None),
             db: Session = Depends(get_db),
+            username: str = Depends(get_current_username)
         ):
             update_fields = {}
 
@@ -98,6 +105,7 @@ class CompiledDataResource:
             eligible_ee_credit: int = Query(None),
             received_ee_credit: int = Query(None),
             db: Session = Depends(get_db),
+            username: str = Depends(get_current_username),
         ):
             existing_entry = db.execute(
                 text("SELECT 1 FROM compiled_hard WHERE semester = :semester"),
@@ -149,6 +157,7 @@ class CompiledDataResource:
         async def delete_by_semester(
             semester: str = Query(...),
             db: Session = Depends(get_db),
+            username: str = Depends(get_current_username)
         ):
             query = text("""
                 DELETE FROM compiled_hard
