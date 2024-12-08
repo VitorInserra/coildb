@@ -1,8 +1,10 @@
 from models.faculty_recipient import FacultyRecipient
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from db import SessionLocal
 from db import get_db
 from models.schemas.faculty_recipient import FacultyRecipientModel
+from models.schemas.base_m import LargestIdResponse
 from fastapi import APIRouter, Depends, HTTPException
 from typing import List, Union
 # from models.coil_base import CoilBase
@@ -46,6 +48,12 @@ class FacultyRecipientResource:
             db.commit()
             return db_faculty
         
+        @self.router.get("/largest-id", response_model=LargestIdResponse)
+        async def get_largest_id(db: Session = Depends(get_db)):
+            largest_id = db.query(func.max(FacultyRecipient.id)).scalar()
+            if largest_id is None:
+                return {"largest_id": 0}
+            return {"largest_id": largest_id}
 
 
         return self.router
