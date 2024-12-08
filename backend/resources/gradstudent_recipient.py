@@ -31,11 +31,11 @@ class GradStudentRecipientResource:
             db.refresh(db_student)
             return db_student
         
-        @self.router.delete("/delete-recipient/{last_name}/{first_name}", response_model=GradStudentRecipientModel)
-        async def delete_gradstudent_recipient(last_name: str, first_name: str, email: str, db: Session = Depends(get_db)):
-            db_student = db.query(GradStudentRecipient).filter(GradStudentRecipient.last_name == last_name, GradStudentRecipient.first_name == first_name,  GradStudentRecipient.email == email).first()
+        @self.router.delete("/delete-recipient/{id}", response_model=GradStudentRecipientModel)
+        async def delete_gradstudent_recipient(id: int, db: Session = Depends(get_db)):
+            db_student = db.query(GradStudentRecipient).filter(GradStudentRecipient.id == id).first()
             if not db_student:
-                raise HTTPException(status_code=404, detail="FacultyRecipient not found")
+                raise HTTPException(status_code=404, detail="GradStudentRecipient not found")
             db.delete(db_student)
             db.commit()
             return db_student
