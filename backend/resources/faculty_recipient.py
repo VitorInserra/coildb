@@ -39,7 +39,7 @@ class FacultyRecipientResource:
         @self.router.put("/update-recipient/", response_model=FacultyRecipientModel)
         async def update_faculty_recipient(updated_data: FacultyRecipientModel, db: Session = Depends(get_db)):
             try:
-                db_student = db.query(FacultyRecipientModel).filter_by(
+                db_student = db.query(FacultyRecipient).filter_by(
                     id=updated_data.id,
                 ).first()
                 if not db_student:
