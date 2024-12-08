@@ -3,11 +3,12 @@ from models.school_dept import School, Department
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 from db import SessionLocal
-from models.schemas.school_dept import SchoolModel, DepartmentModel
+from models.schemas.school_dept import SchoolCreateModel, SchoolModel, DepartmentModel
 from models.schemas.base_m import LargestIdResponse
 from fastapi import APIRouter, Depends, HTTPException
 from db import get_db
 from dependencies import get_current_username
+from services.school_dept_compile import update_faculty_counts
 
 
 class SchoolDeptResource:
@@ -53,9 +54,9 @@ class SchoolDeptResource:
             else:
                 return {"message": "No matching department found"}
 
-        @self.router.post("/schools", response_model=SchoolModel)
+        @self.router.post("/schools", response_model=SchoolCreateModel)
         async def create_school(
-            school: SchoolModel,
+            school: SchoolCreateModel,
             db: Session = Depends(get_db),
             username: str = Depends(get_current_username),
         ):
@@ -63,6 +64,7 @@ class SchoolDeptResource:
             db.add(db_school)
             db.commit()
             db.refresh(db_school)
+            update_faculty_counts(db)
             return db_school
         
         @self.router.post("/department", response_model=DepartmentModel)
