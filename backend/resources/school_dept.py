@@ -63,6 +63,13 @@ class SchoolDeptResource:
                 return {"largest_id": 0}
             return {"largest_id": largest_id}
         
+        @self.router.get("/largest-id/department", response_model=LargestIdResponse)
+        async def get_largest_id_department(db: Session = Depends(get_db)):
+            largest_id = db.query(func.max(Department.id)).scalar()
+            if largest_id is None:
+                return {"largest_id": 0}
+            return {"largest_id": largest_id}
+        
         @self.router.delete("/delete-school/{id}", response_model=SchoolModel)
         async def delete_school(id: int, db: Session = Depends(get_db)):
             db_school = db.query(School).filter(School.id == id).first()
