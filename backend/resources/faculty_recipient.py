@@ -37,6 +37,25 @@ class FacultyRecipientResource:
             db.refresh(db_faculty)
             return db_faculty
         
+        @self.router.put("/update-recipient/", response_model=FacultyRecipientModel)
+        async def update_faculty_recipient(updated_data: FacultyRecipientModel, db: Session = Depends(get_db)):
+            try:
+                db_student = db.query(FacultyRecipient).filter_by(
+                    id=updated_data.id,
+                ).first()
+                if not db_student:
+                    raise HTTPException(status_code=404, detail="Recipient not found")
+
+                for key, value in updated_data.dict().items():
+                    if hasattr(db_student, key) and value is not None:
+                        setattr(db_student, key, value)
+
+                db.commit()
+                db.refresh(db_student)
+                return db_student
+            except Exception as e:
+                raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+
         @self.router.get("/largest-id", response_model=LargestIdResponse)
         async def get_largest_id(db: Session = Depends(get_db)):
             largest_id = db.query(func.max(FacultyRecipient.id)).scalar()

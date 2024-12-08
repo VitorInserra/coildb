@@ -140,8 +140,8 @@ export default function ReportPage({
       alert("Please select a row to delete.");
       return;
     }
-    // Confirmation dialog (optional)
-    const confirmDelete = window.confirm(`Are you sure you want to delete row with ID: ${selectedRowId}?`);
+    // Confirmation dialog
+    const confirmDelete = window.confirm(`Are you sure you want to delete this row?`);
 
     if (!confirmDelete) return;
 
