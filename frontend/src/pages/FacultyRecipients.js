@@ -1,25 +1,34 @@
-import React from "react";
-import ReportPage from "../components/ReportPage";
+import React, { useContext } from 'react';
+import ReportPage from '../components/ReportPage';
+import AuthContext from '../auth/AuthContext';
 
 export default function FacultyRecipients({ addStarredReport }) {
+  const { isAuthenticated, authToken } = useContext(AuthContext);
+
   const columnDefs = [
-    { headerName: "Last Name", field: "last_name", filter: true, editable: true },
-    { headerName: "First Name", field: "first_name", filter: true, editable: true },
-    { headerName: "Email", field: "email", filter: true, editable: true },
-    { headerName: "Department", field: "department", filter: true, editable: true },
-    { headerName: "School", field: "school", filter: true, editable: true },
-    { headerName: "Course Title", field: "course_title", filter: true, editable: true },
-    { headerName: "Course Number", field: "course_number", filter: true, editable: true },
+    { headerName: 'Last Name', field: 'last_name', filter: true, editable: isAuthenticated },
+    { headerName: 'First Name', field: 'first_name', filter: true, editable: isAuthenticated },
+    { headerName: 'Email', field: 'email', filter: true, editable: isAuthenticated },
+    { headerName: 'Department', field: 'department', filter: true, editable: isAuthenticated },
+    { headerName: 'School', field: 'school', filter: true, editable: isAuthenticated },
+    { headerName: 'Course Title', field: 'course_title', filter: true, editable: isAuthenticated },
+    { headerName: 'Course Number', field: 'course_number', filter: true, editable: isAuthenticated },
   ];
+
+  console.log(process.env)
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+  console.log(process.env.REACT_APP_API_BASE_URL)
+  const fetchEndpoint = `${API_BASE_URL}/faculty-recipient/get-recipient`;
+  const updateEndpoint = `${API_BASE_URL}/faculty-recipient/update-recipient`;
 
   return (
     <ReportPage
       title="Faculty Recipients Page"
-      fetchEndpoint="http://0.0.0.0:8080/faculty-recipient/get-recipient"
-      updateEndpoint="http://0.0.0.0:8080/faculty-recipient/update-recipient"
-      createEndpoint="http://0.0.0.0:8080/faculty-recipient/post-recipient/"
+      fetchEndpoint={fetchEndpoint}
+      updateEndpoint={updateEndpoint}
       columnDefs={columnDefs}
       addStarredReport={addStarredReport}
+      authToken={authToken}
     />
   );
 }
