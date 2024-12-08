@@ -13,6 +13,7 @@ export default function SummaryDepartmental({ addStarredReport }) {
       fetchEndpoint="http://0.0.0.0:8080/school-dept/departments_table" 
       updateEndpoint="TODO: add put endpoint" 
       createEndpoint="TODO: add post endpoint" 
+      deleteEndpoint="http://0.0.0.0:8080/school-dept/delete-department"
       columnDefs={columnDefs}
       addStarredReport={addStarredReport}
     />

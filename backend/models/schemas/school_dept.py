@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 class SchoolModel(BaseModel):
-    #id: int
+    id: int
     school: str
     school_count: int
     #repeat_faculty: int

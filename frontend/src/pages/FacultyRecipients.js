@@ -47,11 +47,11 @@ export default function FacultyRecipients({ addStarredReport }) {
   return (
     <ReportPage
       title="Faculty Recipients Page"
-      fetchEndpoint="http://localhost:8080/faculty-recipient/get-recipient"
-      updateEndpoint="http://localhost:8080/faculty-recipient/update-recipient"
-      createEndpoint="http://localhost:8080/faculty-recipient/post-recipient/"
-      largestId="http://localhost:8080/faculty-recipient/largest-id"
-      deleteEndpoint="http://localhost:8080/faculty-recipient/delete-recipient"
+      fetchEndpoint="http://0.0.0.0:8080/faculty-recipient/get-recipient"
+      updateEndpoint="http://0.0.0.0:8080/faculty-recipient/update-recipient"
+      createEndpoint="http://0.0.0.0:8080/faculty-recipient/post-recipient/"
+      largestId="http://0.0.0.0:8080/faculty-recipient/largest-id"
+      deleteEndpoint="http://0.0.0.0:8080/faculty-recipient/delete-recipient"
       columnDefs={columnDefs}
       addStarredReport={addStarredReport}
     />
