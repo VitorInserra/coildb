@@ -4,13 +4,14 @@ from typing import List
 from db import get_db
 from models.starred_report import StarredReport
 from models.schemas.starred_report import StarredReportModel
+from dependencies import get_current_username
 
 class StarredReportResource:
     def __init__(self):
         self.router = APIRouter(prefix="/starred-reports", tags=["StarredReportResource"])
 
     def get_router(self):
-        @self.router.post("/", response_model=StarredReportModel)
+        @self.router.post("/", response_model=StarredReportModel, dependencies=[Depends(get_current_username)])
         async def create_starred_report(report: StarredReportModel, db: Session = Depends(get_db)):
             # Check if a report with the same title already exists
             existing_report = db.query(StarredReport).filter(StarredReport.title == report.title).first()

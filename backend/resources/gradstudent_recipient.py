@@ -30,12 +30,11 @@ class GradStudentRecipientResource:
             ]
 
         @self.router.post(
-            "/gradstudent-recipient/", response_model=GradStudentRecipientModel
+            "/gradstudent-recipient/", response_model=GradStudentRecipientModel, dependencies=[Depends(get_current_username)]
         )
         async def create_gradstudent(
             gradstudent: GradStudentRecipientModel,
-            db: Session = Depends(get_db),
-            username: str = Depends(get_current_username),
+            db: Session = Depends(get_db)
         ):
             db_student = GradStudentRecipient(**gradstudent.dict())
             db.add(db_student)
@@ -52,10 +51,9 @@ class GradStudentRecipientResource:
             db.commit()
             return db_student
 
-        @self.router.put("/update-recipient/", response_model=GradStudentRecipientModel)
+        @self.router.put("/update-recipient/", response_model=GradStudentRecipientModel, dependencies=[Depends(get_current_username)])
         async def update_gradstudent_recipient(
             updated_data: GradStudentRecipientModel,
-            username: str = Depends(get_current_username),
             db: Session = Depends(get_db),
         ):
             try:
@@ -63,7 +61,7 @@ class GradStudentRecipientResource:
                     id=updated_data.id,
                 ).first()
                 if not db_student:
-                    raise HTTPException(status_code=404, detail="Recipient not found")
+                    raise HTTPException(status_code=404, detail="Recipient not found", )
 
                 for key, value in updated_data.dict().items():
                     if hasattr(db_student, key) and value is not None:

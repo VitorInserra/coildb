@@ -20,7 +20,7 @@ class FacultyRecipientResource:
             faculty_list = db.query(FacultyRecipient)
             return [FacultyRecipientModel.from_orm(faculty) for faculty in faculty_list]
 
-        @self.router.get("/get-recipient/{column}/{input}/", response_model=Union[FacultyRecipientModel, List[FacultyRecipientModel]])
+        @self.router.get("/get-recipient/{column}/{input}/", response_model=Union[FacultyRecipientModel, List[FacultyRecipientModel]], dependencies=[Depends(get_current_username)])
         async def get_faculty_recipient(column: str, input: str, db: Session = Depends(get_db)):
             query = db.query(FacultyRecipient).filter(getattr(FacultyRecipient, column) == input)
             result = query.all()
@@ -29,15 +29,15 @@ class FacultyRecipientResource:
             else:
                 return {"message": "No matching faculty recipient found"}
 
-        @self.router.post("/post-recipient/", response_model=FacultyRecipientModel)
-        async def create_faculty_recipient(faculty: FacultyRecipientModel, db: Session = Depends(get_db), username: str = Depends(get_current_username)):
+        @self.router.post("/post-recipient/", response_model=FacultyRecipientModel, dependencies=[Depends(get_current_username)])
+        async def create_faculty_recipient(faculty: FacultyRecipientModel, db: Session = Depends(get_db)):
             db_faculty = FacultyRecipient(**faculty.dict())
             db.add(db_faculty)
             db.commit()
             db.refresh(db_faculty)
             return db_faculty
         
-        @self.router.put("/update-recipient/", response_model=FacultyRecipientModel)
+        @self.router.put("/update-recipient/", response_model=FacultyRecipientModel, dependencies=[Depends(get_current_username)])
         async def update_faculty_recipient(updated_data: FacultyRecipientModel, db: Session = Depends(get_db)):
             try:
                 db_student = db.query(FacultyRecipient).filter_by(
@@ -63,7 +63,7 @@ class FacultyRecipientResource:
                 return {"largest_id": 0}
             return {"largest_id": largest_id}
         
-        @self.router.delete("/delete-recipient/{id}", response_model=FacultyRecipientModel)
+        @self.router.delete("/delete-recipient/{id}", response_model=FacultyRecipientModel, dependencies=[Depends(get_current_username)])
         async def delete_faculty_recipient(id: int, db: Session = Depends(get_db)):
             db_student = db.query(FacultyRecipient).filter(FacultyRecipient.id == id).first()
             if not db_student:

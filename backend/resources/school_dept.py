@@ -54,11 +54,10 @@ class SchoolDeptResource:
             else:
                 return {"message": "No matching department found"}
 
-        @self.router.post("/schools", response_model=SchoolCreateModel)
+        @self.router.post("/schools", response_model=SchoolCreateModel, dependencies=[Depends(get_current_username)])
         async def create_school(
             school: SchoolCreateModel,
             db: Session = Depends(get_db),
-            username: str = Depends(get_current_username),
         ):
             db_school = School(**dict(school))
             db.add(db_school)
@@ -92,7 +91,7 @@ class SchoolDeptResource:
                 return {"largest_id": 0}
             return {"largest_id": largest_id}
         
-        @self.router.delete("/delete-school/{id}", response_model=SchoolModel)
+        @self.router.delete("/delete-school/{id}", response_model=SchoolModel, dependencies=[Depends(get_current_username)])
         async def delete_school(id: int, db: Session = Depends(get_db)):
             db_school = db.query(School).filter(School.id == id).first()
             if not db_school:
@@ -101,7 +100,7 @@ class SchoolDeptResource:
             db.commit()
             return db_school
         
-        @self.router.delete("/delete-department/{id}", response_model=DepartmentModel)
+        @self.router.delete("/delete-department/{id}", response_model=DepartmentModel, dependencies=[Depends(get_current_username)])
         async def delete_department(id: int, db: Session = Depends(get_db)):
             db_department = db.query(Department).filter(Department.id == id).first()
             if not db_department:
@@ -110,7 +109,7 @@ class SchoolDeptResource:
             db.commit()
             return db_department
         
-        @self.router.put("/update-school/", response_model=SchoolModel)
+        @self.router.put("/update-school/", response_model=SchoolModel, dependencies=[Depends(get_current_username)])
         async def update_school(
             updated_data: SchoolModel,
             db: Session = Depends(get_db),
@@ -132,7 +131,7 @@ class SchoolDeptResource:
             except Exception as e:
                 raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
             
-        @self.router.put("/update-department/", response_model=DepartmentModel)
+        @self.router.put("/update-department/", response_model=DepartmentModel, dependencies=[Depends(get_current_username)])
         async def update_department(
             updated_data: DepartmentModel,
             db: Session = Depends(get_db),

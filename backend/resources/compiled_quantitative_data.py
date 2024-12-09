@@ -47,7 +47,7 @@ class CompiledDataResource:
 
             return res
 
-        @self.router.put("/update-hard-coded")
+        @self.router.put("/update-hard-coded", dependencies=[Depends(get_current_username)])
         async def update_hard_coded(
             semester: str = Query(...),
             undergrad_fdoc: int = Query(None),
@@ -95,7 +95,7 @@ class CompiledDataResource:
             return {"message": f"Semester '{semester}' updated successfully."}
 
                 
-        @self.router.post("/add-hard-coded")
+        @self.router.post("/add-hard-coded", dependencies=[Depends(get_current_username)])
         async def add_hard_coded(
             semester: str = Query(...),
             undergrad_fdoc: int = Query(None),
