@@ -6,6 +6,7 @@ import './index.css';
 import FacultyRecipients from './pages/FacultyRecipients';
 import GradStudentRecipients from './pages/GradStudentRecipients';
 import SummaryDepartmental from './pages/SummaryDepartmental';
+import Compiled from './pages/Compiled';
 import SummarySchools from './pages/SummarySchools';
 import KeyStatistics from './components/KeyStatistics';
 import { AuthProvider } from './auth/AuthContext';
@@ -79,13 +80,13 @@ const HomePage = ({ addStarredReport, starredReports }) => {
   const [searchTermStarred, setSearchTermStarred] = useState('');
 
   const summaryReports = [
-    { name: "Departmental", path: "/summary-departmental" },
-    { name: "Schools", path: "/summary-schools" }
+    { name: "COIL Courses Data", path: "/summary-departmental" },
+    { name: "Schools and Faculty", path: "/summary-schools" },
   ];
 
   const pages = [
     { name: "Faculty Recipients", path: "/faculty-recipients" },
-    { name: "Grad Student Recipients", path: "/grad-student-recipients" },
+    { name: "Gradudate Student Recipients", path: "/grad-student-recipients" },
   ];
 
   const filteredSummaryReports = summaryReports.filter(report =>

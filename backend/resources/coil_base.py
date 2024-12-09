@@ -1,18 +1,8 @@
 from fastapi import APIRouter, Depends, Response, Request, middleware
-from sqlalchemy.orm import Session
 from sqlalchemy import text
-from db import get_db
-from fastapi import Depends, HTTPException, status
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from fastapi import Depends
 import os
-from dotenv import load_dotenv
 from dependencies import get_current_username
-
-load_dotenv(os.getcwd() + "/.env")
-
-security = HTTPBasic()
-USERNAME = os.getenv("AUTH_USER", "admin")
-PASSWORD = os.getenv("AUTH_PASS", "secret")
 
 
 class CoilBase:
@@ -21,7 +11,7 @@ class CoilBase:
 
     def get_router(self):
 
-        @self.router.get("/ping")
+        @self.router.get("/ping", dependencies=[Depends(get_current_username)])
         def ping():
             return {"message": "ok"}
 

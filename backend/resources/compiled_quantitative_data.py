@@ -16,11 +16,16 @@ class CompiledDataResource:
         self.router = APIRouter(prefix="/compiled-data", tags=["CompiledDataResource"])
 
     def get_router(self):
+        @self.router.get("/get-compiled_data", response_model=List[CompiledDataModel])
+        async def get_compiled_data_table(db: Session = Depends(get_db)):
+            compiled_list = db.query(CompiledQuantitativeData)
+            return [CompiledDataModel.from_orm(compiled) for compiled in compiled_list]
+
         @self.router.get("/get-partner-univerisities")
         async def get_compiled_data(
             semesters: List[str] = Query(),
             db: Session = Depends(get_db),
-            svc=CompiledQuantitativeDataService(),
+            svc: CompiledQuantitativeDataService = Depends(CompiledQuantitativeDataService),
         ):
             res = {}
             for i in range(len(semesters)):
@@ -33,7 +38,7 @@ class CompiledDataResource:
         async def get_compiled_data(
             semesters: List[str] = Query(),
             db: Session = Depends(get_db),
-            svc=CompiledQuantitativeDataService(),
+            svc: CompiledQuantitativeDataService = Depends(CompiledQuantitativeDataService),
         ):
             res = {}
             for i in range(len(semesters)):
@@ -42,7 +47,7 @@ class CompiledDataResource:
 
             return res
 
-        @self.router.put("/update-hard-coded")
+        @self.router.put("/update-hard-coded", dependencies=[Depends(get_current_username)])
         async def update_hard_coded(
             semester: str = Query(...),
             undergrad_fdoc: int = Query(None),
@@ -90,7 +95,7 @@ class CompiledDataResource:
             return {"message": f"Semester '{semester}' updated successfully."}
 
                 
-        @self.router.post("/add-hard-coded")
+        @self.router.post("/add-hard-coded", dependencies=[Depends(get_current_username)])
         async def add_hard_coded(
             semester: str = Query(...),
             undergrad_fdoc: int = Query(None),
@@ -148,11 +153,10 @@ class CompiledDataResource:
 
             return {"message": "Data added successfully"}
         
-        @self.router.delete("/delete-by-semester")
+        @self.router.delete("/delete-by-semester", dependencies=[Depends(get_current_username)])
         async def delete_by_semester(
             semester: str = Query(...),
             db: Session = Depends(get_db),
-            username: str = Depends(get_current_username)
         ):
             query = text("""
                 DELETE FROM compiled_hard

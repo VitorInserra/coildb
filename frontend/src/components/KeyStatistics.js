@@ -1,25 +1,53 @@
-import React from "react";
-
+import React, { useState, useEffect } from "react";
 
 export default function KeyStatistics() {
+    const [keyStats, setKeyStats] = useState({
+        departmentsParticipating: 0,
+        coursesAvailable: 0,
+        participatingSchools: 0,
+        studentsEnrolled: 0,
+    });
+
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
+    useEffect(() => {
+        fetch(`${API_BASE_URL}/key-stats/`, 
+        )
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`KeyStats fetch error: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then((data) => {
+                setKeyStats({
+                    departmentsParticipating: data.departments_participating,
+                    coursesAvailable: data.courses_available,
+                    participatingSchools: data.participating_schools,
+                    studentsEnrolled: data.students_enrolled,
+                });
+            })
+            .catch((error) => console.error("Error fetching KeyStats:", error));
+    }, []);
+
     return (
         <section className="keystats">
             <div className="keystats--content">
                 <div className="keystats--item">
                     <div className="keystats--label">Departments Participating</div>
-                    <div className="keystats--number">28</div>
+                    <div className="keystats--number">{keyStats.departmentsParticipating}</div>
                 </div>
                 <div className="keystats--item">
                     <div className="keystats--label">Courses Available</div>
-                    <div className="keystats--number">100</div>
+                    <div className="keystats--number">{keyStats.coursesAvailable}</div>
                 </div>
                 <div className="keystats--item">
                     <div className="keystats--label">Participating Schools</div>
-                    <div className="keystats--number">50</div>
+                    <div className="keystats--number">{keyStats.participatingSchools}</div>
                 </div>
                 <div className="keystats--item">
                     <div className="keystats--label">Students Enrolled</div>
-                    <div className="keystats--number">100</div>
+                    <div className="keystats--number">{keyStats.studentsEnrolled}</div>
                 </div>
             </div>
         </section>
