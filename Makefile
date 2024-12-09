@@ -12,8 +12,9 @@ test_backend:
 	@oc port-forward svc/postgresql 5433:5432 -n dept-coildb &
 	@PORT_FORWARD_PID=$!  # Capture the process ID of the port-forward command
 	@sleep 3
-	@cd $(BACKEND_DIR) && source venv/bin/activate && pytest --cov=. --cov-report=term-missing tests/
-	@kill $$PORT_FORWARD_PID  # Terminate the port-forward process after main.py exits
+	@export DEV_DB_USERNAME="dev_user" DEV_DB_PASSWORD="coil-db-dev-pass" DEV_DB_HOST="localhost" DEV_DB_PORT="5433" DEV_DB_NAME="dev_db" && \
+	cd $(BACKEND_DIR) && source venv/bin/activate && pytest --cov=. --cov-report=term-missing tests/; \
+	kill $$PORT_FORWARD_PID  # Terminate the port-forward process after main.py exits
 
 # Run the Python backend
 backend:

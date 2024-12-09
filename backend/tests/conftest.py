@@ -17,6 +17,7 @@ DB_PORT = os.getenv("DEV_DB_PORT")
 DB_NAME = os.getenv("DEV_DB_NAME")
 
 DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+print(DATABASE_URL)
 
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
