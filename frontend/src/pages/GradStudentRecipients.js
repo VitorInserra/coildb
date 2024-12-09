@@ -24,15 +24,18 @@ export default function GradStudentRecipients({ addStarredReport }) {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const fetchEndpoint = `${API_BASE_URL}/gradstudent-recipient/gradstudent-recipient/`;
   const updateEndpoint = `${API_BASE_URL}/gradstudent-recipient/update-recipient`;
+  const createEndpoint = `${API_BASE_URL}/gradstudent-recipient/gradstudent-recipient/`;
+  const largestId = `${API_BASE_URL}/gradstudent-recipient/largest-id`;
+  const deleteEndpoint = `${API_BASE_URL}gradstudent-recipient/delete-recipient`;
 
   return (
     <ReportPage
       title="Graduate Students Recipients Page"
-      fetchEndpoint="http://0.0.0.0:8080/gradstudent-recipient/gradstudent-recipient/"
-      updateEndpoint="http://0.0.0.0:8080/gradstudent-recipient/update-recipient"
-      createEndpoint="http://0.0.0.0:8080/gradstudent-recipient/gradstudent-recipient/"
-      largestId="http://0.0.0.0:8080/gradstudent-recipient/largest-id"
-      deleteEndpoint="http://0.0.0.0:8080/gradstudent-recipient/delete-recipient"
+      fetchEndpoint={fetchEndpoint}
+      updateEndpoint={updateEndpoint}
+      createEndpoint={createEndpoint}
+      largestId={largestId}
+      deleteEndpoint={deleteEndpoint}
       columnDefs={columnDefs}
       addStarredReport={addStarredReport}
       authToken={authToken}
