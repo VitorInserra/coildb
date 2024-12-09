@@ -11,18 +11,22 @@ export default function SummaryDepartmental({ addStarredReport }) {
   ];
 
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+  console.log("apibase: "+API_BASE_URL);
   const fetchEndpoint = `${API_BASE_URL}/school-dept/departments_table`;
-  const updateEndpoint = `${API_BASE_URL}/departments/update-department`;
+  const updateEndpoint = `${API_BASE_URL}/school-dept/update-department`;
+  const createEndpoint = `${API_BASE_URL}/school-dept/department`;
+  const largestId = `${API_BASE_URL}/school-dept/largest-id/department`;
+  const deleteEndpoint = `${API_BASE_URL}/school-dept/delete-department`;
 
 
   return (
     <ReportPage
-      title="Departments Data Page"
-      fetchEndpoint="http://0.0.0.0:8080/school-dept/departments_table" 
-      updateEndpoint="http://0.0.0.0:8080/school-dept/update-department" 
-      createEndpoint="http://0.0.0.0:8080/school-dept/department" 
-      largestId="http://0.0.0.0:8080/school-dept/largest-id/department"
-      deleteEndpoint="http://0.0.0.0:8080/school-dept/delete-department"
+      title="COIL Courses Data Page"
+      fetchEndpoint={fetchEndpoint}
+      updateEndpoint={updateEndpoint}
+      createEndpoint={createEndpoint}
+      largestId={largestId}
+      deleteEndpoint={deleteEndpoint}
       columnDefs={columnDefs}
       addStarredReport={addStarredReport}
       authToken={authToken}

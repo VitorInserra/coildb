@@ -1,6 +1,7 @@
+from fastapi import Response, Request
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
-from api import app, create_auth_middleware
+from api import app
 
 app.add_middleware(
     CORSMiddleware,
@@ -10,7 +11,9 @@ app.add_middleware(
     allow_headers=["Authorization", "Content-Type"],
 )
 
-create_auth_middleware(app)
+@app.options("/{path:path}")
+async def handle_options(path: str, request: Request):
+    return Response(status_code=200)
 
 
 if __name__ == "__main__":

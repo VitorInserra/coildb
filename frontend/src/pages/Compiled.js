@@ -24,6 +24,7 @@ export default function CompiledQuantitativeDataPage({ addStarredReport }) {
     { headerName: "Partner Country Count", field: "partner_country_count", filter: true, editable: false },
   ];
 
+
   return (
     <ReportPage
       title="Compiled Quantitative Data"

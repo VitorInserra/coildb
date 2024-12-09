@@ -4,6 +4,7 @@ from typing import List
 from db import get_db
 from models.starred_report import StarredReport
 from models.schemas.starred_report import StarredReportModel
+from dependencies import get_current_username
 
 class StarredReportResource:
     def __init__(self):

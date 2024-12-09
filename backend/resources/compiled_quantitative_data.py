@@ -157,7 +157,6 @@ class CompiledDataResource:
         async def delete_by_semester(
             semester: str = Query(...),
             db: Session = Depends(get_db),
-            username: str = Depends(get_current_username)
         ):
             query = text("""
                 DELETE FROM compiled_hard

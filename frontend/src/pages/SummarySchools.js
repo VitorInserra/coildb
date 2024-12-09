@@ -12,18 +12,22 @@ export default function SummarySchools({ addStarredReport }) {
     //{ headerName: "Unique Faculty", field: "unique_faculty", filter: true, editable: true },
   ];
 
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Base API URL from environment variables
+  console.log("apibase: "+API_BASE_URL);
   const fetchEndpoint = `${API_BASE_URL}/school-dept/schools_table`;
-  const updateEndpoint = `${API_BASE_URL}/schools/update-school`;
+  const updateEndpoint = `${API_BASE_URL}/school-dept/update-school`;
+  const createEndpoint = `${API_BASE_URL}/school-dept/schools`;
+  const largestId = `${API_BASE_URL}/school-dept/largest-id/school`;
+  const deleteEndpoint = `${API_BASE_URL}/school-dept/delete-school`;
 
   return (
     <ReportPage
       title="Schools Data Page"
-      fetchEndpoint="http://0.0.0.0:8080/school-dept/schools_table" 
-      updateEndpoint="http://0.0.0.0:8080/school-dept/update-school" 
-      createEndpoint="http://0.0.0.0:8080/school-dept/schools" 
-      largestId="http://0.0.0.0:8080/school-dept/largest-id/school"
-      deleteEndpoint="http://0.0.0.0:8080/school-dept/delete-school"
+      fetchEndpoint={fetchEndpoint}
+      updateEndpoint={updateEndpoint}
+      createEndpoint={createEndpoint}
+      largestId={largestId}
+      deleteEndpoint={deleteEndpoint}
       columnDefs={columnDefs}
       addStarredReport={addStarredReport}
       authToken={authToken}

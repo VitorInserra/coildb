@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS
 import 'ag-grid-community/styles/ag-theme-alpine.css'; // Theme
+import AuthContext from '../auth/AuthContext';
 
 export default function ReportPage({
   title,
@@ -21,6 +22,7 @@ export default function ReportPage({
   const [isFormOpen, setIsFormOpen] = useState(false); // For toggling the form
   const navigate = useNavigate();
   const gridRef = useRef(null); // Reference to the grid for API access
+  const { isAuthenticated, authToken } = useContext(AuthContext);
 
   // Fetching data from the backend
   useEffect(() => {
@@ -47,14 +49,14 @@ export default function ReportPage({
   const handleInputChange = (field, value) => {
     const column = columnDefs.find((col) => col.field === field);
     setNewRowData((prev) => ({
-        ...prev,
-        [field]: column.type === "int"
-            ? parseInt(value, 10) || 0
-            : column.type === "boolean"
-            ? value === "true" || value === true || value === false
-            : value, // Default to string for "string" type
+      ...prev,
+      [field]: column.type === "int"
+        ? parseInt(value, 10) || 0
+        : column.type === "boolean"
+          ? value === "true" || value === true || value === false
+          : value, // Default to string for "string" type
     }));
-};
+  };
 
   const handleCellValueChanged = (event) => {
     const updatedData = event.data; // The updated row data
@@ -69,6 +71,7 @@ export default function ReportPage({
     fetch(updateEndpoint, {
       method: "PUT",
       headers: {
+        // 'Authorization': `Basic ${authToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(updatedData), // Ensure the updatedData object matches the backend schema
@@ -94,22 +97,25 @@ export default function ReportPage({
         return response.json();
       })
       .then((data) => {
-        const max_id = data.largest_id || -5; 
+        const max_id = data.largest_id || -5;
         const newId = max_id + 1;             // Calculate the new ID
-  
+
         const formattedData = columnDefs.reduce((acc, col) => {
           acc[col.field] = col.type === "boolean"
             ? newRowData[col.field] ?? false            //  false default for boolean
             : newRowData[col.field] ?? null;            //  null default
           return acc;
         }, { id: newId });
-          
+
         console.log("Data being sent to backend:", formattedData); // Debugging log
-  
+
         // Send the data to the backend
         fetch(createEndpoint, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            // 'Authorization': `Basic ${authToken}`,
+            "Content-Type": "application/json"
+          },
           body: JSON.stringify(formattedData),
         })
           .then((response) => {
@@ -127,7 +133,7 @@ export default function ReportPage({
       })
       .catch((error) => console.error("Error fetching largest ID:", error));
   };
-  
+
   const [selectedRowId, setSelectedRowId] = useState(null);
 
   const handleRowClick = (event) => {
@@ -149,6 +155,7 @@ export default function ReportPage({
     fetch(`${deleteEndpoint}/${selectedRowId}`, {
       method: "DELETE",
       headers: {
+        // 'Authorization': `Basic ${authToken}`,
         "Content-Type": "application/json",
       },
     })
@@ -164,7 +171,7 @@ export default function ReportPage({
       })
       .catch((error) => console.error("Error deleting row:", error));
   };
-  
+
 
   const exportToCsv = () => {
     gridRef.current.api.exportDataAsCsv(); // Use Ag-Grid's export API
@@ -282,11 +289,11 @@ export default function ReportPage({
                   col.type === "int"
                     ? "number"
                     : col.type === "boolean"
-                    ? "checkbox"
-                    : col.type === "date"
-                    ? "date"
-                    : "text"
-                }          
+                      ? "checkbox"
+                      : col.type === "date"
+                        ? "date"
+                        : "text"
+                }
                 placeholder={col.headerName}
                 value={newRowData[col.field] || ""}
                 onChange={(e) => handleInputChange(col.field, e.target.value)}
