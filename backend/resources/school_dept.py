@@ -58,7 +58,6 @@ class SchoolDeptResource:
         async def create_school(
             school: SchoolCreateModel,
             db: Session = Depends(get_db),
-            username: str = Depends(get_current_username),
         ):
             db_school = School(**dict(school))
             db.add(db_school)

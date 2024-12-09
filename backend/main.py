@@ -1,5 +1,6 @@
 from fastapi.middleware.cors import CORSMiddleware
 from db import get_db
+from db import get_db
 from resources.coil_base import CoilBase
 from resources.compiled_quantitative_data import CompiledDataResource
 from resources.faculty_recipient import FacultyRecipientResource
@@ -39,4 +40,5 @@ async def on_startup():
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", port=8080, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8080)
+

@@ -2,7 +2,7 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import text
 from sqlalchemy.orm import sessionmaker
-from db import Base, engine
+from db import engine
 from main import app
 
 TestSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

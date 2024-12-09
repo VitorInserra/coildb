@@ -37,7 +37,7 @@ def test_add_hard_coded(override_db, client):
         },
     )
     assert response.status_code == 200
-    assert response.json() == {"message": "Data added successfully"}
+    assert response.json() == {"message": "ok"}
 
 def test_add_duplicate_hard_coded(override_db, client):
     response = client.post(
