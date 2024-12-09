@@ -8,9 +8,11 @@ export default function KeyStatistics() {
         studentsEnrolled: 0,
     });
 
-    // Fetch key stats data on component mount
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
     useEffect(() => {
-        fetch("http://localhost:8080/key-stats/")
+        fetch(`${API_BASE_URL}/key-stats/`, 
+        )
             .then((response) => {
                 if (!response.ok) {
                     throw new Error(`KeyStats fetch error: ${response.statusText}`);

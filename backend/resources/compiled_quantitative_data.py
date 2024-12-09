@@ -153,11 +153,10 @@ class CompiledDataResource:
 
             return {"message": "Data added successfully"}
         
-        @self.router.delete("/delete-by-semester")
+        @self.router.delete("/delete-by-semester", dependencies=[Depends(get_current_username)])
         async def delete_by_semester(
             semester: str = Query(...),
             db: Session = Depends(get_db),
-            username: str = Depends(get_current_username)
         ):
             query = text("""
                 DELETE FROM compiled_hard
