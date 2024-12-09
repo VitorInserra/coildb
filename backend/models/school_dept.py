@@ -6,8 +6,8 @@ class School(Base):
     id = Column(Integer, primary_key=True, index=True)  # Primary key
     school = Column(String)
     school_count = Column(Integer)
-    #repeat_faculty = Column(Integer)
-    #unique_faculty = Column(Integer)
+    repeat_faculty = Column(Integer, nullable=True)
+    unique_faculty = Column(Integer, nullable=True)
  
 class Department(Base):
     id = Column(Integer, primary_key=True, index=True)  # Primary key
