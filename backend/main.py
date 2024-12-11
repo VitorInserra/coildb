@@ -1,6 +1,5 @@
 from fastapi.middleware.cors import CORSMiddleware
 from db import get_db
-from db import get_db
 from resources.coil_base import CoilBase
 from resources.compiled_quantitative_data import CompiledDataResource
 from resources.faculty_recipient import FacultyRecipientResource
