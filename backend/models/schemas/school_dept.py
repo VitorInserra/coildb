@@ -19,7 +19,7 @@ class SchoolCreateModel(BaseModel):
         orm_mode = True
 
 class DepartmentModel(BaseModel):
-    id: int
+    #id: int
     department: str
     course: str
 

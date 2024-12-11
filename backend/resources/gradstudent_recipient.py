@@ -7,7 +7,7 @@ from models.schemas.gradstudent_recipient import GradStudentRecipientModel
 from models.schemas.base_m import LargestIdResponse
 from fastapi import APIRouter, Depends, HTTPException
 from db import get_db
-from typing import List
+from typing import List, Union
 from dependencies import get_current_username
 
 
@@ -79,6 +79,24 @@ class GradStudentRecipientResource:
             if largest_id is None:
                 return {"largest_id": 0}
             return {"largest_id": largest_id}
+        
+        @self.router.get("/get-recipient/{column}/{input}/", response_model=Union[GradStudentRecipientModel, List[GradStudentRecipientModel]])
+        async def get_gradstudent_recipient(column: str, input: str, db: Session = Depends(get_db)):
+            query = db.query(GradStudentRecipient).filter(getattr(GradStudentRecipient, column) == input)
+            result = query.all()
+            if result:
+                return result
+            else:
+                return {"message": "No matching faculty recipient found"}
+            
+        @self.router.delete("/delete-recipient/first-last-name/{first}/{last}", response_model=GradStudentRecipientModel)
+        async def delete_gradstudent_recipient_name(first: str, last:str, db: Session = Depends(get_db)):
+            db_student = db.query(GradStudentRecipient).filter(GradStudentRecipient.first_name == first, GradStudentRecipient.last_name == last).first()
+            if not db_student:
+                raise HTTPException(status_code=404, detail="GradStudentRecipient not found")
+            db.delete(db_student)
+            db.commit()
+            return db_student
 
 
         return self.router
