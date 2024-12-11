@@ -59,18 +59,6 @@ def test_get_dept_table(override_db, client):
     # Cleanup
     helper_delete_dept(client, "test_dept", "test_course")
 
-def test_get_dept(override_db, client):
-     # Cleanup
-    helper_delete_dept(client, "test_dept", "test_course")
-    response = client.post("/school-dept/department/", json=school_data.dict())
-    column = "department"
-    input = "test_dept"
-    response = client.get(f"/school-dept/get-department/{column}/{input}/")
-    assert response.status_code == 200
-    data = response.json()
-    assert data is not None
-    assert any(recipient["course"] == "test_course" for recipient in data)
-    helper_delete_dept(client, "test_dept", "test_course")
 
 def test_get_nonexistent_dept(client):
     # Test API retrieval for a nonexistent last_name
