@@ -37,7 +37,7 @@ def test_add_hard_coded(override_db, client):
         },
     )
     assert response.status_code == 200
-    assert response.json() == {"message": "ok"}
+    assert response.json() == {"message": "Data added successfully"}
 
 def test_add_duplicate_hard_coded(override_db, client):
     response = client.post(
@@ -47,14 +47,14 @@ def test_add_duplicate_hard_coded(override_db, client):
     assert response.status_code == 200
     assert response.json() == {"message": "Semester 'Fall 2024' already exists. No data added."}
 
-def test_get_compiled_data(override_db, client):
+def test_get_compiled_quantity_data(override_db, client):
     response = client.get(
-        "/compiled-data/get-data/",
-        params={"semesters": ["Fall 2024"]},
+        "/compiled-data/get-quantity-data/",
+        params={"semesters": ["Fall 2023"] }
     )
     assert response.status_code == 200
     data = response.json()
-    assert "Fall 2024" in data
+    assert "coil_courses_offered" in data["Fall 2023"]
 
 def test_update_hard_coded(override_db, client):
     response = client.put(
