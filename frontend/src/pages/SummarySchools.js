@@ -8,8 +8,8 @@ export default function SummarySchools({ addStarredReport }) {
   const columnDefs = [
     { headerName: "School", field: "school", filter: true, editable: true },
     { headerName: "School Count", field: "school_count", filter: true, editable: true },
-    //{ headerName: "Repeat Faculty", field: "repeat_faculty", filter: true, editable: true },
-    //{ headerName: "Unique Faculty", field: "unique_faculty", filter: true, editable: true },
+    { headerName: "Repeat Faculty", field: "repeat_faculty", filter: true, editable: true },
+    { headerName: "Unique Faculty", field: "unique_faculty", filter: true, editable: true },
   ];
 
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; // Base API URL from environment variables

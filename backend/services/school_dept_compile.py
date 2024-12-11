@@ -7,93 +7,108 @@ from models.faculty_recipient import FacultyRecipient
 def update_faculty_counts(db: Session):
     #Raw SQL query to update repeat_faculty field in the Schools table
    update_query = text("""
-       -- Update repeat_faculty count for College of Arts & Sciences
+      -- Update repeat_faculty count for College of Arts & Sciences
 UPDATE "schools"
 SET "repeat_faculty" = (
-   SELECT COUNT(*)
-   FROM "faculty"
-   WHERE "School" LIKE '%College%'
-     AND "Repeat Course Semester" IS NOT NULL
+  SELECT COUNT(*)
+  FROM "faculty"
+  WHERE "School" LIKE '%College%'
+    AND "Repeat Course Semester" IS NOT NULL
 )
 WHERE "school" = 'College of Arts & Sciences';
+
+
 
 
 -- Update repeat_faculty count for School of Nursing
 UPDATE "schools"
 SET "repeat_faculty" = (
-   SELECT COUNT(*)
-   FROM "faculty"
-   WHERE "School" LIKE '%Nursing%'
-     AND "Repeat Course Semester" IS NOT NULL
+  SELECT COUNT(*)
+  FROM "faculty"
+  WHERE "School" LIKE '%Nursing%'
+    AND "Repeat Course Semester" IS NOT NULL
 )
 WHERE "school" = 'School of Nursing';
+
+
 
 
 -- Update repeat_faculty count for Kenan-Flagler Business School
 UPDATE "schools"
 SET "repeat_faculty" = (
-   SELECT COUNT(*)
-   FROM "faculty"
-   WHERE "School" LIKE '%Business%'
-     AND "Repeat Course Semester" IS NOT NULL
+  SELECT COUNT(*)
+  FROM "faculty"
+  WHERE "School" LIKE '%Business%'
+    AND "Repeat Course Semester" IS NOT NULL
 )
 WHERE "school" = 'Kenan-Flagler Business School';
+
+
 
 
 -- Update repeat_faculty count for School of Education
 UPDATE "schools"
 SET "repeat_faculty" = (
-   SELECT COUNT(*)
-   FROM "faculty"
-   WHERE "School" LIKE '%Education%'
-     AND "Repeat Course Semester" IS NOT NULL
+  SELECT COUNT(*)
+  FROM "faculty"
+  WHERE "School" LIKE '%Education%'
+    AND "Repeat Course Semester" IS NOT NULL
 )
 WHERE "school" = 'School of Education';
+
+
 
 
 -- Update repeat_faculty count for Hussman School of Journalism and Media
 UPDATE "schools"
 SET "repeat_faculty" = (
-   SELECT COUNT(*)
-   FROM "faculty"
-   WHERE "School" LIKE '%Journalism%'
-     AND "Repeat Course Semester" IS NOT NULL
+  SELECT COUNT(*)
+  FROM "faculty"
+  WHERE "School" LIKE '%Journalism%'
+    AND "Repeat Course Semester" IS NOT NULL
 )
 WHERE "school" = 'Hussman School of Journalism and Media';
+
+
 
 
 -- Update repeat_faculty count for School of Government
 UPDATE "schools"
 SET "repeat_faculty" = (
-   SELECT COUNT(*)
-   FROM "faculty"
-   WHERE "School" LIKE '%Government%'
-     AND "Repeat Course Semester" IS NOT NULL
+  SELECT COUNT(*)
+  FROM "faculty"
+  WHERE "School" LIKE '%Government%'
+    AND "Repeat Course Semester" IS NOT NULL
 )
 WHERE "school" = 'School of Government';
+
+
 
 
 -- Update repeat_faculty count for School of Medicine
 UPDATE "schools"
 SET "repeat_faculty" = (
-   SELECT COUNT(*)
-   FROM "faculty"
-   WHERE "School" LIKE '%Medicine%'
-     AND "Repeat Course Semester" IS NOT NULL
+  SELECT COUNT(*)
+  FROM "faculty"
+  WHERE "School" LIKE '%Medicine%'
+    AND "Repeat Course Semester" IS NOT NULL
 )
 WHERE "school" = 'School of Medicine';
+
+
 
 
 -- Update repeat_faculty count for Gillings School of Global Public Health
 UPDATE "schools"
 SET "repeat_faculty" = (
-   SELECT COUNT(*)
-   FROM "faculty"
-   WHERE "School" LIKE '%Public Health%'
-     AND "Repeat Course Semester" IS NOT NULL
+  SELECT COUNT(*)
+  FROM "faculty"
+  WHERE "School" LIKE '%Public Health%'
+    AND "Repeat Course Semester" IS NOT NULL
 )
 WHERE "school" = 'Gillings School of Global Public Health';
-   """)
+  """)
+
    # Execute the SQL query
    db.execute(update_query)
    # Raw SQL query to calculate unique_faculty
