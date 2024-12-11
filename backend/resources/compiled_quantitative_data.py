@@ -57,6 +57,7 @@ class CompiledDataResource:
             eligible_ee_credit: int = Query(None),
             received_ee_credit: int = Query(None),
             db: Session = Depends(get_db),
+            username: str = Depends(get_current_username)
         ):
             update_fields = {}
 
@@ -104,6 +105,7 @@ class CompiledDataResource:
             eligible_ee_credit: int = Query(None),
             received_ee_credit: int = Query(None),
             db: Session = Depends(get_db),
+            username: str = Depends(get_current_username),
         ):
             existing_entry = db.execute(
                 text("SELECT 1 FROM compiled_hard WHERE semester = :semester"),
