@@ -4,10 +4,10 @@ from db import engine, Base
 
 class GradStudentRecipient(Base):
     __tablename__ = "grad_student"
-    id = Column(Integer, primary_key=True, index=True)  # Primary key
+    #id = Column(Integer, primary_key=True, index=True, autoincrement=True)  # Primary key
     semester_taught = Column('Semester Taught', String)
     year_taught = Column('Year Taught', Integer)
-    last_name = Column('Last Name', String, index=False)
+    last_name = Column('Last Name', String, index=False, primary_key=True)
     first_name = Column('First Name', String)
     faculty_supervisor = Column('Faculty Supervisor', String)
     school = Column('School', String)

@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 from models.school_dept import School, Department
 from sqlalchemy import func
 from sqlalchemy.orm import Session
@@ -45,6 +45,24 @@ class SchoolDeptResource:
                 return result
             else:
                 return {"message": "No matching school found"}
+            
+        @self.router.get("/get-school/{column}/{input}/", response_model=Union[SchoolModel, List[SchoolModel]])
+        async def get_school_column(column: str, input: str, db: Session = Depends(get_db)):
+            query = db.query(School).filter(getattr(School, column) == input)
+            result = query.all()
+            if result:
+                return result
+            else:
+                raise HTTPException(status_code=404, detail="School not found")
+            
+        @self.router.get("/get-department/{column}/{input}/", response_model=Union[DepartmentModel, List[DepartmentModel]])
+        async def get_dept_column(column: str, input: str, db: Session = Depends(get_db)):
+            query = db.query(School).filter(getattr(Department, column) == input)
+            result = query.all()
+            if result:
+                return result
+            else:
+                raise HTTPException(status_code=404, detail="Department not found")
 
         @self.router.get("/depts", response_model=DepartmentModel)
         async def get_department(department_id: int, db: Session = Depends(get_db)):
@@ -105,6 +123,15 @@ class SchoolDeptResource:
             db_school = db.query(School).filter(School.school == name).first()
             if not db_school:
                 raise HTTPException(status_code=404, detail="School not found")
+            db.delete(db_school)
+            db.commit()
+            return db_school
+        
+        @self.router.delete("/delete-dept/{dept}/{course}/", response_model=DepartmentModel)
+        async def delete_dept(dept: str, course: str, db: Session = Depends(get_db)):
+            db_school = db.query(Department).filter(Department.department == dept, Department.course == course).first()
+            if not db_school:
+                raise HTTPException(status_code=404, detail="Department not found")
             db.delete(db_school)
             db.commit()
             return db_school
