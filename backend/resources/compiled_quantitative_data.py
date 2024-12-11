@@ -34,7 +34,7 @@ class CompiledDataResource:
 
             return res
 
-        @self.router.get("/get-quantity-data")
+        @self.router.get("/get-quantity-data/")
         async def get_compiled_data(
             semesters: List[str] = Query(),
             db: Session = Depends(get_db),

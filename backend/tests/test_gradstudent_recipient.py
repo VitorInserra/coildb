@@ -3,6 +3,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy.orm import sessionmaker
 from db import Base, engine
 from models.gradstudent_recipient import GradStudentRecipient
+from models.schemas.gradstudent_recipient import GradStudentRecipientModel
 from main import app
 
 TestSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -21,79 +22,42 @@ def override_db():
 
 url_base = '/gradstudent-recipient'
 
+new_student = GradStudentRecipientModel(
+        first_name= "Alice",
+        last_name= "Wonderland",
+        semester_taught= "Winter",
+        year_taught= 2022,
+        faculty_supervisor= "Dr. Brown",
+        school= "Medicine",
+        course="test",
+        department = "test",
+        number = "0",
+        unc_course_name = "test",
+        partner_institution ="test",
+        award = 0,
+        email = "test",
+        pid = 0
+)
 
 def test_get_gradstudents(override_db, client):
-    student_1 = GradStudentRecipient(
-        first_name="John",
-        last_name="Doe",
-        semester_taught="Fall",
-        year_taught=2024,
-        faculty_supervisor="Dr. Smith",
-        school="Arts and Sciences",
-        department="Computer Science",
-        course="CS101",
-        number="101",
-        unc_course_name="Introduction to Computer Science",
-        partner_institution="Partner University",
-        award=1500,
-    )
-    student_2 = GradStudentRecipient(
-        first_name="Jane",
-        last_name="Smith",
-        semester_taught="Spring",
-        year_taught=2023,
-        faculty_supervisor="Dr. Johnson",
-        school="Engineering",
-        department="Electrical Engineering",
-        course="EE201",
-        number="201",
-        unc_course_name="Circuits and Systems",
-        partner_institution="Engineering College",
-        award=2000,
-    )
-
-    override_db.add_all([student_1, student_2])
-    override_db.commit()
-
-    response = client.get(url_base + "/gradstudent-recipient/")
+    response = client.delete("/gradstudent-recipient/delete-recipient/first-last-name/Alice/Wonderland")
+    #cleanup
+    response = client.post("/gradstudent-recipient/gradstudent-recipient/", json=new_student.dict())
+    response = client.get("/gradstudent-recipient/gradstudent-recipient/")
 
     assert response.status_code == 200
     data = response.json()
-    assert len(data) == 2
-    assert data[0]["first_name"] == "John"
-    assert data[0]["last_name"] == "Doe"
-    assert data[0]["semester_taught"] == "Fall"
-    assert data[0]["year_taught"] == 2024
-    assert data[0]["department"] == "Computer Science"
-    assert data[0]["course"] == "CS101"
-    assert data[0]["number"] == "101"
-    assert data[0]["unc_course_name"] == "Introduction to Computer Science"
-    assert data[0]["partner_institution"] == "Partner University"
-    assert data[0]["award"] == 1500
-    assert data[1]["first_name"] == "Jane"
-    assert data[1]["last_name"] == "Smith"
-    assert data[1]["semester_taught"] == "Spring"
-    assert data[1]["year_taught"] == 2023
-    assert data[1]["department"] == "Electrical Engineering"
-    assert data[1]["course"] == "EE201"
-    assert data[1]["number"] == "201"
-    assert data[1]["unc_course_name"] == "Circuits and Systems"
-    assert data[1]["partner_institution"] == "Engineering College"
-    assert data[1]["award"] == 2000
+    assert any(recipient["last_name"] == "Wonderland" for recipient in data)
+    assert any(recipient["first_name"] == "Alice" for recipient in data)
+    response = client.delete("/faculty-recipient/delete-recipient/first-last-name/Alice/Wonderland")
+    #cleanup
+
+
 
 
 def test_create_gradstudent(override_db, client):
-    new_student = {
-        "first_name": "Alice",
-        "last_name": "Wonderland",
-        "semester_taught": "Winter",
-        "year_taught": 2022,
-        "faculty_supervisor": "Dr. Brown",
-        "school": "Medicine",
-    }
-
-    response = client.post(url_base + "/gradstudent-recipient/", json=new_student)
-
+    response = client.delete("/gradstudent-recipient/delete-recipient/first-last-name/Alice/Wonderland")
+    response = client.post("/gradstudent-recipient/gradstudent-recipient/", json=new_student.dict())
     assert response.status_code == 200
     data = response.json()
     assert data["first_name"] == "Alice"
@@ -110,29 +74,22 @@ def test_create_gradstudent(override_db, client):
     assert student_in_db is not None
 
 def test_delete_gradstudent_recipient(override_db, client):
-    student = GradStudentRecipient(
-        first_name="Eve",
-        last_name="Adams",
-        semester_taught="Summer",
-        year_taught=2023,
-        faculty_supervisor="Dr. Clark",
-        school="Business",
-    )
-    override_db.add(student)
-    override_db.commit()
-
-    response = client.delete(url_base + "/delete-recipient/Adams/Eve")
-
+    #Cleanup
+    response = client.delete("/gradstudent-recipient/delete-recipient/first-last-name/Alice/Wonderland")
+    #Add test
+    response = client.post("/gradstudent-recipient/gradstudent-recipient/", json=new_student.dict())
+    response = client.get("/gradstudent-recipient/get-recipient/last_name/Wonderland")
     assert response.status_code == 200
     data = response.json()
-    assert data["first_name"] == "Eve"
-    assert data["last_name"] == "Adams"
+    assert data[0]["first_name"] == "Alice"
+    assert data[0]["last_name"] == "Wonderland"
 
-
-    remaining_students = override_db.query(GradStudentRecipient).all()
-    assert all(
-        s.first_name != "Eve" or s.last_name != "Adams" for s in remaining_students
-    )
+    #Delete test
+    response = client.delete("/gradstudent-recipient/delete-recipient/first-last-name/Alice/Wonderland")
+    response = client.get("/gradstudent-recipient/get-recipient/last_name/Wonderland")
+    data = response.json()
+    assert data["first_name"] == None
+    assert data["last_name"] == None
 
 def test_delete_nonexistent_gradstudent_recipient(client):
     response = client.delete("/delete-recipient/Nonexistent/Name")

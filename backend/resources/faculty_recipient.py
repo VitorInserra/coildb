@@ -23,6 +23,8 @@ class FacultyRecipientResource:
         @self.router.get("/get-recipient/{column}/{input}/", response_model=Union[FacultyRecipientModel, List[FacultyRecipientModel]])
         async def get_faculty_recipient(column: str, input: str, db: Session = Depends(get_db)):
             query = db.query(FacultyRecipient).filter(getattr(FacultyRecipient, column) == input)
+            if not query:
+                raise HTTPException(status_code=404, detail="FacultyRecipient not found")
             result = query.all()
             if result:
                 return result
