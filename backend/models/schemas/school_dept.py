@@ -2,7 +2,7 @@ from typing import Optional
 from pydantic import BaseModel
 
 class SchoolModel(BaseModel):
-    #id: int
+    id: int
     school: str
     school_count: int
     repeat_faculty: Optional[int]
@@ -12,7 +12,7 @@ class SchoolModel(BaseModel):
 
 
 class SchoolCreateModel(BaseModel):
-    #id: int
+    id: int
     school: str
     school_count: int
     class Config:
