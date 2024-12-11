@@ -1,6 +1,6 @@
 # coildb
 
-### The COIL Database is a full-stack web application which provides a user-friendly way to access and modify information required by the UNC Global Affairs staff to maintain the COIL program.
+### [The COIL Database](http://coildb-frontend-dept-coildb.apps.cloudapps.unc.edu) is a full-stack web application which provides a user-friendly way to access and modify information required by the UNC Global Affairs staff to maintain the COIL program.
 
 The COIL (Collaborative Online International Learning) Database is a web application designed by The Global Education Team to enhance how the UNC Global Affairs staff manages information related to COIL courses. The Global Education Team is the team of UNC Global Affairs staff members that manage the COIL Database. Currently, staff rely on Excel spreadsheets, which are prone to human errors and inconsistencies, especially due to user-created formulas. This new web based database will serve as an upgrade, offering a more structured and efficient way to input and manage course data. It will also introduce quality-of-life features, such as diagnostic tools and graphs to further streamline the management process.
 
