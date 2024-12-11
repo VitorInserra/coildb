@@ -71,6 +71,15 @@ class FacultyRecipientResource:
             db.delete(db_student)
             db.commit()
             return db_student
+        
+        @self.router.delete("/delete-recipient/first-last-name/{first}/{last}", response_model=FacultyRecipientModel)
+        async def delete_faculty_recipient_name(first: str, last:str, db: Session = Depends(get_db)):
+            db_student = db.query(FacultyRecipient).filter(FacultyRecipient.first_name == first, FacultyRecipient.last_name == last).first()
+            if not db_student:
+                raise HTTPException(status_code=404, detail="FacultyRecipient not found")
+            db.delete(db_student)
+            db.commit()
+            return db_student
 
 
         return self.router

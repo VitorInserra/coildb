@@ -9,7 +9,7 @@ from resources.school_dept import SchoolDeptResource
 from resources.starred_report import StarredReportResource
 from resources.key_stats import KeyStatisticsResource
 import uvicorn
-from api import app, create_auth_middleware
+from api import app#, create_auth_middleware
 from services.school_dept_compile import update_faculty_counts
 
 app.add_middleware(

@@ -3,10 +3,10 @@ from db import engine, Base
 
 class FacultyRecipient(Base):
     __tablename__ = "faculty"
-    id = Column(Integer, primary_key=True, index=True)  # Primary key
-    last_name = Column('Last Name', String, nullable=False, index=False)  
+    #id = Column(Integer, primary_key=True, index=True)  # Primary key
+    last_name = Column('Last Name', String, primary_key=True, nullable=False, index=False)  
     first_name = Column('First Name', String, nullable=False)  
-    email = Column('Email', String, unique=True, nullable=False)  
+    email = Column('Email', String, nullable=False)  
     semester_taught = Column('Semester Taught', String, nullable=False)  
     school = Column('School', String)  
     department = Column('Department', String)
